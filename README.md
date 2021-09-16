@@ -1,1 +1,5 @@
-Client-server iOS applications
+Vk_application
+
+Учебное приложение, имитирующее Vkontakte
+
+
