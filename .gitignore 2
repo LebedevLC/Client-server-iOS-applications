@@ -8,7 +8,7 @@ build/
 DerivedData
 
 Pods/
- *.xcworkspace
+*.xcworkspace
 
 
 ## Various settings
