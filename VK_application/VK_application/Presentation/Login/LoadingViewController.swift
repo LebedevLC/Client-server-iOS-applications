@@ -9,6 +9,8 @@ import UIKit
 
 class LoadingViewController: UIViewController {
     
+    @IBOutlet var animationView: UIView!
+    
     private var firstPoint: UILabel = {
         let firstPoint = UILabel()
         firstPoint.translatesAutoresizingMaskIntoConstraints = false
@@ -49,6 +51,7 @@ class LoadingViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        animationFirst()
         animationSecond()
     }
     
@@ -79,7 +82,6 @@ class LoadingViewController: UIViewController {
     private func animationSecond() {
         UIView.animateKeyframes(withDuration: 1,
                                 delay: 0,
-//                                options: .repeat,
                                 animations: {
                                     UIView.addKeyframe(withRelativeStartTime: 0.15,
                                                        relativeDuration: 0.16,
@@ -114,10 +116,54 @@ class LoadingViewController: UIViewController {
                                 },
                                 completion: { _ in
                                     self.performSegue(withIdentifier: "goToTabBar", sender: nil)
-                                    print("User token = " + UserSession.shared.token)
-                                    print("UserID = " + String(UserSession.shared.userId))
                                 })
     }
     
+    private func animationFirst() {
+        let firstLayer = CAShapeLayer()
+        let secondLayer = CAShapeLayer()
+        
+        firstLayer.path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 4, height: 4)).cgPath
+        secondLayer.path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 4, height: 4)).cgPath
+        
+        firstLayer.backgroundColor = UIColor.black.cgColor
+        secondLayer.backgroundColor = UIColor.black.cgColor
+        
+        firstLayer.frame = CGRect(x: view.center.x - 10, y: view.center.y - 200, width: 40, height: 40)
+        secondLayer.frame = CGRect(x: view.center.x - 10, y: view.center.y - 200, width: 40, height: 40)
+        
+        firstLayer.masksToBounds = true
+        secondLayer.masksToBounds = true
+        firstLayer.cornerRadius = 20
+        secondLayer.cornerRadius = 20
+        
+        self.view.layer.addSublayer(firstLayer)
+        self.view.layer.addSublayer(secondLayer)
+        
+        let scale = CABasicAnimation(keyPath: "bounds.size.width")
+        scale.byValue = 160
+        scale.duration = 0.5
+        scale.fillMode = CAMediaTimingFillMode.forwards
+        scale.isRemovedOnCompletion = false
+        
+        let rotationLeft = CABasicAnimation(keyPath: "transform.rotation")
+        rotationLeft.byValue = CGFloat.pi / 4
+        rotationLeft.duration = 0.5
+        rotationLeft.beginTime = CACurrentMediaTime() + 0.5
+        rotationLeft.fillMode = CAMediaTimingFillMode.both
+        rotationLeft.isRemovedOnCompletion = false
+        
+        let rotationRight = CABasicAnimation(keyPath: "transform.rotation")
+        rotationRight.byValue = -CGFloat.pi / 4
+        rotationRight.duration = 0.5
+        rotationRight.beginTime = CACurrentMediaTime() + 0.5
+        rotationRight.fillMode = CAMediaTimingFillMode.both
+        rotationRight.isRemovedOnCompletion = false
+        
+        firstLayer.add(scale, forKey: nil)
+        firstLayer.add(rotationLeft, forKey: nil)
+        secondLayer.add(scale, forKey: nil)
+        secondLayer.add(rotationRight, forKey: nil)
+    }
     
 }
