@@ -15,6 +15,7 @@ final class PhotoCollectionViewCell: UICollectionViewCell {
     @IBOutlet var newAvatarView: NewAvatarView!
     
     static let identifier = "PhotoCollectionViewCell"
+    
     var likeTapped: (() -> Void)?
     
     override func layoutSubviews() {

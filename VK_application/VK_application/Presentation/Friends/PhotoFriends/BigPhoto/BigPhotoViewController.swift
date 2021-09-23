@@ -25,6 +25,7 @@ class BigPhotoViewController: UIViewController {
         bigView.photoes = bigPhotoes.map({$0.fileName})
         bigView.visibleIndex = sourceIndexPath.item
         bigView.namePhoto = bigPhotoes.map({$0.name})
+        bigView.delegate = self
         tabBarController?.tabBar.isHidden = true
         navigationController?.navigationBar.isHidden = true
     }
@@ -37,10 +38,13 @@ class BigPhotoViewController: UIViewController {
     
 }
 
-// 2 часа на первую версию, чтобы передавать сюда изображения
-// 3 часа ночью и 1/2 часа утром на вторую версию чтобы передать сюда изображения (утром думается лучше)
-// 1 чвс на анимацию transform при перелистывании
-// 1 час на добавление, передачу и анимацию названия фото
-// 1/4 чвса на исправление бага с исчезающим фото
+// delegate
+extension BigPhotoViewController: BigPhotoViewDelegate {
+    func action() {
+        tabBarController?.tabBar.isHidden.toggle()
+        navigationController?.navigationBar.isHidden.toggle()
+    }
+}
+
 
 

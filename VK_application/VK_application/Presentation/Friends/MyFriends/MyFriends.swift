@@ -17,6 +17,10 @@ class MyFriends: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        FriendsGet().getFriends()
+        PhotoesGetAll().getPhotoesAll()
+        GroupsGet().getMyGroups()
+        GroupsSearch().getMyGroups()
         
         friends = FriendStorage().friend
     }

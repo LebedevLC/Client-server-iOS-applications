@@ -7,7 +7,13 @@
 
 import UIKit
 
-class BigPhotoView: UIView {
+protocol BigPhotoViewDelegate: AnyObject {
+    func action()
+}
+
+class BigPhotoView: UIView, UIGestureRecognizerDelegate {
+    
+    weak var delegate: BigPhotoViewDelegate?
     
     private var leftView: UIImageView = {
         let leftView = UIImageView()
@@ -61,7 +67,7 @@ class BigPhotoView: UIView {
         super.layoutSubviews()
         setViews()
         setGesture()
-        setDoubleTap()
+        setTap()
         setPhotos()
         beginCenterXVisibleView = visibleView.center.x
         beginCenterXRightView = rightView.center.x
@@ -111,7 +117,22 @@ class BigPhotoView: UIView {
             print("panGesture is not initial")
             return
         }
+        panGesture?.minimumNumberOfTouches = 1
+        panGesture?.maximumNumberOfTouches = 1
         visibleView.addGestureRecognizer(gesture)
+        // перемещение изображения
+        let panGR = UIPanGestureRecognizer(target: self, action: #selector(didPan))
+        // управление двумя пальцами
+        panGR.minimumNumberOfTouches = 2
+        panGR.maximumNumberOfTouches = 2
+        // делегат для реализации нескольких гестур одновременно
+        panGR.delegate = self
+        visibleView.addGestureRecognizer(panGR)
+        // масштабирование щипками
+        let pinchGR = UIPinchGestureRecognizer(target: self, action: #selector(didPinch))
+        // делегат для реализации нескольких гестур одновременно
+        pinchGR.delegate = self
+        visibleView.addGestureRecognizer(pinchGR)
     }
     
     private func setPhotos() {
@@ -129,41 +150,6 @@ class BigPhotoView: UIView {
         visibleView.isUserInteractionEnabled = true
     }
     
-    @IBAction private func handlePan(recognizer: UIPanGestureRecognizer) {
-        let translation = recognizer.translation(in: self.visibleView)
-        if let visibleViewRecogniser = recognizer.view {
-            visibleViewRecogniser.center.x = visibleViewRecogniser.center.x + translation.x
-            leftView.center.x = leftView.center.x + translation.x
-            rightView.center.x = rightView.center.x + translation.x
-            
-            rightView.isHidden = false
-            leftView.isHidden = false
-            
-            firstTransformAnimate()
-        }
-        recognizer.setTranslation(.zero, in: self.visibleView)
-        if recognizer.state == .ended {
-            let offset = beginCenterXVisibleView - visibleView.center.x
-            if offset > 100 {
-                startAnimate(.left)
-            } else if offset < -100 {
-                startAnimate(.right)
-            } else {
-                startAnimate(.revert)
-            }
-        }
-    }
-    
-    func setDoubleTap() {
-    let doubleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleDoubleTap))
-        doubleTap.numberOfTapsRequired = 2
-    self.visibleView.addGestureRecognizer(doubleTap)
-    }
-    
-    @objc func handleDoubleTap() {
-        likeAnimation()
-     }
-    
     private func nextIndex() -> Int {
         let lastIndex = photoes.count - 1
         if lastIndex == visibleIndex {
@@ -180,6 +166,97 @@ class BigPhotoView: UIView {
         } else {
             return visibleIndex - 1
         }
+    }
+    
+//MARK:- Gesture
+    
+    @IBAction private func handlePan(recognizer: UIPanGestureRecognizer) {
+        let translation = recognizer.translation(in: self.visibleView)
+        if let visibleViewRecogniser = recognizer.view {
+            visibleViewRecogniser.center.x = visibleViewRecogniser.center.x + translation.x
+            leftView.center.x = leftView.center.x + translation.x
+            rightView.center.x = rightView.center.x + translation.x
+            rightView.isHidden = false
+            leftView.isHidden = false
+            firstTransformAnimate()
+        }
+        recognizer.setTranslation(.zero, in: self.visibleView)
+        if recognizer.state == .ended {
+            let offset = beginCenterXVisibleView - visibleView.center.x
+            if offset > 100 {
+                startAnimate(.left)
+            } else if offset < -100 {
+                startAnimate(.right)
+            } else {
+                startAnimate(.revert)
+            }
+        }
+    }
+    
+    private func setTap() {
+        // показать/скрыть навигацию
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap))
+        singleTap.numberOfTapsRequired = 1
+        self.visibleView.addGestureRecognizer(singleTap)
+        // Double Tap (Like)
+        let doubleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleDoubleTap))
+        doubleTap.numberOfTapsRequired = 2
+        self.visibleView.addGestureRecognizer(doubleTap)
+        // обработка двойного или одиночного нажатия
+        singleTap.require(toFail: doubleTap)
+        singleTap.delaysTouchesBegan = true
+        doubleTap.delaysTouchesBegan = true
+    }
+    
+    // BigPhotoView Delegate for hiden/show navigation
+    @objc func handleSingleTap() {
+        delegate?.action()
+    }
+    
+    // Анимация отображения сердца в центре экрана
+    @objc func handleDoubleTap() {
+        likeAnimation()
+     }
+    
+    // перемещение изображения
+    @objc func didPan(panGR: UIPanGestureRecognizer) {
+        visibleView.bringSubviewToFront(visibleView)
+        var translation = panGR.translation(in: visibleView)
+        switch panGR.state {
+        case .ended:
+            animation()
+//        return
+        case .changed:
+            translation = translation.applying(visibleView.transform)
+            visibleView.center.x += translation.x
+            visibleView.center.y += translation.y
+            panGR.setTranslation(CGPoint.zero, in: visibleView)
+        default:
+            return
+        }
+    }
+    
+    // масштабирование изображения
+    @objc func didPinch(pinchGR: UIPinchGestureRecognizer) {
+        visibleView.bringSubviewToFront(visibleView)
+        let scale = pinchGR.scale
+        switch pinchGR.state {
+        case .changed:
+            visibleView.transform = visibleView.transform.scaledBy(x: scale, y: scale)
+            pinchGR.scale = 1.0
+        case .ended:
+            animation()
+//        return
+        default:
+            return
+        }
+    }
+    
+    // нужно true для возможности использовать сразу несколько гестур (по дефолту false)
+    func gestureRecognizer(_: UIGestureRecognizer,
+                           shouldRecognizeSimultaneouslyWith
+                            shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool {
+        return true
     }
     
 //MARK:- Animation
@@ -288,6 +365,16 @@ class BigPhotoView: UIView {
             },
             completion: nil
         )
+    }
+    
+    // анимация возвращения в исходное состояние
+    private func animation(){
+        UIView.animate(
+            withDuration: 0.15,
+            animations: { [unowned self] in
+                self.visibleView.transform = CGAffineTransform.identity
+                self.visibleView.frame = UIScreen.main.bounds
+            } )
     }
     
 }

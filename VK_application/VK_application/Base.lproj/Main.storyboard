@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QnH-Ft-GFa">
     <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -146,7 +147,42 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="100" y="96"/>
+            <point key="canvasLocation" x="-15" y="472"/>
+        </scene>
+        <!--Login View Controller-->
+        <scene sceneID="Eod-nK-2Hy">
+            <objects>
+                <viewController id="QnH-Ft-GFa" customClass="VKLoginViewController" customModule="VK_application" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="765-eX-gtq">
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3RV-4n-fUU">
+                                <rect key="frame" x="0.0" y="44" width="428" height="848"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="93D-jZ-TpE"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="3RV-4n-fUU" firstAttribute="top" secondItem="93D-jZ-TpE" secondAttribute="top" id="5gE-3D-YYH"/>
+                            <constraint firstItem="93D-jZ-TpE" firstAttribute="trailing" secondItem="3RV-4n-fUU" secondAttribute="trailing" id="Dxd-Ue-KAy"/>
+                            <constraint firstItem="3RV-4n-fUU" firstAttribute="leading" secondItem="93D-jZ-TpE" secondAttribute="leading" id="q4A-tO-i89"/>
+                            <constraint firstItem="93D-jZ-TpE" firstAttribute="bottom" secondItem="3RV-4n-fUU" secondAttribute="bottom" id="u3d-Zo-YSk"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="3RV-4n-fUU" id="fG6-38-kRd"/>
+                        <segue destination="bU5-9P-g2L" kind="show" identifier="fromWebToLoading" id="sc4-9D-xOz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oDQ-7d-MkY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-15" y="-265"/>
         </scene>
         <!--Loading View Controller-->
         <scene sceneID="mrz-TN-IsL">
@@ -155,11 +191,24 @@
                     <view key="view" contentMode="scaleToFill" id="LZ6-ra-Ygx">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wP3-t0-1zr">
+                                <rect key="frame" x="94" y="100" width="240" height="128"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="UH0-BO-ZOa"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="wP3-t0-1zr" firstAttribute="top" secondItem="UH0-BO-ZOa" secondAttribute="top" constant="56" id="HLt-bB-HGa"/>
+                            <constraint firstItem="wP3-t0-1zr" firstAttribute="centerX" secondItem="LZ6-ra-Ygx" secondAttribute="centerX" id="JpD-ig-cG1"/>
+                            <constraint firstItem="wP3-t0-1zr" firstAttribute="leading" secondItem="UH0-BO-ZOa" secondAttribute="leading" constant="94" id="cXg-hw-RYn"/>
+                            <constraint firstItem="UH0-BO-ZOa" firstAttribute="bottom" secondItem="wP3-t0-1zr" secondAttribute="bottom" constant="664" id="wjk-QK-HEe"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="fIm-Wn-JVm"/>
                     <connections>
+                        <outlet property="animationView" destination="wP3-t0-1zr" id="Lub-Zl-7gx"/>
                         <segue destination="9Rp-cW-5NW" kind="show" identifier="goToTabBar" id="zIf-XV-air"/>
                     </connections>
                 </viewController>
@@ -298,7 +347,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FriendsTableViewCell" id="zUH-w0-LEL" customClass="FriendsTableViewCell" customModule="VK_application" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="24.333333969116211" width="428" height="94"/>
+                                        <rect key="frame" x="0.0" y="44.666666030883789" width="428" height="94"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zUH-w0-LEL" id="LCZ-P5-78f">
                                             <rect key="frame" x="0.0" y="0.0" width="398.33333333333331" height="94"/>
@@ -573,7 +622,7 @@
                                 </searchBar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserGroupTableViewCell" id="Fmd-Vh-Emj" customClass="UserGroupTableViewCell" customModule="VK_application" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="68.333333969116211" width="428" height="154.33332824707031"/>
+                                        <rect key="frame" x="0.0" y="88.666666030883789" width="428" height="154.33332824707031"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Fmd-Vh-Emj" id="8u5-1G-MVY">
                                             <rect key="frame" x="0.0" y="0.0" width="428" height="154.33332824707031"/>
@@ -932,7 +981,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AddGroupViewCell" id="sHa-N0-CXQ" customClass="AddGroupCell" customModule="VK_application" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="24.333333969116211" width="428" height="129.33332824707031"/>
+                                        <rect key="frame" x="0.0" y="44.666666030883789" width="428" height="129.33332824707031"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sHa-N0-CXQ" id="mnt-n2-8Ay">
                                             <rect key="frame" x="0.0" y="0.0" width="428" height="129.33332824707031"/>
@@ -1021,6 +1070,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="aDs-Sm-8n0"/>
+        <segue reference="pKi-bf-c3H"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Hinata0" width="500" height="488"/>
@@ -1032,7 +1082,7 @@
         <image name="line.horizontal.3.decrease" catalog="system" width="128" height="73"/>
         <image name="message" catalog="system" width="128" height="113"/>
         <image name="message.fill" catalog="system" width="128" height="113"/>
-        <image name="newspaper" catalog="system" width="128" height="108"/>
+        <image name="newspaper" catalog="system" width="128" height="111"/>
         <image name="newspaper.fill" catalog="system" width="128" height="111"/>
         <image name="person.2" catalog="system" width="128" height="81"/>
         <image name="person.2.fill" catalog="system" width="128" height="80"/>
