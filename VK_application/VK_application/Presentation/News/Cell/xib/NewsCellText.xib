@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="ZC2-Tu-ewd" customClass="NewsCellText" customModule="VK_application" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZC2-Tu-ewd" id="JPX-ha-UsK">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4D6-Op-F2r">
+                        <rect key="frame" x="10" y="10" width="394" height="24"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="4D6-Op-F2r" firstAttribute="top" secondItem="JPX-ha-UsK" secondAttribute="top" constant="10" id="YCA-kp-zCH"/>
+                    <constraint firstAttribute="bottom" secondItem="4D6-Op-F2r" secondAttribute="bottom" constant="10" id="YZx-GU-65N"/>
+                    <constraint firstItem="4D6-Op-F2r" firstAttribute="leading" secondItem="JPX-ha-UsK" secondAttribute="leading" constant="10" id="f4m-we-MPQ"/>
+                    <constraint firstAttribute="trailing" secondItem="4D6-Op-F2r" secondAttribute="trailing" constant="10" id="nc1-Hl-niB"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="labelText" destination="4D6-Op-F2r" id="3ir-GO-zmv"/>
+            </connections>
+            <point key="canvasLocation" x="97" y="74"/>
+        </tableViewCell>
+    </objects>
+</document>
