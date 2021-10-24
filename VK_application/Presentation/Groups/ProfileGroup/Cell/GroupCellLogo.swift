@@ -37,10 +37,11 @@ class GroupCellLogo: UITableViewCell {
         
     }
     
-    func configure(group: GroupModel) {
-        avatarImage.image = UIImage(named: group.avatarGroup)
-        shortDescriptionLabel.text = group.shortDescription
-        nameGroupLabel.text = group.nameGroup
+    func configure(group: GroupsItems) {
+        let url = URL(string: group.photo_100)
+        avatarImage.kf.setImage(with: url)
+        shortDescriptionLabel.text = group.screen_name
+        nameGroupLabel.text = group.name
         
         // test parameters
         subscribeControl.configure(isSubscribe: Bool.random())

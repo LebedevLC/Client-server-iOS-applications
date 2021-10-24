@@ -17,9 +17,12 @@ class MyFriendsVC: UIViewController {
     private var friendsServices = FriendsServices()
     // параметр для сортиовке при запросе
     private var order: FriendsServices.Order = .hints
+    private var backUserId: Int?
     
     private var token: NotificationToken?
     private var friendsRealmNotification: Results<FriendsItems>?
+    
+    //MARK: - LifeCicle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +36,11 @@ class MyFriendsVC: UIViewController {
         // обновлять инормацию в БД через дидлоад не получается, значит обновляем здесь
         // а затем уже она читается из БД и по нотификации показывается нам (зачем так сложно?!)
         getFriendsAloma(order: self.order)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        returnToFriendRow(id: backUserId)
     }
     
     //MARK: - DataBase
@@ -94,8 +102,21 @@ class MyFriendsVC: UIViewController {
         else { return }
         guard let indexPath = sender as? IndexPath else {return}
         guard let friend = friendsRealmNotification?[indexPath.row] else {return}
+        backUserId = friend.id
         destinationController.userID = friend.id
         destinationController.title = friend.first_name + " " + friend.last_name
+    }
+    
+    // вернуться к ячейке выбранного пользователя
+    private func returnToFriendRow(id: Int?) {
+        guard
+            let x = backUserId,
+            let firstIndexForFriend = friendsRealmNotification?.firstIndex(where: { $0.id == x })
+        else { return }
+            tableView.scrollToRow(
+                at: IndexPath(row: firstIndexForFriend, section: 0),
+                at: .middle,
+                animated: false)
     }
     
 //MARK: - Bar Button Items
@@ -121,7 +142,7 @@ class MyFriendsVC: UIViewController {
                     self.tableView.reloadData()
 //                    realm.beginWrite()
 //                    let sorded = Array(sotrFriends)
-//                    let oldfriends = friends
+//                    let oldfriends = friendsTitle
 //                    realm.delete(oldfriends)
 //                    realm.add(sorded, update: .all)
 //                    try realm.commitWrite()

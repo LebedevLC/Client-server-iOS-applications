@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class NewsCellPhoto: UITableViewCell {
     
@@ -26,15 +27,16 @@ final class NewsCellPhoto: UITableViewCell {
         self.newsImageView.image = nil
     }
     
-    func configure(news: NewsModel) {
-        newsImageView.image = UIImage(named: news.newsImageName)
+    func configure(wall: WallItems, group: GroupsItems) {
+        let sizeLast = wall.attachments[0].photo.sizes.endIndex-1
+        let url = URL(string: wall.attachments[0].photo.sizes[sizeLast].url)
+        newsImageView.kf.setImage(with: url, placeholder: nil, options: [.transition(ImageTransition.fade(1) ) ] )
     }
     
     private func configureStatic() {
         newsImageView.isUserInteractionEnabled = true
-        newsImageView.frame = bounds
-        newsImageView.layer.borderWidth = 2
-        newsImageView.layer.borderColor = UIColor.black.cgColor
+        //        newsImageView.layer.borderWidth = 1
+        //        newsImageView.layer.borderColor = UIColor.black.cgColor
     }
     
     // добавляем обработку нажатия на фото

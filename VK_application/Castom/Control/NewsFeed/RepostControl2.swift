@@ -12,7 +12,7 @@ final class RepostControl2: UIControl {
     var controlTapped: (() -> Void)?
     private var repostButton = UIButton()
     private var repostCountLabel = UILabel()
-    private var repostCounter: Int = 0
+    private var repostCounter: String = ""
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,8 +43,15 @@ final class RepostControl2: UIControl {
     }
     
     func configure(isRepost: Bool, repostCount: Int) {
-        repostCounter = repostCount
-        repostCountLabel.text = String(repostCount)
+        switch repostCount {
+        case 0..<1000:
+            repostCounter = String(repostCount)
+        case 1000..<1_000_000:
+            repostCounter = String(repostCount/1000) + "K"
+        default:
+            repostCounter = ""
+        }
+        repostCountLabel.text = repostCounter
         repostButton.isSelected = isRepost
     }
     
@@ -53,13 +60,12 @@ final class RepostControl2: UIControl {
         animatedLabel(repostCount: repostCounter)
     }
     
-    private func animatedLabel(repostCount: Int) {
+    private func animatedLabel(repostCount: String) {
         UIView.transition(with: repostCountLabel,
                           duration: 0.2,
                           options: .transitionFlipFromLeft,
                           animations: { [unowned self] in
-                            self.repostCountLabel.text = String(repostCount)}
+            self.repostCountLabel.text = repostCount}
         )
     }
-    
 }

@@ -6,18 +6,21 @@
 //
 
 import UIKit
+import Kingfisher
 
 class BigImageNewsVC: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var bigImageView: UIImageView!
     
-    var imageName: String = ""
-    
+    private var visibleIndex = 0
+
+    var wallPost: WallItems?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBarController?.tabBar.isHidden = true
         navigationController?.navigationBar.isHidden = true
-        setImage()
+        setImage(index: 0)
         setGesture()
     }
     
@@ -27,11 +30,37 @@ class BigImageNewsVC: UIViewController, UIGestureRecognizerDelegate {
         navigationController?.navigationBar.isHidden = false
     }
     
-    private func setImage() {
-        bigImageView.image = UIImage(named: imageName)
+//MARK: - Image
+    
+    private func setImage(index: Int) {
+        let url = URL(string: wallPost!.attachments[index].photo.sizes[wallPost!.attachments[index].photo.sizes.count-1].url)
+        bigImageView.kf.setImage(with: url, placeholder: nil, options: [.transition(ImageTransition.fade(1) ) ] )
         bigImageView.frame = UIScreen.main.bounds
         bigImageView.backgroundColor = UIColor.clear
     }
+    
+    // бесконечная прокрутка
+    private func nextIndex() -> Int {
+        let lastIndex = wallPost!.attachments.count - 1
+        if lastIndex == visibleIndex {
+            visibleIndex = 0
+            return 0
+        } else {
+            return visibleIndex + 1
+        }
+    }
+    
+    // бесконечная прокрутка
+    private func earlyIndex() -> Int {
+        let lastIndex = wallPost!.attachments.count - 1
+        if visibleIndex == 0 {
+            return lastIndex
+        } else {
+            return visibleIndex - 1
+        }
+    }
+    
+//MARK: - UIGesture
     
     private func setGesture() {
         // показать/скрыть навигацию
@@ -53,6 +82,16 @@ class BigImageNewsVC: UIViewController, UIGestureRecognizerDelegate {
         swipeUp.direction = .up
         bigImageView.addGestureRecognizer(swipeUp)
         
+        //  предыдущее изображение
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swipeToLeft))
+        swipeLeft.direction = .left
+        bigImageView.addGestureRecognizer(swipeLeft)
+        
+        // следующее изображение
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(swipeToRight))
+        swipeRight.direction = .right
+        bigImageView.addGestureRecognizer(swipeRight)
+        
         // перемещение изображения
         let panGR = UIPanGestureRecognizer(target: self, action: #selector(didPan))
         // управление двумя пальцами
@@ -69,8 +108,6 @@ class BigImageNewsVC: UIViewController, UIGestureRecognizerDelegate {
         bigImageView.addGestureRecognizer(pinchGR)
     }
     
-//MARK: - UIGesture
-    
     // по тапу показать/скрыть навигацию
     @objc func handleSingleTap(sender: UITapGestureRecognizer) {
         tabBarController?.tabBar.isHidden.toggle()
@@ -79,13 +116,25 @@ class BigImageNewsVC: UIViewController, UIGestureRecognizerDelegate {
     
     // добавить/убрать лайк фотографии
     @objc func handleDoubleTap() {
-        print("Like photo \(imageName)")
+//        print("Like photo \(imageName)")
     }
     
     // по свайпу вверх можно вернуться назад
     @objc func swipeToUp() {
         bigImageView.isHidden = true
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    // бесконечная прокрутка
+    @objc func swipeToLeft() {
+        visibleIndex = nextIndex()
+        setImage(index: visibleIndex)
+    }
+    
+    // бесконечная прокрутка
+    @objc func swipeToRight() {
+        visibleIndex = earlyIndex()
+        setImage(index: visibleIndex)
     }
     
     // перемещение изображения

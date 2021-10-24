@@ -20,6 +20,7 @@ class UserGroupsViewController: UIViewController {
     private var tapGesture: UITapGestureRecognizer?
     // данные групп
     private var afGroups = GroupsServices()
+    
     var groupsAloma: [GroupsItems] = []
     var filteredGroups: [GroupsItems] = []
     

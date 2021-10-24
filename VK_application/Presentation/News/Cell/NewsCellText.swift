@@ -27,8 +27,8 @@ final class NewsCellText: UITableViewCell {
         labelText.text = nil
     }
     
-    func configure(news: NewsModel) {
-        labelText.text = news.text
+    func configure(wall: WallItems) {
+        labelText.text = wall.text
     }
 
     // Добавляем обрабоку нажатия на текст (в сториборде разрешил взаимодействие с пользователем)

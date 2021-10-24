@@ -29,9 +29,9 @@ class DescriptionCell: UITableViewCell {
         self.buttonTapped?()
     }
     
-    func configure(group: GroupModel) {
-        subscribeCountLabel.text = String(group.subscribersCount) + " подписчиков"
-        fullDescriptionLabel.text = group.fullDescription
+    func configure(group: GroupsItems) {
+        subscribeCountLabel.text = String(group.members_count) + " подписчиков"
+        fullDescriptionLabel.text = group.descriptionGroup
     }
     
 }

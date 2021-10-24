@@ -236,7 +236,6 @@ class BigPhotoView: UIView, UIGestureRecognizerDelegate {
         switch panGR.state {
         case .ended:
             animation()
-//        return
         case .changed:
             translation = translation.applying(visibleView.transform)
             visibleView.center.x += translation.x
@@ -257,7 +256,6 @@ class BigPhotoView: UIView, UIGestureRecognizerDelegate {
             pinchGR.scale = 1.0
         case .ended:
             animation()
-//        return
         default:
             return
         }

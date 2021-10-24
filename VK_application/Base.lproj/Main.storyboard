@@ -847,11 +847,11 @@
             <objects>
                 <viewController id="5yj-Mb-4jK" customClass="BigImageNewsVC" customModule="VK_application" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WWf-e2-et5">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="News2.1" translatesAutoresizingMaskIntoConstraints="NO" id="T3X-wy-0RK">
-                                <rect key="frame" x="0.0" y="56" width="414" height="757"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="676"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vk9-Qi-4dn"/>
@@ -1015,7 +1015,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="aDs-Sm-8n0"/>
+        <segue reference="q11-wk-06H"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Hinata0" width="500" height="488"/>

@@ -13,32 +13,33 @@ struct WallGetModel: Codable {
 
 struct WallGetResponse: Codable {
     let count: Int
-    let items: [WallGetItems]
+    let items: [WallItems]
 }
 
-struct WallGetItems: Codable {
+struct WallItems: Codable {
     var id: Int = 0
     var from_id: Int = 0
     var owner_id: Int = 0
-    var date: Date
+//    var date: Date
     var post_type: String = ""
     var text: String = ""
-    var copy_history: [CopyHistory]
+//    var copy_history: [CopyHistory]
+    var attachments: [Attachments]
     var comments: Comments
     var likes: Likes
     var reposts: Reposts
     var views: Views
 }
 
-struct CopyHistory: Codable {
-    var id: Int = 0
-    var owner_id: Int = 0
-    var from_id: Int = 0
-    var date: Date
-    var post_type: String = ""
-    var text: String = ""
-    var attachments: [Attachments]
-}
+//struct CopyHistory: Codable {
+//    var id: Int = 0
+//    var owner_id: Int = 0
+//    var from_id: Int = 0
+//    var date: Date
+//    var post_type: String = ""
+//    var text: String = ""
+//    var attachments: [Attachments]
+//}
 
 struct Attachments: Codable {
     var type: String = ""
@@ -47,7 +48,7 @@ struct Attachments: Codable {
 
 struct Photo: Codable {
     var album_id: Int = 0
-    var date: Date
+//    var date: Date
     var id: Int = 0
     var owner_id: Int = 0
     var access_key: String = ""
@@ -65,9 +66,9 @@ struct Sizes: Codable {
 
 struct Comments: Codable {
     var can_post: Int = 0
-    var can_close: Int = 0
+//    var can_close: Int = 0
     var count: Int = 0
-    var groups_can_post: Bool
+//    var groups_can_post: Bool
 }
 
 struct Likes: Codable {
@@ -78,6 +79,7 @@ struct Likes: Codable {
 
 struct Reposts: Codable {
     var count: Int = 0
+    var user_reposted: Int = 0
 }
 
 struct Views: Codable {

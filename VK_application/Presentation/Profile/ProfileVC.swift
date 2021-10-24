@@ -28,11 +28,11 @@ class ProfileVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         getProfileInfo()
-        tableView.separatorStyle = .none
         configureButtonMenu()
     }
     
     private func setTableView() {
+        self.tableView.separatorStyle = .none
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.register(UINib(nibName: HeaderProfileCell.reusedIdentifier, bundle: nil),
@@ -62,18 +62,6 @@ class ProfileVC: UIViewController {
             self.tableView.reloadData()
         }
     }
-    
-    // test
-    //        let wallService = WallServices()
-    //        wallService.getWall(ownerID: UserSession.shared.userId, count: 5) {[weak self] result in
-    //            guard self != nil else { return }
-    //            switch result {
-    //            case .success(let wall):
-    //               print(wall)
-    //            case .failure:
-    //                print("getWallAloma FAIL")
-    //            }
-    //        }
     
     //MARK: - DataBase
     
