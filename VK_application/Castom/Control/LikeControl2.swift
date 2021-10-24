@@ -12,7 +12,7 @@ final class LikeControl2: UIControl {
     var controlTapped: (() -> Void)?
     private var likeButton = UIButton()
     private var likeCountLabel = UILabel()
-    private var likeCounter: Int = 0
+    private var likeCounter: String = ""
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,9 +43,16 @@ final class LikeControl2: UIControl {
     }
     
     func configure(isLike: Bool, likeCount: Int) {
-        likeCountLabel.text = String(likeCount)
+        switch likeCount {
+        case 0..<1000:
+            likeCounter = String(likeCount)
+        case 1000..<1_000_000:
+            likeCounter = String(likeCount/1000) + "K"
+        default:
+            likeCounter = ""
+        }
+        likeCountLabel.text = likeCounter
         likeButton.isSelected = isLike
-        likeCounter = likeCount
     }
     
     @objc func tapControl(_ sender: UIButton) {
@@ -53,13 +60,12 @@ final class LikeControl2: UIControl {
         animatedLabel(likeCount: likeCounter)
     }
     
-    private func animatedLabel(likeCount: Int) {
+    private func animatedLabel(likeCount: String) {
         UIView.transition(with: likeCountLabel,
                           duration: 0.2,
                           options: .transitionFlipFromTop,
                           animations: { [unowned self] in
-                            self.likeCountLabel.text = String(likeCount)}
+                            self.likeCountLabel.text = likeCount}
         )
     }
-    
 }

@@ -51,24 +51,28 @@ final class NewsCellFooter: UITableViewCell {
         super.prepareForReuse()
     }
     
-    func configure(newsData: NewsDataModel) {
-        likeView.configure(isLike: newsData.newsIsLike,
-                           likeCount: newsData.newsLikeCount
+    func configure(wall: WallItems, group: GroupsItems) {
+        var isLike = false
+        if wall.likes.user_likes == 1 {
+            isLike = true
+        }
+        likeView.configure(isLike: isLike,
+                           likeCount: wall.likes.count
         )
         likeView.controlTapped = {[weak self] in
             self?.likeTapped?()
         }
-        repostView.configure(isRepost: newsData.newsIsRepost,
-                             repostCount: newsData.newsRepostCount
+        repostView.configure(isRepost: false,
+                             repostCount: wall.reposts.count
         )
         repostView.controlTapped = {[weak self] in
             self?.repostTapped?()
         }
-        commentControl.configure(isComment: newsData.newsIsComment)
+        commentControl.configure(isComment: false)
         commentControl.controlTapped = {[weak self] in
             self?.commentTapped?()
         }
-        viewsControl.configure(viewsCount: newsData.newsViewCount)
+        viewsControl.configure(viewsCount: wall.views.count)
     }
     
     private func setView() {
@@ -98,7 +102,7 @@ final class NewsCellFooter: UITableViewCell {
         contentView.addSubview(viewsControl)
         NSLayoutConstraint.activate([
             viewsControl.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            viewsControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 45),
+            viewsControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 60),
             viewsControl.heightAnchor.constraint(equalToConstant: 25),
             viewsControl.widthAnchor.constraint(equalToConstant: 25)
         ])

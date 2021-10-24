@@ -8,8 +8,8 @@
 import UIKit
 
 class MoreGroupInfo: UIViewController {
-
-    var group: GroupModel?
+    
+    var moreGroup = GroupsItems()
     
     @IBOutlet var nameGroupLabel: UILabel!
     @IBOutlet var shortDescriptionLabel: UILabel!
@@ -19,16 +19,16 @@ class MoreGroupInfo: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setInfo(info: group!)
+        setInfo(info: moreGroup)
     }
 
-    func setInfo(info: GroupModel) {
-        nameGroupLabel.text = info.nameGroup
-        shortDescriptionLabel.text = info.shortDescription
-        fullDescriptionLabel.text = info.fullDescription
+    func setInfo(info: GroupsItems) {
+        nameGroupLabel.text = info.name
+        shortDescriptionLabel.text = info.screen_name
+        fullDescriptionLabel.text = info.descriptionGroup
         
         // test parameters
-        adressGroupLabel.text = String(info.nameGroup) + "_adress"
+        adressGroupLabel.text = String(info.screen_name) + "_adress"
         dateCreatingGroupLabel.text = "15.09.21"
     }
     

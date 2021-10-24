@@ -15,7 +15,7 @@ class WallServices {
     private let feedUrlPath = "https://api.vk.com/method/wall.get"
     private let realmService = RealmServices()
     
-    func getWall(ownerID: Int, count: Int, completion: @escaping (Result<[WallGetItems], SimpleServiceError>) -> Void) {
+    func getWall(ownerID: Int, count: Int, completion: @escaping (Result<[WallItems], SimpleServiceError>) -> Void) {
         let paramters: Parameters = [
             "owner_id": "\(ownerID)",
             "count": "\(count)",
@@ -24,6 +24,7 @@ class WallServices {
         ]
         
         AF.request(feedUrlPath, method: .get, parameters: paramters).responseJSON { response in
+//            print("https://api.vk.com/method/wall.get\(paramters)")
             if let error = response.error {
                 completion(.failure(.serverError))
                 print("server Error!")
@@ -41,6 +42,8 @@ class WallServices {
 //                self.realmService.saveData(array: users)
             } catch {
                 completion(.failure(.decodeError))
+                print("Decode Error")
+//                print(response)
             }
         }
     }

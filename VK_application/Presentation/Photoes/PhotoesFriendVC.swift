@@ -50,6 +50,14 @@ final class PhotoesFriendVC: UIViewController {
             let photoes = realm.objects(PhotoesItems.self).filter("id == %@", userID)
             guard photoes.count != 0 else {
                 print("friend count photoes = 0")
+                // уходим через алерт
+                DefaultAlert.alert.okAlert(
+                    view: self,
+                    title: "Внимание",
+                    message: "У данного пользователя нет изображений")
+                {
+                    self.navigationController?.popViewController(animated: true)
+                }
                 return
             }
             self.photoesAloma = Array(photoes)

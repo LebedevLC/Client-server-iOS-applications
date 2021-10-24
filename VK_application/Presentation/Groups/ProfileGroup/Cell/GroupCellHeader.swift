@@ -23,8 +23,9 @@ final class GroupCellHeader: UITableViewCell {
         headerImage.image = nil
     }
     
-    func configure(image: String) {
-        headerImage.image = UIImage(named: image)
+    func configure(group: GroupsItems) {
+        let url = URL(string: group.photo_200)
+        headerImage.kf.setImage(with: url)
     }
     
 }

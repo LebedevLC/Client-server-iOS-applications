@@ -1,1 +1,0 @@
-Client-server iOS applications

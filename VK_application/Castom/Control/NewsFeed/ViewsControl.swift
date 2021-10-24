@@ -41,16 +41,13 @@ final class ViewsControl: UIControl {
     
     func configure(viewsCount: Int) {
         viewsButton.isSelected = true
-//        animatedLabel(viewsCount: viewsCount)
-        viewsCountLabel.text = String(viewsCount)
-    }
-    
-    private func animatedLabel(viewsCount: Int) {
-        UIView.transition(with: viewsCountLabel,
-                          duration: 0.2,
-                          options: .transitionFlipFromLeft,
-                          animations: { [unowned self] in
-                            self.viewsCountLabel.text = String(viewsCount)}
-        )
+        switch viewsCount {
+        case 0..<1000:
+            viewsCountLabel.text = String(viewsCount)
+        case 1000..<1_000_000:
+            viewsCountLabel.text = String(viewsCount/1000) + "K"
+        default:
+            viewsCountLabel.text = "1"
+        }
     }
 }

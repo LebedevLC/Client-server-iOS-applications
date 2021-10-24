@@ -83,5 +83,4 @@ struct ResponseServerFriendDelete: Decodable {
 
 struct FriendDeleteResponse: Decodable {
     let success: Int
-//    let friend_deleted: String
 }

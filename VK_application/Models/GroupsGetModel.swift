@@ -40,6 +40,7 @@ class GroupsItems: Object, Decodable {
         case name
         case type
         case photo_100
+        case photo_200
         case members_count
         case screen_name
         case is_closed
@@ -55,6 +56,7 @@ class GroupsItems: Object, Decodable {
         self.name = try values.decode(String.self, forKey: .name)
         self.type = try values.decode(String.self, forKey: .type)
         self.photo_100 = try values.decode(String.self, forKey: .photo_100)
+        self.photo_200 = try values.decode(String.self, forKey: .photo_200)
         self.members_count = try values.decode(Int.self, forKey: .members_count)
         self.screen_name = try values.decode(String.self, forKey: .screen_name)
         self.is_closed = try values.decode(Int.self, forKey: .is_closed)

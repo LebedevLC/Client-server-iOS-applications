@@ -29,10 +29,12 @@ final class NewsCellHeader2: UITableViewCell {
         dataLabel.text = nil
     }
     
-    func configure(friend: FriendModel, newsData: NewsModel) {
-        avatarView.image = UIImage(named: friend.avatarName)
-        nameLabel.text = friend.name
-        dataLabel.text = newsData.data
+    func configure(wall: WallItems, group: GroupsItems) {
+        let url = URL(string: group.photo_100)
+        avatarView.kf.setImage(with: url)
+        nameLabel.text = group.name
+//        dataLabel.text = wall.date
+        
     }
     
     private func configureStatic() {
