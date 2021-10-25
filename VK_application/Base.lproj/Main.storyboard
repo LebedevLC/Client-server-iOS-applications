@@ -55,8 +55,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wP3-t0-1zr">
-                                <rect key="frame" x="94" y="100" width="226" height="98"/>
+                                <rect key="frame" x="94" y="100" width="226" height="100"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="abY-kk-zBQ"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="UH0-BO-ZOa"/>
@@ -65,7 +68,6 @@
                             <constraint firstItem="wP3-t0-1zr" firstAttribute="top" secondItem="UH0-BO-ZOa" secondAttribute="top" constant="56" id="HLt-bB-HGa"/>
                             <constraint firstItem="wP3-t0-1zr" firstAttribute="centerX" secondItem="LZ6-ra-Ygx" secondAttribute="centerX" id="JpD-ig-cG1"/>
                             <constraint firstItem="wP3-t0-1zr" firstAttribute="leading" secondItem="UH0-BO-ZOa" secondAttribute="leading" constant="94" id="cXg-hw-RYn"/>
-                            <constraint firstItem="UH0-BO-ZOa" firstAttribute="bottom" secondItem="wP3-t0-1zr" secondAttribute="bottom" constant="664" id="wjk-QK-HEe"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="fIm-Wn-JVm"/>
