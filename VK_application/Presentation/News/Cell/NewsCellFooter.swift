@@ -51,19 +51,19 @@ final class NewsCellFooter: UITableViewCell {
         super.prepareForReuse()
     }
     
-    func configure(wall: WallItems, group: GroupsItems) {
+    func configure(comments: Comments, likes: Likes, reposts: Reposts, views: Views) {
         var isLike = false
-        if wall.likes.user_likes == 1 {
+        if likes.user_likes == 1 {
             isLike = true
         }
         likeView.configure(isLike: isLike,
-                           likeCount: wall.likes.count
+                           likeCount: likes.count
         )
         likeView.controlTapped = {[weak self] in
             self?.likeTapped?()
         }
         repostView.configure(isRepost: false,
-                             repostCount: wall.reposts.count
+                             repostCount: reposts.count
         )
         repostView.controlTapped = {[weak self] in
             self?.repostTapped?()
@@ -72,7 +72,7 @@ final class NewsCellFooter: UITableViewCell {
         commentControl.controlTapped = {[weak self] in
             self?.commentTapped?()
         }
-        viewsControl.configure(viewsCount: wall.views.count)
+        viewsControl.configure(viewsCount: views.count)
     }
     
     private func setView() {

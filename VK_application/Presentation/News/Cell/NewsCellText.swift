@@ -27,11 +27,10 @@ final class NewsCellText: UITableViewCell {
         labelText.text = nil
     }
     
-    func configure(wall: WallItems) {
-        labelText.text = wall.text
+    func configure(text: String) {
+        labelText.text = text
     }
 
-    // Добавляем обрабоку нажатия на текст (в сториборде разрешил взаимодействие с пользователем)
     private func setSingleTap() {
         let singleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleSingleTap))
         singleTap.numberOfTapsRequired = 1

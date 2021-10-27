@@ -14,7 +14,7 @@ class BigImageNewsVC: UIViewController, UIGestureRecognizerDelegate {
     
     private var visibleIndex = 0
 
-    var wallPost: WallItems?
+    var attachments: [Attachments] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,15 +33,17 @@ class BigImageNewsVC: UIViewController, UIGestureRecognizerDelegate {
 //MARK: - Image
     
     private func setImage(index: Int) {
-        let url = URL(string: wallPost!.attachments[index].photo.sizes[wallPost!.attachments[index].photo.sizes.count-1].url)
-        bigImageView.kf.setImage(with: url, placeholder: nil, options: [.transition(ImageTransition.fade(1) ) ] )
+        guard let photo = attachments[index].photo?.sizes else {return}
+        let sizeLast = photo.endIndex - 1
+        let url = URL(string: photo[sizeLast].url)
+        bigImageView.kf.setImage(with: url, placeholder: nil, options: [.transition(ImageTransition.fade(1))])
         bigImageView.frame = UIScreen.main.bounds
         bigImageView.backgroundColor = UIColor.clear
     }
     
     // бесконечная прокрутка
     private func nextIndex() -> Int {
-        let lastIndex = wallPost!.attachments.count - 1
+        let lastIndex = attachments.count - 1
         if lastIndex == visibleIndex {
             visibleIndex = 0
             return 0
@@ -52,7 +54,7 @@ class BigImageNewsVC: UIViewController, UIGestureRecognizerDelegate {
     
     // бесконечная прокрутка
     private func earlyIndex() -> Int {
-        let lastIndex = wallPost!.attachments.count - 1
+        let lastIndex = attachments.count - 1
         if visibleIndex == 0 {
             return lastIndex
         } else {
@@ -169,7 +171,6 @@ class BigImageNewsVC: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    // нужно true для возможности использовать сразу несколько гестур (по дефолту false)
     func gestureRecognizer(_: UIGestureRecognizer,
                            shouldRecognizeSimultaneouslyWith
                             shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool {

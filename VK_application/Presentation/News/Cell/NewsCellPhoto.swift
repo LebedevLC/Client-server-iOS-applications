@@ -13,7 +13,7 @@ final class NewsCellPhoto: UITableViewCell {
     @IBOutlet private var newsImageView: UIImageView!
     
     static let reusedIdentifier = "NewsCellPhoto"
-    // замыкание для перехода по сеге
+
     var controlTapped: (() -> Void)?
     
     override func layoutSubviews() {
@@ -27,30 +27,25 @@ final class NewsCellPhoto: UITableViewCell {
         self.newsImageView.image = nil
     }
     
-    func configure(wall: WallItems, group: GroupsItems) {
-        let sizeLast = wall.attachments[0].photo.sizes.endIndex-1
-        let url = URL(string: wall.attachments[0].photo.sizes[sizeLast].url)
+    func configure(attachments: Attachments) {
+        guard let photo = attachments.photo?.sizes else {return}
+        let sizeLast = photo.endIndex - 1
+        let url = URL(string: photo[sizeLast].url)
         newsImageView.kf.setImage(with: url, placeholder: nil, options: [.transition(ImageTransition.fade(1) ) ] )
     }
     
     private func configureStatic() {
         newsImageView.isUserInteractionEnabled = true
-        //        newsImageView.layer.borderWidth = 1
-        //        newsImageView.layer.borderColor = UIColor.black.cgColor
     }
     
-    // добавляем обработку нажатия на фото
     func setSingleTap() {
         let singleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleSingleTap))
         singleTap.numberOfTapsRequired = 1
         newsImageView.addGestureRecognizer(singleTap)
     }
     
-    // логика нажатия
     @IBAction func handleSingleTap(sender: UITapGestureRecognizer) {
-        //  performSegue "showBigImageNews" вызывается в контроллере
         controlTapped?()
     }
-    
     
 }

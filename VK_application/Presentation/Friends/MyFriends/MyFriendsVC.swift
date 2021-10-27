@@ -33,8 +33,6 @@ class MyFriendsVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // обновлять инормацию в БД через дидлоад не получается, значит обновляем здесь
-        // а затем уже она читается из БД и по нотификации показывается нам (зачем так сложно?!)
         getFriendsAloma(order: self.order)
     }
     
@@ -55,18 +53,14 @@ class MyFriendsVC: UIViewController {
             switch changes {
             case .initial:
                 tableView.reloadData()
-                print("initial")
             case .update(_, let deletions, let insertions, let modifications):
                 tableView.beginUpdates()
                 tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
                                      with: .none)
-                print("insert")
                 tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0)}),
                                      with: .none)
-                print("delete")
                 tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
                                      with: .none)
-                print("reload")
                 tableView.endUpdates()
             case .error(let error):
                 print("observe.error")
@@ -136,18 +130,10 @@ class MyFriendsVC: UIViewController {
                 do {
                     let realm = try Realm()
                     let friendsTitle = realm.objects(FriendsItems.self)
-                    let sotrFriends = friendsTitle.sorted(byKeyPath: "title", ascending: true)
-                    self.friendsRealmNotification = sotrFriends
-                    // а на решение ниже ругается, получилось только так
+                    let sortFriendsTitle = friendsTitle.sorted(byKeyPath: "title")
+                    self.friendsRealmNotification = sortFriendsTitle
                     self.tableView.reloadData()
-//                    realm.beginWrite()
-//                    let sorded = Array(sotrFriends)
-//                    let oldfriends = friendsTitle
-//                    realm.delete(oldfriends)
-//                    realm.add(sorded, update: .all)
-//                    try realm.commitWrite()
                 } catch { print(error) }
-                
             }),
             UIAction(title: "Рейтингу", image: UIImage(systemName: "star"), handler: { (_) in
                 self.order = .hints
@@ -199,9 +185,6 @@ extension MyFriendsVC: UITableViewDelegate, UITableViewDataSource{
         guard let friendsRealmNotification = self.friendsRealmNotification else { return }
         if editingStyle == .delete {
             let friend = friendsRealmNotification[indexPath.row]
-            // здесь я считаю бессмысленно просто удалить друга из Realm
-            // ведь мы всё-равно должны обновить список на сервере
-            // поэтому логичнее просто вызвать обновление после успешного ответа на удаление
             showDeleteAlert(id: friend.id)
         }
     }
@@ -238,4 +221,3 @@ extension MyFriendsVC {
         present(alertController, animated: true, completion: {})
     }
 }
-

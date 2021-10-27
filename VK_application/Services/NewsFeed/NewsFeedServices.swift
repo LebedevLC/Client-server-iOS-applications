@@ -1,23 +1,20 @@
 //
-//  NewsServices.swift
+//  NewsFeedServices.swift
 //  VK_application
 //
-//  Created by Сергей Чумовских  on 14.10.2021.
+//  Created by Сергей Чумовских  on 26.10.2021.
 //
 
 import Foundation
 import Alamofire
-import RealmSwift
 
-//MARK: - Получение списка записей со стены
+class NewsFeedServices {
 
-class WallServices {
-    private let feedUrlPath = "https://api.vk.com/method/wall.get"
-    private let realmService = RealmServices()
+    private let feedUrlPath = "https://api.vk.com/method/newsfeed.get"
     
-    func getWall(ownerID: Int, count: Int, completion: @escaping (Result<[WallItems], SimpleServiceError>) -> Void) {
+    func getNewsFeedPost(count: Int, completion: @escaping (Result<NewsFeedResponse, SimpleServiceError>) -> Void) {
         let paramters: Parameters = [
-            "owner_id": "\(ownerID)",
+            "filters": "post",
             "count": "\(count)",
             "access_token": "\(UserSession.shared.token)",
             "v": "\(UserSession.shared.v)"
@@ -35,14 +32,14 @@ class WallServices {
                 return
             }
             do {
-                let responseWall = try JSONDecoder().decode(WallGetModel.self, from: response.data!)
-                let wall = responseWall.response.items
-                completion(.success(wall))
-//                self.realmService.saveData(array: users)
+                let responseFeed = try JSONDecoder().decode(NewsFeedModel.self, from: response.data!)
+                let feed = responseFeed.response
+                completion(.success(feed))
             } catch {
                 completion(.failure(.decodeError))
                 print("Decode Error")
             }
         }
     }
+    
 }

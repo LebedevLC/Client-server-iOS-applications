@@ -17,71 +17,56 @@ struct WallGetResponse: Codable {
 }
 
 struct WallItems: Codable {
-    var id: Int = 0
-    var from_id: Int = 0
-    var owner_id: Int = 0
-//    var date: Date
-    var post_type: String = ""
-    var text: String = ""
-//    var copy_history: [CopyHistory]
-    var attachments: [Attachments]
-    var comments: Comments
-    var likes: Likes
-    var reposts: Reposts
-    var views: Views
+    var id: Int
+    var date: Int
+    var post_type: String
+    var text: String
+    var attachments: [Attachments]?
+    var comments: Comments?
+    var likes: Likes?
+    var reposts: Reposts?
+    var views: Views?
 }
 
-//struct CopyHistory: Codable {
-//    var id: Int = 0
-//    var owner_id: Int = 0
-//    var from_id: Int = 0
-//    var date: Date
-//    var post_type: String = ""
-//    var text: String = ""
-//    var attachments: [Attachments]
-//}
-
 struct Attachments: Codable {
-    var type: String = ""
-    var photo: Photo
+    var type: String
+    var photo: Photo?
 }
 
 struct Photo: Codable {
-    var album_id: Int = 0
+    var album_id: Int
 //    var date: Date
-    var id: Int = 0
-    var owner_id: Int = 0
-    var access_key: String = ""
+    var id: Int
+    var owner_id: Int
+    var access_key: String
     var sizes: [Sizes]
-    var text: String = ""
-    var user_id: Int = 0
+    var text: String
+    var user_id: Int
 }
 
 struct Sizes: Codable {
-    var height: Int = 0
-    var width: Int = 0
-    var type: String = ""
-    var url: String = ""
+    var height: Int
+    var width: Int
+    var type: String
+    var url: String
 }
 
 struct Comments: Codable {
-    var can_post: Int = 0
-//    var can_close: Int = 0
-    var count: Int = 0
-//    var groups_can_post: Bool
+    var can_post: Int
+    var count: Int
 }
 
 struct Likes: Codable {
-    var can_like: Int = 0
-    var count: Int = 0
-    var user_likes: Int = 0
+    var can_like: Int
+    var count: Int
+    var user_likes: Int
 }
 
 struct Reposts: Codable {
-    var count: Int = 0
-    var user_reposted: Int = 0
+    var count: Int
+    var user_reposted: Int
 }
 
 struct Views: Codable {
-    var count: Int = 0
+    var count: Int
 }

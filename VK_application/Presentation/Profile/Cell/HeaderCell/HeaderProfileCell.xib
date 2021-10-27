@@ -33,7 +33,7 @@
                                     <attributedString key="attributedTitle">
                                         <fragment content="Редактировать">
                                             <attributes>
-                                                <font key="NSFont" size="12" name="Helvetica"/>
+                                                <font key="NSFont" size="14" name="Helvetica"/>
                                                 <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                             </attributes>
                                         </fragment>
@@ -60,9 +60,9 @@
                                     <constraint firstAttribute="width" constant="100" id="fTW-2C-X32"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Василий Пупкин" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yrl-et-fhV">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Василий Пупкин" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yrl-et-fhV">
                                 <rect key="frame" x="130" y="30" width="280" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -83,7 +83,7 @@
                                                 <fragment content="Фото">
                                                     <attributes>
                                                         <color key="NSColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
-                                                        <font key="NSFont" size="12" name="Helvetica"/>
+                                                        <font key="NSFont" size="14" name="Helvetica"/>
                                                         <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                     </attributes>
                                                 </fragment>
@@ -99,7 +99,7 @@
                                                 <fragment content="Запись">
                                                     <attributes>
                                                         <color key="NSColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
-                                                        <font key="NSFont" size="12" name="Helvetica"/>
+                                                        <font key="NSFont" size="14" name="Helvetica"/>
                                                         <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                     </attributes>
                                                 </fragment>
@@ -115,7 +115,7 @@
                                                 <fragment content="Камера">
                                                     <attributes>
                                                         <color key="NSColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
-                                                        <font key="NSFont" size="12" name="Helvetica"/>
+                                                        <font key="NSFont" size="14" name="Helvetica"/>
                                                         <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                     </attributes>
                                                 </fragment>
@@ -128,7 +128,6 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="JqD-cJ-sOI" secondAttribute="trailing" constant="10" id="2yX-gt-fpY"/>
-                            <constraint firstAttribute="height" constant="209" id="37h-0K-kbe"/>
                             <constraint firstItem="JqD-cJ-sOI" firstAttribute="leading" secondItem="iv6-pT-23Q" secondAttribute="leading" constant="10" id="4KA-hz-wFK"/>
                             <constraint firstItem="6GF-Fa-Gkb" firstAttribute="top" secondItem="QqZ-gx-Gip" secondAttribute="bottom" constant="10" id="4kc-gV-2Jf"/>
                             <constraint firstAttribute="trailing" secondItem="Swb-Fm-TNE" secondAttribute="trailing" constant="10" id="BPJ-3o-7Go"/>
