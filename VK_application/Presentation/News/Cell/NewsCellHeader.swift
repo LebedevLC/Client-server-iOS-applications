@@ -7,12 +7,12 @@
 
 import UIKit
 
-final class NewsCellHeader2: UITableViewCell {
+final class NewsCellHeader: UITableViewCell {
     
     @IBOutlet var cellView: UIView!
     @IBOutlet var avatarView: UIImageView!
     @IBOutlet var nameLabel: UILabel!
-    @IBOutlet var dataLabel: UILabel!
+    @IBOutlet var dateLabel: UILabel!
     
     static let reusedIdentifier = "NewsCellHeader2"
     
@@ -26,14 +26,14 @@ final class NewsCellHeader2: UITableViewCell {
         super.prepareForReuse()
         avatarView.image = nil
         nameLabel.text = nil
-        dataLabel.text = nil
+        dateLabel.text = nil
     }
     
-    func configure(wall: WallItems, group: GroupsItems) {
-        let url = URL(string: group.photo_100)
+    func configure(avatar: String, name: String, date: String) {
+        let url = URL(string: avatar)
         avatarView.kf.setImage(with: url)
-        nameLabel.text = group.name
-//        dataLabel.text = wall.date
+        nameLabel.text = name
+        dateLabel.text = date
         
     }
     

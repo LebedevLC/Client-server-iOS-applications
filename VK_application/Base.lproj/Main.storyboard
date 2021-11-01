@@ -55,8 +55,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wP3-t0-1zr">
-                                <rect key="frame" x="94" y="100" width="226" height="98"/>
+                                <rect key="frame" x="94" y="100" width="226" height="100"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="abY-kk-zBQ"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="UH0-BO-ZOa"/>
@@ -65,7 +68,6 @@
                             <constraint firstItem="wP3-t0-1zr" firstAttribute="top" secondItem="UH0-BO-ZOa" secondAttribute="top" constant="56" id="HLt-bB-HGa"/>
                             <constraint firstItem="wP3-t0-1zr" firstAttribute="centerX" secondItem="LZ6-ra-Ygx" secondAttribute="centerX" id="JpD-ig-cG1"/>
                             <constraint firstItem="wP3-t0-1zr" firstAttribute="leading" secondItem="UH0-BO-ZOa" secondAttribute="leading" constant="94" id="cXg-hw-RYn"/>
-                            <constraint firstItem="UH0-BO-ZOa" firstAttribute="bottom" secondItem="wP3-t0-1zr" secondAttribute="bottom" constant="664" id="wjk-QK-HEe"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="fIm-Wn-JVm"/>
@@ -601,10 +603,10 @@
             </objects>
             <point key="canvasLocation" x="3578.9719626168221" y="471.70626349892012"/>
         </scene>
-        <!--Profile Group2VC-->
+        <!--Profile GroupVC-->
         <scene sceneID="1v5-lf-leJ">
             <objects>
-                <viewController id="nB5-Fu-LQM" customClass="ProfileGroup2VC" customModule="VK_application" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="nB5-Fu-LQM" customClass="ProfileGroupVC" customModule="VK_application" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FtY-Zi-5L8">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -779,7 +781,7 @@
         <!--Новости-->
         <scene sceneID="dym-4V-Acz">
             <objects>
-                <viewController id="57d-2p-Pfw" customClass="NewsViewController" customModule="VK_application" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="57d-2p-Pfw" customClass="NewsVC" customModule="VK_application" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WbT-8Z-KxM">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -850,8 +852,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="News2.1" translatesAutoresizingMaskIntoConstraints="NO" id="T3X-wy-0RK">
-                                <rect key="frame" x="0.0" y="88" width="414" height="676"/>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock.icloud.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="T3X-wy-0RK">
+                                <rect key="frame" x="0.0" y="89" width="414" height="672.5"/>
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vk9-Qi-4dn"/>
@@ -1019,12 +1022,12 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Hinata0" width="500" height="488"/>
-        <image name="News2.1" width="900" height="1200"/>
         <image name="at" catalog="system" width="128" height="124"/>
         <image name="clock" catalog="system" width="128" height="121"/>
         <image name="filemenu.and.cursorarrow" catalog="system" width="128" height="96"/>
         <image name="gearshape" catalog="system" width="128" height="121"/>
         <image name="line.horizontal.3.decrease" catalog="system" width="128" height="73"/>
+        <image name="lock.icloud.fill" catalog="system" width="128" height="88"/>
         <image name="message" catalog="system" width="128" height="113"/>
         <image name="message.fill" catalog="system" width="128" height="113"/>
         <image name="newspaper" catalog="system" width="128" height="111"/>

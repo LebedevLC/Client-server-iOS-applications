@@ -1,5 +1,5 @@
 //
-//  ProfileGroupVC(TableView).swift
+//  ProfileGroupVC.swift
 //  VK_application
 //
 //  Created by Сергей Чумовских  on 13.08.2021.
@@ -8,22 +8,22 @@
 import UIKit
 import RealmSwift
 
-class ProfileGroup2VC: UIViewController {
+final class ProfileGroupVC: UIViewController {
     
     @IBOutlet var tableView: UITableView!
     
     let wallService = WallServices()
+    let dateFormatterRU = DateFormatterRU()
     
     private var group: [GroupsItems] = []
     private var wall: [WallItems] = []
     
-    private var countPostsLoad = 2
+    private let countPostsLoad = 100
     
     var groupID: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         DispatchQueue.main.async {
             self.loadGroupData()
             self.getWallGroup() {
@@ -37,39 +37,13 @@ class ProfileGroup2VC: UIViewController {
         tableView.reloadData()
     }
     
-    private func setTableView() {
-        tableView.separatorStyle = .none
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        // group header cell
-        tableView.register(UINib(nibName: GroupCellHeader.reusedIdentifier, bundle: nil),
-                           forCellReuseIdentifier: GroupCellHeader.reusedIdentifier)
-        tableView.register(UINib(nibName: GroupCellLogo.reusedIdentifier, bundle: nil),
-                           forCellReuseIdentifier: GroupCellLogo.reusedIdentifier)
-        tableView.register(UINib(nibName: DescriptionCell.reusedIdentifier, bundle: nil),
-                           forCellReuseIdentifier: DescriptionCell.reusedIdentifier)
-        // news cell
-        tableView.register(UINib(nibName: NewsCellHeader2.reusedIdentifier, bundle: nil),
-                               forCellReuseIdentifier: NewsCellHeader2.reusedIdentifier)
-        tableView.register(UINib(nibName: NewsCellText.reusedIdentifier, bundle: nil),
-                               forCellReuseIdentifier: NewsCellText.reusedIdentifier)
-        tableView.register(UINib(nibName: NewsCellPhoto.reusedIdentifier, bundle: nil),
-                               forCellReuseIdentifier: NewsCellPhoto.reusedIdentifier)
-        tableView.register(UINib(nibName: NewsCellFooter.reusedIdentifier, bundle: nil),
-                               forCellReuseIdentifier: NewsCellFooter.reusedIdentifier)
-        tableView.reloadData()
-    }
-    
 //MARK: - Network
     
-    // Network Wall
     private func getWallGroup(completion: @escaping () -> Void) {
         wallService.getWall(ownerID: -groupID, count: countPostsLoad) {[weak self] result in
             guard self != nil else { return }
             switch result {
             case .success(let wall):
-                
                 DispatchQueue.main.async {
                     self?.wall = wall
                     completion()
@@ -82,11 +56,9 @@ class ProfileGroup2VC: UIViewController {
     
 //MARK: - Database
     
-    // Загрузка данных из Realm
     private func loadGroupData() {
         do {
             let realm = try Realm()
-            // Чтение из группы БД по параметру id
             let groupRealm = realm.objects(GroupsItems.self).filter("id == %@", groupID)
             self.group = Array(groupRealm)
         } catch { print(error) }
@@ -104,9 +76,10 @@ class ProfileGroup2VC: UIViewController {
         case "showBigImageNewsGroup":
             guard
                 let destinationController = segue.destination as? BigImageNewsVC,
-                let indexPath = sender as? IndexPath
+                let indexPath = sender as? IndexPath,
+                let attachments = wall[indexPath.section - 1].attachments
             else { return }
-            destinationController.wallPost = wall[indexPath.section - 1]
+            destinationController.attachments = attachments
         default:
             return
         }
@@ -115,39 +88,23 @@ class ProfileGroup2VC: UIViewController {
 
 //MARK: - TableView
 
-extension ProfileGroup2VC: UITableViewDelegate, UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section > 0 && indexPath.row == 2 {
-            let sizeLast = wall[indexPath.section - 1].attachments[0].photo.sizes.endIndex-1
-            let heightPhotoCell = CGFloat(wall[indexPath.section - 1].attachments[0].photo.sizes[sizeLast].height/2)
-//            print("\(heightPhotoCell) == heightPhotoCell")
-            return heightPhotoCell
-        } else {
-            return tableView.rowHeight
-        }
-    }
+extension ProfileGroupVC: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         wall.count + 1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 3
-        } else {
-            return 4
-        }
+        section == 0 ? 3 : 4
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
-
-        //MARK: - Group section
-
         case 0:
             switch indexPath.row {
-
+                
+        //MARK: - Group section
+                
 // первая ячейка (хедер)
             case 0:
                 guard
@@ -200,14 +157,17 @@ extension ProfileGroup2VC: UITableViewDelegate, UITableViewDataSource {
 // первая ячейка (хедер)
             case 0:
                 guard
-                    let cell = tableView.dequeueReusableCell(withIdentifier: NewsCellHeader2.reusedIdentifier,
-                                                             for: indexPath) as? NewsCellHeader2
+                    let cell = tableView.dequeueReusableCell(withIdentifier: NewsCellHeader.reusedIdentifier,
+                                                             for: indexPath) as? NewsCellHeader
                 else {
                     return UITableViewCell()
                 }
-                let wallData = wall[indexPath.section - 1]
                 let group = group[0]
-                cell.configure(wall: wallData, group: group)
+                let wallData = wall[indexPath.section - 1]
+                let date = dateFormatterRU.ShowMeDate(date: wallData.date)
+                cell.configure(avatar: group.photo_100,
+                               name: group.name,
+                               date: date)
                 return cell
 
 // вторая ячейка (текст)
@@ -219,10 +179,9 @@ extension ProfileGroup2VC: UITableViewDelegate, UITableViewDataSource {
                     return UITableViewCell()
                 }
                 let wallData = wall[indexPath.section - 1]
-                cell.configure(wall: wallData)
+                cell.configure(text: wallData.text)
                 // реализация разворачивания и сворачивания текста
                 cell.controlTapped = { [weak self] in
-                    // обновляем данные
                     self?.tableView.reloadData()
                 }
                 return cell
@@ -231,18 +190,16 @@ extension ProfileGroup2VC: UITableViewDelegate, UITableViewDataSource {
             case 2:
                 guard
                     let cell = tableView.dequeueReusableCell(withIdentifier: NewsCellPhoto.reusedIdentifier,
-                                                             for: indexPath) as? NewsCellPhoto
+                                                             for: indexPath) as? NewsCellPhoto,
+                    let attachments = wall[indexPath.section - 1].attachments
                 else {
+                    print("Return Media ERROR")
                     return UITableViewCell()
                 }
-                let wallData = wall[indexPath.section - 1]
-                let group = group[0]
-                cell.configure(wall: wallData, group: group)
-                // обработка замыкания в ячейке
+                
+                cell.configure(attachments: attachments[0])
                 cell.controlTapped = { [weak self] in
                     self?.performSegue(withIdentifier: "showBigImageNewsGroup", sender: indexPath)}
-                print("\(tableView.rowHeight) == cell.height")
-                print("\(wallData.attachments[0].photo.sizes[wallData.attachments[0].photo.sizes.endIndex-1].height) == end index height")
                 return cell
 
 // четвертая яейка (футер)
@@ -254,22 +211,54 @@ extension ProfileGroup2VC: UITableViewDelegate, UITableViewDataSource {
                     return UITableViewCell()
                 }
                 let wallData = wall[indexPath.section - 1]
-                let group = group[0]
-                cell.configure(wall: wallData, group: group)
-//                cell.likeTapped = { [weak self] in
-//                    self?.news[indexPath.section - 1].newsDataModel[0].newsIsLike.toggle()
-//                    self?.tableView.reloadSections(IndexSet(integer: indexPath.section), with: .automatic)
-//                }
-//                cell.repostTapped = { [weak self] in
-//                    self?.news[indexPath.section - 1].newsDataModel[0].newsIsRepost.toggle()
-//                    self?.tableView.reloadSections(IndexSet(integer: indexPath.section), with: .automatic)
-//                }
-//                cell.commentTapped = { [weak self] in
-//                    self?.news[indexPath.section - 1].newsDataModel[0].newsIsComment.toggle()
-//                    self?.tableView.reloadSections(IndexSet(integer: indexPath.section), with: .automatic)
-//                }
+                guard
+                    let comments = wallData.comments,
+                    let likes = wallData.likes,
+                    let reposts = wallData.reposts,
+                    let views = wallData.views
+                else {
+                    return UITableViewCell()
+                }
+                cell.configure(comments: comments, likes: likes, reposts: reposts, views: views)
                 return cell
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard
+            indexPath.section > 0 && indexPath.row == 2,
+            let attachments = self.wall[indexPath.section - 1].attachments,
+            let sizeLast = attachments[0].photo?.sizes.endIndex,
+            let heightPhoto = attachments[0].photo?.sizes[sizeLast-1].height
+        else {
+            return tableView.rowHeight
+        }
+        let heightPhotoCell = CGFloat(heightPhoto/2)
+        return heightPhotoCell
+    }
+    
+    private func setTableView() {
+        tableView.separatorStyle = .none
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        // group header cell
+        tableView.register(UINib(nibName: GroupCellHeader.reusedIdentifier, bundle: nil),
+                           forCellReuseIdentifier: GroupCellHeader.reusedIdentifier)
+        tableView.register(UINib(nibName: GroupCellLogo.reusedIdentifier, bundle: nil),
+                           forCellReuseIdentifier: GroupCellLogo.reusedIdentifier)
+        tableView.register(UINib(nibName: DescriptionCell.reusedIdentifier, bundle: nil),
+                           forCellReuseIdentifier: DescriptionCell.reusedIdentifier)
+        // news cell
+        tableView.register(UINib(nibName: NewsCellHeader.reusedIdentifier, bundle: nil),
+                               forCellReuseIdentifier: NewsCellHeader.reusedIdentifier)
+        tableView.register(UINib(nibName: NewsCellText.reusedIdentifier, bundle: nil),
+                               forCellReuseIdentifier: NewsCellText.reusedIdentifier)
+        tableView.register(UINib(nibName: NewsCellPhoto.reusedIdentifier, bundle: nil),
+                               forCellReuseIdentifier: NewsCellPhoto.reusedIdentifier)
+        tableView.register(UINib(nibName: NewsCellFooter.reusedIdentifier, bundle: nil),
+                               forCellReuseIdentifier: NewsCellFooter.reusedIdentifier)
+        tableView.reloadData()
     }
 }

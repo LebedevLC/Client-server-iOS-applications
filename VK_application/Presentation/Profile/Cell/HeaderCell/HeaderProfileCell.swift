@@ -34,7 +34,7 @@ class HeaderProfileCell: UITableViewCell {
         cityLabel.text = nil
     }
     
-    func configure(accountItems: AccountItems, photoModel: PhotoesItems) {
+    func configure(accountItems: AccountItems, photoModel: PhotoesItems, friendCount: Int) {
         let url = URL(string: photoModel.singleSizePhoto)
         DispatchQueue.main.async() { [weak self] in
             self?.avatarImageView.kf.setImage(with: url)

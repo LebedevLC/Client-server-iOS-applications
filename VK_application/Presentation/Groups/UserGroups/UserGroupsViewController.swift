@@ -64,7 +64,7 @@ class UserGroupsViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard segue.identifier == "ProfileGroup2VC" else {return}
-        if let vc = segue.destination as? ProfileGroup2VC {
+        if let vc = segue.destination as? ProfileGroupVC {
             guard let send = sender as? Int else {
                 print("FAIL cast")
                 return}
