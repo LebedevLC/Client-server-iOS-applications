@@ -19,8 +19,6 @@ class RealmServices {
             realm.delete(oldArray)
             realm.add(array)
             try realm.commitWrite()
-//            print("добавил/обновил \(array.count) записей")
-//            print(realm.configuration.fileURL as Any)
             DispatchQueue.main.async {
                 completion()
             }
@@ -50,32 +48,10 @@ class RealmServices {
         do {
             let realm = try Realm()
             realm.beginWrite()
-            print("Начинаю запись данных в Realm")
             realm.add(array)
             try realm.commitWrite()
-            print("Добавил \(array.count) записей")
         } catch {
             print(error)
         }
     }
-    
-//    func saveFriendsData(_ friends: [FriendsItems]) {
-//        // обработка исключений при работе с хранилищем
-//        do {
-//            let realm = try Realm()
-//            // получаем friends
-//            try friends.forEach{
-//                guard let friend = realm.object(ofType: FriendsDataRealm.self, forPrimaryKey: $0.id) else { return }
-//            let oldData = friend.friends
-//            realm.beginWrite()
-//            realm.delete(oldData)
-//            friend.friends.append(objectsIn: friends)
-//                try realm.commitWrite()
-//
-//            }
-//        } catch {
-//            print(error)
-//        }
-//    }
-    
 }

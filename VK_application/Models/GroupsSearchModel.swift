@@ -8,7 +8,6 @@
 import Foundation
 import RealmSwift
 
-
 struct GroupsSearchModel: Codable {
     let response: GroupsSearchResponse
 }

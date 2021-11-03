@@ -5,7 +5,6 @@
 //  Created by Сергей Чумовских  on 31.07.2021.
 //
 
-
 import UIKit
 
 class BigPhotoViewController: UIViewController {
@@ -35,7 +34,6 @@ class BigPhotoViewController: UIViewController {
         tabBarController?.tabBar.isHidden = false
         navigationController?.navigationBar.isHidden = false
     }
-    
 }
 
 // delegate
@@ -45,6 +43,3 @@ extension BigPhotoViewController: BigPhotoViewDelegate {
         navigationController?.navigationBar.isHidden.toggle()
     }
 }
-
-
-

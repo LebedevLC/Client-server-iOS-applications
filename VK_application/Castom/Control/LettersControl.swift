@@ -17,7 +17,7 @@ final class LettersControl: UIControl {
         }
     }
 
-    var selectLetter: String? = nil {
+    var selectLetter: String? {
         didSet {
             self.sendActions(for: .valueChanged)
         }

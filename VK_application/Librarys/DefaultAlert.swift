@@ -11,10 +11,10 @@ class DefaultAlert: NSObject {
     
 static let alert = DefaultAlert()
 
-    //Show alert
+    // Show alert
     func okAlert(view: UIViewController, title: String, message: String, completion: @escaping () -> Void) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: { action in
+        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: { _ in
             DispatchQueue.main.async {
                 completion()
             }

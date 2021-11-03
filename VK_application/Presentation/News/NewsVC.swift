@@ -3,7 +3,7 @@
 //  VK_application
 //
 //  Шикарно с третьего раза Created by Сергей Чумовских  on 23.07.2021.
-//  Пробую 4-й, и уже с сетью 26.10.2021
+//  4-й, и уже с сетью 26.10.2021
 
 import UIKit
 
@@ -19,38 +19,31 @@ final class NewsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getNewsFeed {
-            self.setTableView()
-        }
+        getNewsFeed()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard
-            segue.identifier == "showBigImageNews",
-            let destinationController = segue.destination as? BigImageNewsVC,
-            let indexPath = sender as? IndexPath,
-            let attachments = feed?.items[indexPath.section].attachments
-        else { return }
-        destinationController.attachments = attachments
-    }
+// MARK: - Network
     
-    private func getNewsFeed(completion: @escaping () -> Void) {
-        newsFeedServices.getNewsFeedPost(count: countNews) {[weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let feed):
-                DispatchQueue.main.async {
-                    self.feed = feed
-                    completion()
+    private func getNewsFeed() {
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async{
+            self.newsFeedServices.getNewsFeedPost(count: self.countNews) {[weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let feed):
+                    DispatchQueue.main.async {
+                        self.feed = feed
+                        self.setTableView()
+                    }
+                case .failure:
+                    print("getNewsFeed FAIL")
                 }
-            case .failure:
-                print("getNewsFeed FAIL")
             }
         }
     }
 }
 
-//MARK: - Extension UITableView
+// MARK: - Extension UITableView
 
 extension NewsVC: UITableViewDelegate, UITableViewDataSource {
     
@@ -65,7 +58,7 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.row {
             
-            // первая ячейка (хедер)
+        // первая ячейка (хедер)
         case 0:
             guard
                 let cell = tableView.dequeueReusableCell(withIdentifier: NewsCellHeader.reusedIdentifier,
@@ -80,32 +73,28 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
             let date = dateFormatterRU.ShowMeDate(date: feedPost.date)
             if id > 0 {
                 var profile: NewsFeedProfile
-                for i in 0..<feedProfiles.count {
-                    if feedProfiles[i].id == id {
-                        profile = feedProfiles[i]
-                        let lastName = profile.last_name ?? " "
-                        cell.configure(avatar: profile.photo_50,
-                                       name: lastName + " " + profile.first_name,
-                                       date: date)
-                        break
-                    }
+                for i in 0..<feedProfiles.count where feedProfiles[i].id == id {
+                    profile = feedProfiles[i]
+                    let lastName = profile.last_name ?? " "
+                    cell.configure(avatar: profile.photo_50,
+                                   name: lastName + " " + profile.first_name,
+                                   date: date)
+                    break
                 }
             } else {
                 var group: NewsFeedGroup
-                for i in 0..<feedGroup.count {
-                    if feedGroup[i].id == -(id) {
-                        group = feedGroup[i]
-                        
-                        cell.configure(avatar: group.photo_50,
-                                       name: group.name,
-                                       date: date)
-                        break
-                    }
+                for i in 0..<feedGroup.count where feedGroup[i].id == -(id) {
+                    group = feedGroup[i]
+                    
+                    cell.configure(avatar: group.photo_50,
+                                   name: group.name,
+                                   date: date)
+                    break
                 }
             }
             return cell
             
-            // вторая ячейка (текст)
+        // вторая ячейка (текст)
         case 1:
             guard
                 let cell = tableView.dequeueReusableCell(withIdentifier: NewsCellText.reusedIdentifier,
@@ -121,8 +110,7 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
             }
             return cell
             
-            
-            // третья ячейка (медиа)
+        // третья ячейка (медиа)
         case 2:
             guard
                 let cell = tableView.dequeueReusableCell(withIdentifier: NewsCellPhoto.reusedIdentifier,
@@ -137,7 +125,7 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
                 self?.performSegue(withIdentifier: "showBigImageNews", sender: indexPath)}
             return cell
             
-            // четвертая яейка (футер)
+        // четвертая яейка (футер)
         default:
             guard
                 let cell = tableView.dequeueReusableCell(withIdentifier: NewsCellFooter.reusedIdentifier,
@@ -195,5 +183,19 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
         tableView.register(UINib(nibName: NewsCellFooter.reusedIdentifier, bundle: nil),
                            forCellReuseIdentifier: NewsCellFooter.reusedIdentifier)
         tableView.reloadData()
+    }
+}
+
+// MARK: - Segue
+
+extension NewsVC {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard
+            segue.identifier == "showBigImageNews",
+            let destinationController = segue.destination as? BigImageNewsVC,
+            let indexPath = sender as? IndexPath,
+            let attachments = feed?.items[indexPath.section].attachments
+        else { return }
+        destinationController.attachments = attachments
     }
 }

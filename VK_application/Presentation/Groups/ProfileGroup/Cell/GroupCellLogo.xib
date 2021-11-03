@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -46,7 +48,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f4D-1d-af2" customClass="AvatarUIView" customModule="VK_application" customModuleProvider="target">
                         <rect key="frame" x="355" y="12" width="100" height="100"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="group_akatsuku" translatesAutoresizingMaskIntoConstraints="NO" id="Ftu-uW-P0G">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photoHolder" translatesAutoresizingMaskIntoConstraints="NO" id="Ftu-uW-P0G">
                                 <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                             </imageView>
                         </subviews>
@@ -121,7 +123,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="group_akatsuku" width="1280" height="720"/>
+        <image name="photoHolder" width="250" height="250"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

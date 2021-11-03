@@ -27,7 +27,7 @@ final class SubscribeControl: UIControl {
     
     private var subState: Bool?
     
-//MARK: - LifeCicle
+// MARK: - LifeCicle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,36 +38,36 @@ final class SubscribeControl: UIControl {
         self.setView()
     }
     
-//MARK: - Body
+// MARK: - Body
     
     private func setView() {
         self.addSubview(subscribeButton)
         self.addSubview(subscribeLabel)
         self.subscribeButton.addTarget(self, action: #selector(tapControl(_:)), for: .touchUpInside)
         let size: CGFloat = 30
-        NSLayoutConstraint.activate ([
+        NSLayoutConstraint.activate([
             subscribeButton.topAnchor.constraint(equalTo: topAnchor, constant: 4),
             subscribeButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             subscribeButton.heightAnchor.constraint(equalToConstant: size),
-            subscribeButton.widthAnchor.constraint(equalToConstant: size),
+            subscribeButton.widthAnchor.constraint(equalToConstant: size)
         ])
-        NSLayoutConstraint.activate ([
+        NSLayoutConstraint.activate([
             subscribeLabel.topAnchor.constraint(equalTo: subscribeButton.bottomAnchor, constant: 2),
             subscribeLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2),
             subscribeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 2),
-            subscribeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 2),
+            subscribeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 2)
         ])
     }
     
-//MARK: - TapButton
+// MARK: - TapButton
     
-    enum subscribeState: String {
+    enum SubscribeState: String {
         case subscribeON = "Вы подписаны"
         case subscribeOFF = "Подписаться"
     }
 
     private func subscribeON() {
-        subscribeLabel.text = subscribeState.subscribeON.rawValue
+        subscribeLabel.text = SubscribeState.subscribeON.rawValue
         subscribeButton.tintColor = UIColor.lightGray
         subscribeButton.setBackgroundImage(UIImage(systemName: "checkmark.rectangle.portrait.fill"), for: .normal)
         subscribeLabel.textColor = UIColor.gray
@@ -75,7 +75,7 @@ final class SubscribeControl: UIControl {
     }
     
     private func subscribeOFF() {
-        subscribeLabel.text = subscribeState.subscribeOFF.rawValue
+        subscribeLabel.text = SubscribeState.subscribeOFF.rawValue
         subscribeButton.tintColor = UIColor.link
         subscribeButton.setBackgroundImage(UIImage(systemName: "checkmark.rectangle.portrait"), for: .normal)
         subscribeLabel.textColor = UIColor.link
@@ -96,20 +96,20 @@ final class SubscribeControl: UIControl {
         animatedLabel()
     }
     
-//MARK: - Animation
+// MARK: - Animation
     
     private func animatedLabel() {
         UIView.transition(with: subscribeLabel,
                           duration: 0.2,
                           options: .transitionFlipFromTop,
                           animations: { [unowned self] in
-                            switch subState{
+                            switch subState {
                             case true: subscribeOFF()
                             case false: subscribeON()
                             case .none:
                                 return
                             case .some(_):
-                                return
+                                break
                             }
                           }
         )

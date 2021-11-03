@@ -197,6 +197,7 @@
                         <outlet property="lettersControl" destination="SUf-7T-nu8" id="MaK-3T-e7k"/>
                         <outlet property="searchBar" destination="p5I-I9-qCG" id="d8e-ip-cx5"/>
                         <outlet property="tableView" destination="6go-AD-5Tn" id="Q3E-lD-rbd"/>
+                        <segue destination="MfA-1n-bTH" kind="show" identifier="fromSearchToProfileVC" id="e0C-mv-Zdm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KFG-nz-Okk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -225,7 +226,7 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iAb-FZ-4Eq" customClass="AvatarUIView" customModule="VK_application" customModuleProvider="target">
                                                     <rect key="frame" x="28" y="9" width="75" height="75.5"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Hinata0" translatesAutoresizingMaskIntoConstraints="NO" id="M6R-G8-BaZ">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photoHolder" translatesAutoresizingMaskIntoConstraints="NO" id="M6R-G8-BaZ">
                                                             <rect key="frame" x="0.0" y="0.0" width="75" height="75.5"/>
                                                         </imageView>
                                                     </subviews>
@@ -323,7 +324,7 @@
                     <connections>
                         <outlet property="sortBarButtonItem" destination="Tcy-09-LLY" id="QIk-6Z-8DS"/>
                         <outlet property="tableView" destination="aWv-bS-7jI" id="lrq-uQ-iT0"/>
-                        <segue destination="ods-an-F0V" kind="show" identifier="moveToPhoto" id="W2b-oW-nCc"/>
+                        <segue destination="MfA-1n-bTH" kind="show" identifier="goToProfile" id="Scd-P0-qh6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PSD-QW-w2c" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -673,8 +674,8 @@
                                 <color key="textColor" systemColor="systemGrayColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="line.horizontal.3.decrease" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="mk2-Zr-a3z">
-                                <rect key="frame" x="16" y="168" width="30" height="22"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="line.3.crossed.swirl.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="mk2-Zr-a3z">
+                                <rect key="frame" x="16" y="164.5" width="30" height="29"/>
                                 <color key="tintColor" systemColor="systemGrayColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="GjE-nR-ryv"/>
@@ -818,9 +819,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="tu5-CJ-ldB">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tu5-CJ-ldB">
                                 <rect key="frame" x="0.0" y="56" width="414" height="757"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8ZS-bU-Lqw"/>
@@ -838,11 +839,44 @@
                     <connections>
                         <outlet property="barButtonItem" destination="pUH-jk-qdi" id="K3K-zR-sYW"/>
                         <outlet property="tableView" destination="tu5-CJ-ldB" id="CYX-2G-zkG"/>
+                        <segue destination="ods-an-F0V" kind="show" identifier="goToPhotoes" id="nhC-gl-NzC"/>
+                        <segue destination="2f6-ei-Zv4" kind="show" identifier="goToMoreInfo" id="1Ez-JN-ILl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6bJ-Gd-jd8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3578" y="2658"/>
+        </scene>
+        <!--More InfoVC-->
+        <scene sceneID="AzM-Jx-FyV">
+            <objects>
+                <viewController id="2f6-ei-Zv4" customClass="MoreInfoVC" customModule="VK_application" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QK2-H9-qhu">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eoA-zD-nre">
+                                <rect key="frame" x="0.0" y="56" width="414" height="757"/>
+                                <color key="separatorColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="b7H-hJ-zip"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="eoA-zD-nre" firstAttribute="leading" secondItem="b7H-hJ-zip" secondAttribute="leading" id="3BF-HP-3MD"/>
+                            <constraint firstItem="eoA-zD-nre" firstAttribute="top" secondItem="b7H-hJ-zip" secondAttribute="top" id="LCb-fE-lVG"/>
+                            <constraint firstItem="b7H-hJ-zip" firstAttribute="trailing" secondItem="eoA-zD-nre" secondAttribute="trailing" id="Z7W-0W-M6n"/>
+                            <constraint firstItem="b7H-hJ-zip" firstAttribute="bottom" secondItem="eoA-zD-nre" secondAttribute="bottom" id="lTz-ci-MKW"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="sUg-ZB-jPp"/>
+                    <connections>
+                        <outlet property="tableView" destination="eoA-zD-nre" id="4lt-vs-kHG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="N85-hC-LPJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4432" y="2658"/>
         </scene>
         <!--Big Image NewsVC-->
         <scene sceneID="c1U-GZ-fNZ">
@@ -1019,14 +1053,14 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="q11-wk-06H"/>
+        <segue reference="e0C-mv-Zdm"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="Hinata0" width="500" height="488"/>
         <image name="at" catalog="system" width="128" height="124"/>
         <image name="clock" catalog="system" width="128" height="121"/>
         <image name="filemenu.and.cursorarrow" catalog="system" width="128" height="96"/>
         <image name="gearshape" catalog="system" width="128" height="121"/>
-        <image name="line.horizontal.3.decrease" catalog="system" width="128" height="73"/>
+        <image name="line.3.crossed.swirl.circle" catalog="system" width="128" height="121"/>
         <image name="lock.icloud.fill" catalog="system" width="128" height="88"/>
         <image name="message" catalog="system" width="128" height="113"/>
         <image name="message.fill" catalog="system" width="128" height="113"/>
@@ -1038,6 +1072,7 @@
         <image name="person.3" catalog="system" width="128" height="62"/>
         <image name="person.3.fill" catalog="system" width="128" height="61"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
+        <image name="photoHolder" width="250" height="250"/>
         <image name="rectangle.and.pencil.and.ellipsis" catalog="system" width="128" height="81"/>
         <systemColor name="linkColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

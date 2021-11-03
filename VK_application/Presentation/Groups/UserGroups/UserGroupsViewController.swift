@@ -35,7 +35,7 @@ class UserGroupsViewController: UIViewController {
         getGroupsAloma()
     }
     
-    //MARK: - БД
+    // MARK: - БД
     
     // Делаем запрос в сеть для обновления БД
     private func getGroupsAloma() {
@@ -60,7 +60,7 @@ class UserGroupsViewController: UIViewController {
         } catch { print(error) }
     }
     
-    //MARK: - Segue
+    // MARK: - Segue
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard segue.identifier == "ProfileGroup2VC" else {return}
@@ -74,7 +74,7 @@ class UserGroupsViewController: UIViewController {
     }
 }
 
-//MARK: - Extension UserGroups: UISearchBarDelegate
+// MARK: - Extension UserGroups: UISearchBarDelegate
 
 extension UserGroupsViewController: UISearchBarDelegate {
     
@@ -113,7 +113,7 @@ extension UserGroupsViewController: UISearchBarDelegate {
     
 }
 
-//MARK: - Extension UserGroups: UITabBarDelegate, UITableViewDataSource
+// MARK: - TableView
 
 extension UserGroupsViewController: UITableViewDelegate, UITableViewDataSource{
     
@@ -140,25 +140,8 @@ extension UserGroupsViewController: UITableViewDelegate, UITableViewDataSource{
         guard editingStyle == .delete,
               !indexPath.isEmpty
         else { return }
-        let leaveGroup = GroupsServices()
         let groupID = filteredGroups[indexPath.row].id
-        leaveGroup.getLeaveGroup(groupID: groupID) {[weak self] result in
-            guard self != nil else {
-                print("fail self")
-                return }
-            switch result {
-            case .success(let answer):
-                self?.filteredGroups.remove(at: indexPath.row)
-                self?.tableView.deleteRows(at: [indexPath], with: .none)
-                print("Leave to groupID = \(groupID) = \(answer)")
-            case .failure:
-                print("Leave to gropID = \(groupID) = FAIL")
-            }
-        }
-        DispatchQueue.main.async {
-            tableView.reloadData()
-        }
-        
+        showDeleteAlert(id: groupID)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -168,4 +151,32 @@ extension UserGroupsViewController: UITableViewDelegate, UITableViewDataSource{
     
 }
 
+// MARK: - Delete Alert
 
+extension UserGroupsViewController {
+    
+    private func showDeleteAlert(id: Int) {
+        let alertController = UIAlertController(title: "Удалить группу?", message: "Это действие действительно внесет изменения в ваш список групп", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Удалить", style: .destructive) { _ in
+            let leaveGroup = GroupsServices()
+            leaveGroup.getLeaveGroup(groupID: id) {[weak self] result in
+                guard self != nil else {
+                    print("fail self")
+                    return }
+                switch result {
+                case .success(let answer):
+                    print("Leave to groupID = \(id) = \(answer)")
+                case .failure:
+                    print("Leave to gropID = \(id) = FAIL")
+                }
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        alertController.addAction(confirmAction)
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: {})
+    }
+}

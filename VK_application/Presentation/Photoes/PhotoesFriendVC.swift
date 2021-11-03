@@ -14,7 +14,7 @@ final class PhotoesFriendVC: UIViewController {
     private var afPhotoes = PhotoesServices()
     private var photoesAloma: [PhotoesItems] = []
     // Словарь для удобной передачи дальше
-    private var photoInfo = [Int : (String, String, Int, Int, Int)]()
+    private var photoInfo = [Int: (String, String, Int, Int, Int)]()
     
     var userID: Int?
     
@@ -25,7 +25,7 @@ final class PhotoesFriendVC: UIViewController {
         getPhotoes()
     }
     
-    //MARK: - DataBase
+    // MARK: - DataBase
     
     // Делаем запрос в сеть для обновления БД
     private func getPhotoes() {
@@ -80,27 +80,21 @@ final class PhotoesFriendVC: UIViewController {
         }
     }
     
-    //MARK: - Segue
+    // MARK: - Segue
     
-    // Передача на следующий контроллер всех изображений объекта и IndexPath выделенного
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard
-            // Проверям сегу
             segue.identifier == "toBigPhoto",
-            // Кастим
             let destinationController = segue.destination as? BigPhotoViewController,
-            // Сохраняем индексы выбранных изображений
             let indexPaths = collectionView.indexPathsForSelectedItems
         else { return }
-        // Кастим чтобы получить не массив
         let indexPath = indexPaths[0] as IndexPath
-        // Отправляем
         destinationController.photoInfo = photoInfo
         destinationController.sourceIndexPath = indexPath
     }
 }
 
-//MARK: - Extension CollectionView (DataSource/Delegate)
+// MARK: - Extension CollectionView (DataSource/Delegate)
 
 extension PhotoesFriendVC: UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -108,14 +102,11 @@ extension PhotoesFriendVC: UICollectionViewDataSource, UICollectionViewDelegate 
         photoesAloma.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier,
                                                       for: indexPath) as! PhotoCollectionViewCell
         cell.configure(photoModel: photoesAloma[indexPath.item])
-        //        cell.likeTapped = { [weak self] in
-        //            self?.photoesAloma[indexPath.item].isLike.toggle()
-        //                collectionView.reloadSections(IndexSet(integer: 0)) //UIView.performWithoutAnimation
-        //        }
         return cell
     }
     

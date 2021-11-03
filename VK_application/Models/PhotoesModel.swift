@@ -27,8 +27,6 @@ class PhotoesItems: Object, Decodable {
     @objc dynamic var singleSizePhoto: String = ""
     var sizesArray = List<String>()
     
-    var ownerId = RealmOptional<Int>()
-    
     // обычные объекты
     enum CodingKeys: String, CodingKey {
         case sizes

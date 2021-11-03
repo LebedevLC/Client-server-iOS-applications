@@ -17,14 +17,12 @@ class DescriptionCell: UITableViewCell {
     @IBOutlet var fullDescriptionLabel: UILabel!
     @IBOutlet var descriptionButton: UIButton!
 
-    
     override func prepareForReuse() {
         super.prepareForReuse()
         subscribeCountLabel.text = nil
         fullDescriptionLabel.text = nil
     }
     
-
     @IBAction func TapedDescriptionButton(_ sender: UIButton) {
         self.buttonTapped?()
     }

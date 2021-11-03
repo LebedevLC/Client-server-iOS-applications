@@ -47,6 +47,10 @@
 		464BACF926F25B4A000402B0 /* MoreGroupInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BACF826F25B4A000402B0 /* MoreGroupInfo.swift */; };
 		464BACFF26F38799000402B0 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BACFE26F38799000402B0 /* UserSession.swift */; };
 		4654BD662711BE540070A159 /* RealmServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4654BD652711BE540070A159 /* RealmServices.swift */; };
+		46557954272AE55000843C6B /* UsersGetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46557953272AE55000843C6B /* UsersGetModel.swift */; };
+		46557956272ECC2400843C6B /* MoreInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46557955272ECC2400843C6B /* MoreInfoVC.swift */; };
+		4655795A272ECF7700843C6B /* MoreInfoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46557958272ECF7700843C6B /* MoreInfoViewCell.swift */; };
+		4655795B272ECF7700843C6B /* MoreInfoViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46557959272ECF7700843C6B /* MoreInfoViewCell.xib */; };
 		465E093126C6B8A100B7EDB7 /* ProfileGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465E093026C6B8A100B7EDB7 /* ProfileGroupVC.swift */; };
 		465E093426C6BB7400B7EDB7 /* GroupCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 465E093326C6BB7400B7EDB7 /* GroupCellHeader.xib */; };
 		465E093626C6BBDA00B7EDB7 /* GroupCellHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465E093526C6BBDA00B7EDB7 /* GroupCellHeader.swift */; };
@@ -131,6 +135,10 @@
 		464BACF826F25B4A000402B0 /* MoreGroupInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreGroupInfo.swift; sourceTree = "<group>"; };
 		464BACFE26F38799000402B0 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		4654BD652711BE540070A159 /* RealmServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmServices.swift; sourceTree = "<group>"; };
+		46557953272AE55000843C6B /* UsersGetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersGetModel.swift; sourceTree = "<group>"; };
+		46557955272ECC2400843C6B /* MoreInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreInfoVC.swift; sourceTree = "<group>"; };
+		46557958272ECF7700843C6B /* MoreInfoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreInfoViewCell.swift; sourceTree = "<group>"; };
+		46557959272ECF7700843C6B /* MoreInfoViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MoreInfoViewCell.xib; sourceTree = "<group>"; };
 		465E093026C6B8A100B7EDB7 /* ProfileGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileGroupVC.swift; sourceTree = "<group>"; };
 		465E093326C6BB7400B7EDB7 /* GroupCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupCellHeader.xib; sourceTree = "<group>"; };
 		465E093526C6BBDA00B7EDB7 /* GroupCellHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCellHeader.swift; sourceTree = "<group>"; };
@@ -224,6 +232,7 @@
 			children = (
 				466420CB271775A9004DD73B /* Errors */,
 				466A12D92707510F007155E7 /* UsersSearchModel.swift */,
+				46557953272AE55000843C6B /* UsersGetModel.swift */,
 				466A12CB27061D81007155E7 /* GroupsSearchModel.swift */,
 				463DBCF42701DDC3005723AF /* GroupsGetModel.swift */,
 				463DBCF127007308005723AF /* PhotoesModel.swift */,
@@ -424,6 +433,15 @@
 			path = Realm;
 			sourceTree = "<group>";
 		};
+		46557957272ECF5400843C6B /* MoreInfoCell */ = {
+			isa = PBXGroup;
+			children = (
+				46557958272ECF7700843C6B /* MoreInfoViewCell.swift */,
+				46557959272ECF7700843C6B /* MoreInfoViewCell.xib */,
+			);
+			path = MoreInfoCell;
+			sourceTree = "<group>";
+		};
 		465E093226C6BB5600B7EDB7 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -458,6 +476,7 @@
 			children = (
 				466420DC27185E3A004DD73B /* Cell */,
 				466420DA27185E28004DD73B /* ProfileVC.swift */,
+				46557955272ECC2400843C6B /* MoreInfoVC.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -465,6 +484,7 @@
 		466420DC27185E3A004DD73B /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				46557957272ECF5400843C6B /* MoreInfoCell */,
 				4649E6242726CF2100703BA8 /* HeaderCell */,
 				462444F427259F8D00576DD8 /* FriendsCell */,
 				4649E61F2726A8DA00703BA8 /* PhotoCell */,
@@ -673,6 +693,7 @@
 			buildConfigurationList = 469F57B9269089F200F3A697 /* Build configuration list for PBXNativeTarget "VK_application" */;
 			buildPhases = (
 				516DA309341BA3CD40804799 /* [CP] Check Pods Manifest.lock */,
+				46A8923D27299DDD0099EE41 /* ShellScript */,
 				469F57A1269089F200F3A697 /* Sources */,
 				469F57A2269089F200F3A697 /* Frameworks */,
 				469F57A3269089F200F3A697 /* Resources */,
@@ -683,8 +704,6 @@
 			dependencies = (
 			);
 			name = VK_application;
-			packageProductDependencies = (
-			);
 			productName = VK_application;
 			productReference = 469F57A5269089F200F3A697 /* VK_application.app */;
 			productType = "com.apple.product-type.application";
@@ -712,8 +731,6 @@
 				Base,
 			);
 			mainGroup = 469F579C269089F200F3A697;
-			packageReferences = (
-			);
 			productRefGroup = 469F57A6269089F200F3A697 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -729,6 +746,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				466420E027185EEB004DD73B /* HeaderProfileCell.xib in Resources */,
+				4655795B272ECF7700843C6B /* MoreInfoViewCell.xib in Resources */,
 				469F57B5269089F200F3A697 /* LaunchScreen.storyboard in Resources */,
 				469F57B2269089F200F3A697 /* Assets.xcassets in Resources */,
 				46EB457526AAD21100183E66 /* NewsCellPhoto.xib in Resources */,
@@ -746,6 +764,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		46A8923D27299DDD0099EE41 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
+		};
 		512E9C94C4E671DBD3160ACD /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -801,6 +836,7 @@
 				46F87AD927285CF400BCB96E /* NewsFeedServices.swift in Sources */,
 				460E715C2699C8E000261821 /* FriendsTableViewCell.swift in Sources */,
 				465E093126C6B8A100B7EDB7 /* ProfileGroupVC.swift in Sources */,
+				4655795A272ECF7700843C6B /* MoreInfoViewCell.swift in Sources */,
 				46EB458B26AEE7F200183E66 /* CommentControl2.swift in Sources */,
 				460E7166269B0D3F00261821 /* PhotoesFriendVC.swift in Sources */,
 				464BACEF26EDEA84000402B0 /* SubscribeControl.swift in Sources */,
@@ -824,6 +860,7 @@
 				466420D4271783D3004DD73B /* WallServices.swift in Sources */,
 				466A12DA2707510F007155E7 /* UsersSearchModel.swift in Sources */,
 				466420CF2717788F004DD73B /* ServerCodeResponseModel.swift in Sources */,
+				46557954272AE55000843C6B /* UsersGetModel.swift in Sources */,
 				464BACE426ECDC7E000402B0 /* LoadingViewController.swift in Sources */,
 				460E71642699E8BE00261821 /* AddFriendsViewController.swift in Sources */,
 				463DBCE026FA276A005723AF /* VKLoginViewController.swift in Sources */,
@@ -842,6 +879,7 @@
 				4649E6212726A96A00703BA8 /* ProfilePhotoCollectionCell.swift in Sources */,
 				466420D627178EBD004DD73B /* WallGetModel.swift in Sources */,
 				460E7177269E01C100261821 /* UserGroupTableViewCell.swift in Sources */,
+				46557956272ECC2400843C6B /* MoreInfoVC.swift in Sources */,
 				460E7171269DFAF800261821 /* UserGroupsViewController.swift in Sources */,
 				46EB458926AEE3F600183E66 /* RepostControl2.swift in Sources */,
 				46F87AD62728554800BCB96E /* NewsFeedModel.swift in Sources */,

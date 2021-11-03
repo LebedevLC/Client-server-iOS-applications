@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 import RealmSwift
 
-//MARK: - Получение списка записей со стены
+// MARK: - Получение списка записей со стены
 
 class WallServices {
     private let feedUrlPath = "https://api.vk.com/method/wall.get"
@@ -20,7 +20,7 @@ class WallServices {
             "owner_id": "\(ownerID)",
             "count": "\(count)",
             "access_token": "\(UserSession.shared.token)",
-            "v": "\(UserSession.shared.v)"
+            "v": "\(UserSession.shared.version)"
         ]
         
         AF.request(feedUrlPath, method: .get, parameters: paramters).responseJSON { response in
@@ -38,7 +38,6 @@ class WallServices {
                 let responseWall = try JSONDecoder().decode(WallGetModel.self, from: response.data!)
                 let wall = responseWall.response.items
                 completion(.success(wall))
-//                self.realmService.saveData(array: users)
             } catch {
                 completion(.failure(.decodeError))
                 print("Decode Error")

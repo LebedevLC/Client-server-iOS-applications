@@ -11,5 +11,3 @@ import Foundation
 struct ResponseServerCodeModel: Codable {
     let response: Int
 }
-
-

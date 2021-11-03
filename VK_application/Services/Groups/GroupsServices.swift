@@ -23,17 +23,17 @@ class GroupsServices {
     private let leaveUrlPath = "https://api.vk.com/method/groups.leave"
     private let realmService = RealmServices()
     
-    //MARK: - Groups.get
+    // MARK: - Groups.get
     
     func getMyGroups(userId: Int, completion: @escaping () -> Void) {
         
         let paramters: Parameters = [
             "owner_id": "\(String(UserSession.shared.userId))",
-            //расширенная информация (да)
+            // расширенная информация (да)
             "extended": "1",
             "fields": "description,members_count",
             "access_token": "\(UserSession.shared.token)",
-            "v": "5.131"
+            "v": "\(UserSession.shared.version)"
         ]
         
         AF.request(getUrlPath, method: .get, parameters: paramters).responseJSON { [weak self] response in
@@ -57,7 +57,7 @@ class GroupsServices {
         }
     }
     
-    //MARK: - Groups.search
+    // MARK: - Groups.search
     
     /// Получить список найденных групп по запросу "q" с колличеством "count" (max count=1000)
     func getMyGroups(q: String, count: Int, completion: @escaping (Result<[GroupsSearchItems], GroupsServiceError>) -> Void) {
@@ -70,7 +70,7 @@ class GroupsServices {
             "q": "\(q)",
             "count": "\(newCount)",
             "access_token": "\(UserSession.shared.token)",
-            "v": "5.131"
+            "v": "\(UserSession.shared.version)"
         ]
         
         AF.request(searchUrlPath, method: .get, parameters: paramters).responseJSON { response in
@@ -93,7 +93,7 @@ class GroupsServices {
         }
     }
     
-    //MARK: - Groups.join
+    // MARK: - Groups.join
     
     struct GroupJoinModel: Codable {
         let response: Int
@@ -103,7 +103,7 @@ class GroupsServices {
         let paramters: Parameters = [
             "group_id": "\(groupID)",
             "access_token": "\(UserSession.shared.token)",
-            "v": "5.131"
+            "v": "\(UserSession.shared.version)"
         ]
         
         AF.request(joinUrlPath, method: .get, parameters: paramters).responseJSON { response in
@@ -124,7 +124,7 @@ class GroupsServices {
         }
     }
     
-    //MARK: - Groups.leave
+    // MARK: - Groups.leave
     
     struct GroupLeaveModel: Codable {
         let response: Int
@@ -134,7 +134,7 @@ class GroupsServices {
         let paramters: Parameters = [
             "group_id": "\(groupID)",
             "access_token": "\(UserSession.shared.token)",
-            "v": "\(UserSession.shared.v)"
+            "v": "\(UserSession.shared.version)"
         ]
         
         AF.request(leaveUrlPath, method: .get, parameters: paramters).responseJSON { response in

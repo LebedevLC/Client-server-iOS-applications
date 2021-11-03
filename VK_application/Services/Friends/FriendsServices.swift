@@ -15,6 +15,7 @@ class FriendsServices {
     private let searchUrlPath = "https://api.vk.com/method/friends.search"
     private let addUrlPath = "https://api.vk.com/method/friends.add"
     private let deleteUrlPath = "https://api.vk.com/method/friends.delete"
+    private let getSuggestionsUrlPath = "https://api.vk.com/method/friends.getSuggestions"
     private let realmService = RealmServices()
     
     enum Order: String {
@@ -24,16 +25,16 @@ class FriendsServices {
         
     }
     
-    //MARK: - Friends.get
+    // MARK: - Friends.get
     
-//    func getFriends(userId: Int, completion: @escaping () -> Void) {
     func getFriends(userId: Int, order: Order) {
         let paramters: Parameters = [
+            "user_id": "\(userId)",
             // сортировать по Order
             "order": "\(order)",
             "fields": "nickname,bdate,city,photo_100,online",
             "access_token": "\(UserSession.shared.token)",
-            "v": "\(UserSession.shared.v)"
+            "v": "\(UserSession.shared.version)"
         ]
         AF.request(getUrlPath, method: .get, parameters: paramters).responseJSON { [weak self] response in
             guard response.data != nil else {
@@ -49,14 +50,45 @@ class FriendsServices {
                     filter: "myOwnerId",
                     filterText: UserSession.shared.userId,
                     array: friends,
-                    completion: {} )
+                    completion: { })
             } catch {
                 print("Decode ERROR")
             }
         }
     }
     
-    //MARK: - Friends.search
+    // MARK: - Friends.get (NO REALM)
+    
+    func getFriendsNoRealm(userId: Int, order: Order, completion: @escaping (Result<[FriendsItems], SimpleServiceError>) -> Void) {
+        let paramters: Parameters = [
+            "user_id": "\(userId)",
+            // сортировать по Order
+            "order": "\(order)",
+            "fields": "nickname,bdate,city,photo_100,online",
+            "access_token": "\(UserSession.shared.token)",
+            "v": "\(UserSession.shared.version)"
+        ]
+        AF.request(getUrlPath, method: .get, parameters: paramters).responseJSON { response in
+            if let error = response.error {
+                completion(.failure(.serverError))
+                print(error)
+            }
+            guard response.data != nil else {
+                completion(.failure(.notData))
+                return
+            }
+            do {
+                let responseFriends = try JSONDecoder().decode(FriendsModel.self, from: response.data!)
+                let friends = responseFriends.response.items
+                completion(.success(friends))
+            } catch {
+                print("Decode ERROR")
+                completion(.failure(.decodeError))
+            }
+        }
+    }
+    
+    // MARK: - Friends.search
     
     /// q = поисковый запрос, count = колличество получаемых друзей ( максимально 1000 )
     func getSearchFriends(q: String, count: Int, completion: @escaping (Result<[FriendsItems], SimpleServiceError>) -> Void) {
@@ -70,7 +102,7 @@ class FriendsServices {
             "fields": "photo_100",
             "count": "\(c)",
             "access_token": "\(UserSession.shared.token)",
-            "v": "\(UserSession.shared.v)"
+            "v": "\(UserSession.shared.version)"
         ]
         
         AF.request(searchUrlPath, method: .get, parameters: paramters).responseJSON { response in
@@ -87,18 +119,19 @@ class FriendsServices {
                 let friends = responseFriends.response.items
                 completion(.success(friends))
             } catch {
+                print("decode error")
                 completion(.failure(.decodeError))
             }
         }
     }
     
-    //MARK: - Friends.add
+    // MARK: - Friends.add
     
     func getAddFriend(userID: Int, completion: @escaping (Result<ResponseServerCodeModel, SimpleServiceError>) -> Void) {
         let paramters: Parameters = [
             "user_id": "\(userID)",
             "access_token": "\(UserSession.shared.token)",
-            "v": "\(UserSession.shared.v)"
+            "v": "\(UserSession.shared.version)"
         ]
         AF.request(addUrlPath, method: .get, parameters: paramters).responseJSON { response in
             if let error = response.error {
@@ -114,8 +147,8 @@ class FriendsServices {
                 let responseFriendAdd = try JSONDecoder().decode(ResponseServerCodeModel.self, from: response.data!)
                 completion(.success(responseFriendAdd))
             } catch {
+                print("decode error")
                 completion(.failure(.decodeError))
-                // раскодируем ошибку
                 print("Ищу ошибку...")
                 self.getAddFriendError(userID: userID, param: paramters) { result in
                     switch result {
@@ -130,7 +163,7 @@ class FriendsServices {
         }
     }
     
-    //MARK: - Поиск ошибки в запросе дружить
+    // MARK: - Поиск ошибки в запросе дружить
     
     private func getAddFriendError(userID: Int, param: Parameters,
                                    completion: @escaping (Result<ErrorAddFriendModel, SimpleServiceError>) -> Void) {
@@ -146,32 +179,63 @@ class FriendsServices {
         }
     }
 
-//MARK: - Friends.delete
+    // MARK: - Friends.delete
 
-func getDeleteFriend(userID: Int, completion: @escaping (Result<ResponseServerFriendDelete, SimpleServiceError>) -> Void) {
-    let paramters: Parameters = [
-        "user_id": "\(userID)",
-        "access_token": "\(UserSession.shared.token)",
-        "v": "\(UserSession.shared.v)"
-    ]
-    AF.request(deleteUrlPath, method: .get, parameters: paramters).responseJSON { response in
-        if let error = response.error {
-            completion(.failure(.serverError))
-            print(error)
-        }
-        guard response.data != nil else {
-            completion(.failure(.notData))
-            print(completion)
-            return
-        }
-        do {
-            let responseDeleteFriend = try JSONDecoder().decode(ResponseServerFriendDelete.self, from: response.data!)
-            completion(.success(responseDeleteFriend))
-        } catch {
-            print(response)
-            print("decode error")
-            completion(.failure(.decodeError))
+    func getDeleteFriend(userID: Int, completion: @escaping (Result<ResponseServerFriendDelete, SimpleServiceError>) -> Void) {
+        let paramters: Parameters = [
+            "user_id": "\(userID)",
+            "access_token": "\(UserSession.shared.token)",
+            "v": "\(UserSession.shared.version)"
+        ]
+        AF.request(deleteUrlPath, method: .get, parameters: paramters).responseJSON { response in
+            if let error = response.error {
+                completion(.failure(.serverError))
+                print(error)
+            }
+            guard response.data != nil else {
+                completion(.failure(.notData))
+                print(completion)
+                return
+            }
+            do {
+                let responseDeleteFriend = try JSONDecoder().decode(ResponseServerFriendDelete.self, from: response.data!)
+                completion(.success(responseDeleteFriend))
+            } catch {
+                print(response)
+                print("decode error")
+                completion(.failure(.decodeError))
+            }
         }
     }
-}
+    
+    // MARK: - Friends.getSuggestions
+    
+    func getSuggestionsFriends(completion: @escaping (Result<[UsersSearchItems], SimpleServiceError>) -> Void) {
+        let paramters: Parameters = [
+            "user_id": "\(UserSession.shared.userId)",
+            "fields": "photo_100",
+            "count": "100",
+            "access_token": "\(UserSession.shared.token)",
+            "v": "\(UserSession.shared.version)"
+        ]
+        
+        AF.request(getSuggestionsUrlPath, method: .get, parameters: paramters).responseJSON { response in
+            if let error = response.error {
+                completion(.failure(.serverError))
+                print(error)
+            }
+            guard response.data != nil else {
+                completion(.failure(.notData))
+                return
+            }
+            do {
+                let responseFriends = try JSONDecoder().decode(UsersSearchModel.self, from: response.data!)
+                let friends = responseFriends.response.items
+                completion(.success(friends))
+            } catch {
+                print("decode error")
+                completion(.failure(.decodeError))
+            }
+        }
+    }
 }

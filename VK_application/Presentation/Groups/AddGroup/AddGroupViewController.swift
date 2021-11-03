@@ -59,7 +59,7 @@ final class AddGroupViewController: UIViewController {
     }
 }
 
-//MARK: - TableView
+// MARK: - TableView
 
 extension AddGroupViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -86,7 +86,7 @@ extension AddGroupViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-//MARK: - SearchBar
+// MARK: - SearchBar
 
 extension AddGroupViewController: UISearchBarDelegate {
     // функция активируется при изменении текста в searchBar
