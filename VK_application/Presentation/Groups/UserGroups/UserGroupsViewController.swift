@@ -5,34 +5,61 @@
 //  Created by Сергей Чумовских  on 13.07.2021.
 //
 
-import SwiftUI
 import Foundation
 import RealmSwift
+import Alamofire
 
 class UserGroupsViewController: UIViewController {
     
     @IBOutlet var searchBar: UISearchBar!
     @IBOutlet var tableView: UITableView!
     
-    // для перехода по сеге
-    var tapedInAvatar = false
-    // для клавиатуры
     private var tapGesture: UITapGestureRecognizer?
-    // данные групп
+    
     private var afGroups = GroupsServices()
     
-    var groupsAloma: [GroupsItems] = []
-    var filteredGroups: [GroupsItems] = []
+    private var groupsAloma: [GroupsItems] = []
+    private var filteredGroups: [GroupsItems] = []
+    
+    private let operationQueue: OperationQueue = {
+        let operationQueue = OperationQueue()
+        operationQueue.name = "com.AsyncOperation.UserGroupsViewController"
+        operationQueue.qualityOfService = .utility
+        return operationQueue
+    }()
+    private let getUrlPath = "https://api.vk.com/method/groups.get"
+    private let paramters: Parameters = [
+        "owner_id": "\(String(UserSession.shared.userId))",
+        "extended": "1",
+        "fields": "description,members_count",
+        "access_token": "\(UserSession.shared.token)",
+        "v": "\(UserSession.shared.version)"
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
         tableView.separatorStyle = .none
+        
+        let myReguest = AF.request(getUrlPath, method: .get, parameters: paramters)
+        let getData = GetDataOperation(request: myReguest)
+        let parseData = DataParseOperation()
+        let writeRealm = WriteRealmOperation()
+        writeRealm.completionBlock = { [weak self] in
+            self?.loadData()
+        }
+        
+        parseData.addDependency(getData)
+        writeRealm.addDependency(parseData)
+    
+        operationQueue.addOperation(getData)
+        operationQueue.addOperation(parseData)
+        operationQueue.addOperation(writeRealm)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getGroupsAloma()
+//        getGroupsAloma()
     }
     
     // MARK: - БД
@@ -49,15 +76,18 @@ class UserGroupsViewController: UIViewController {
     }
     
     // Загрузка данных из Realm
-    private func loadData() {
-        do {
-            let realm = try Realm()
-            // Чтение из БД по параметру myOwnerId
-            let groups = realm.objects(GroupsItems.self).filter("ownerId == %@", UserSession.shared.userId)
-            self.groupsAloma = Array(groups)
-            self.filteredGroups = self.groupsAloma
-            self.tableView.reloadData()
-        } catch { print(error) }
+    func loadData() {
+        DispatchQueue.main.async {
+            do {
+                let realm = try Realm()
+                let groups = realm.objects(GroupsItems.self).filter("ownerId == %@", UserSession.shared.userId)
+                self.groupsAloma = Array(groups)
+                self.filteredGroups = self.groupsAloma
+                
+                self.tableView.reloadData()
+                
+            } catch { print(error) }
+        }
     }
     
     // MARK: - Segue
@@ -74,7 +104,7 @@ class UserGroupsViewController: UIViewController {
     }
 }
 
-// MARK: - Extension UserGroups: UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension UserGroupsViewController: UISearchBarDelegate {
     
@@ -118,7 +148,7 @@ extension UserGroupsViewController: UISearchBarDelegate {
 extension UserGroupsViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        filteredGroups.count
+        filteredGroups.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -130,7 +160,6 @@ extension UserGroupsViewController: UITableViewDelegate, UITableViewDataSource{
         let group = filteredGroups[indexPath.row]
         cell.configure(group: group)
         cell.avatarTapped = { [weak self] in
-            self?.tapedInAvatar = true
             self?.performSegue(withIdentifier: "ProfileGroup2VC", sender: group.id)
         }
         return cell

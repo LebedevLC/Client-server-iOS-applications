@@ -17,6 +17,9 @@
 		460E7173269DFD2100261821 /* AddGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460E7172269DFD2100261821 /* AddGroupViewController.swift */; };
 		460E7175269DFDCC00261821 /* AddGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460E7174269DFDCC00261821 /* AddGroupCell.swift */; };
 		460E7177269E01C100261821 /* UserGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460E7176269E01C100261821 /* UserGroupTableViewCell.swift */; };
+		461603AD2735B02B007D14B8 /* GetDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461603AC2735B02B007D14B8 /* GetDataOperation.swift */; };
+		461603AF2735B126007D14B8 /* DataParseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461603AE2735B126007D14B8 /* DataParseOperation.swift */; };
+		461603B12735B2D9007D14B8 /* WriteRealmOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461603B02735B2D9007D14B8 /* WriteRealmOperation.swift */; };
 		462444F82725B9F500576DD8 /* FriendsCollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462444F72725B9F500576DD8 /* FriendsCollectionTableViewCell.swift */; };
 		462444FA2725BA0700576DD8 /* FriendsTableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462444F92725BA0700576DD8 /* FriendsTableCollectionViewCell.swift */; };
 		4638E5C326A04B0F004E26A2 /* AvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4638E5C226A04B0F004E26A2 /* AvatarImageView.swift */; };
@@ -106,6 +109,9 @@
 		460E7172269DFD2100261821 /* AddGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGroupViewController.swift; sourceTree = "<group>"; };
 		460E7174269DFDCC00261821 /* AddGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGroupCell.swift; sourceTree = "<group>"; };
 		460E7176269E01C100261821 /* UserGroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGroupTableViewCell.swift; sourceTree = "<group>"; };
+		461603AC2735B02B007D14B8 /* GetDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDataOperation.swift; sourceTree = "<group>"; };
+		461603AE2735B126007D14B8 /* DataParseOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataParseOperation.swift; sourceTree = "<group>"; };
+		461603B02735B2D9007D14B8 /* WriteRealmOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteRealmOperation.swift; sourceTree = "<group>"; };
 		462444F72725B9F500576DD8 /* FriendsCollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCollectionTableViewCell.swift; sourceTree = "<group>"; };
 		462444F92725BA0700576DD8 /* FriendsTableCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsTableCollectionViewCell.swift; sourceTree = "<group>"; };
 		4638E5C226A04B0F004E26A2 /* AvatarImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarImageView.swift; sourceTree = "<group>"; };
@@ -593,6 +599,9 @@
 			isa = PBXGroup;
 			children = (
 				469BA92D27346BE200E4B898 /* AsyncOperation.swift */,
+				461603AC2735B02B007D14B8 /* GetDataOperation.swift */,
+				461603AE2735B126007D14B8 /* DataParseOperation.swift */,
+				461603B02735B2D9007D14B8 /* WriteRealmOperation.swift */,
 			);
 			path = Operation;
 			sourceTree = "<group>";
@@ -618,8 +627,8 @@
 		469F57A7269089F200F3A697 /* VK_application */ = {
 			isa = PBXGroup;
 			children = (
-				469BA92C27346BCB00E4B898 /* Operation */,
 				469F57AE269089F200F3A697 /* Main.storyboard */,
+				469BA92C27346BCB00E4B898 /* Operation */,
 				463DBCE426FBBBC2005723AF /* Services */,
 				4638E5C626A1A1E5004E26A2 /* Librarys */,
 				4638E5C426A07BEE004E26A2 /* Castom */,
@@ -847,6 +856,7 @@
 				46F87AD927285CF400BCB96E /* NewsFeedServices.swift in Sources */,
 				460E715C2699C8E000261821 /* FriendsTableViewCell.swift in Sources */,
 				465E093126C6B8A100B7EDB7 /* ProfileGroupVC.swift in Sources */,
+				461603B12735B2D9007D14B8 /* WriteRealmOperation.swift in Sources */,
 				4655795A272ECF7700843C6B /* MoreInfoViewCell.swift in Sources */,
 				46EB458B26AEE7F200183E66 /* CommentControl2.swift in Sources */,
 				460E7166269B0D3F00261821 /* PhotoesFriendVC.swift in Sources */,
@@ -903,11 +913,13 @@
 				467165D626BBF0C6001C9E8D /* AvatarUIView.swift in Sources */,
 				4671660026BFEE75001C9E8D /* BigImageNewsVC.swift in Sources */,
 				464BACF326F10A23000402B0 /* NotificationControl.swift in Sources */,
+				461603AD2735B02B007D14B8 /* GetDataOperation.swift in Sources */,
 				464BACFF26F38799000402B0 /* UserSession.swift in Sources */,
 				466420DB27185E28004DD73B /* ProfileVC.swift in Sources */,
 				466A12CC27061D81007155E7 /* GroupsSearchModel.swift in Sources */,
 				464BACF126F10213000402B0 /* RepostControl.swift in Sources */,
 				46EB457726AAD9AA00183E66 /* NewsCellPhoto.swift in Sources */,
+				461603AF2735B126007D14B8 /* DataParseOperation.swift in Sources */,
 				469BA92E27346BE200E4B898 /* AsyncOperation.swift in Sources */,
 				4638E5CF26A43994004E26A2 /* LikeControl2.swift in Sources */,
 			);
