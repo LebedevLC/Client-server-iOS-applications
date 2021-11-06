@@ -15,9 +15,7 @@ class UserGroupsViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     
     private var tapGesture: UITapGestureRecognizer?
-    
-    private var afGroups = GroupsServices()
-    
+    private var groupService = GroupsServices()
     private var groupsAloma: [GroupsItems] = []
     private var filteredGroups: [GroupsItems] = []
     
@@ -27,55 +25,31 @@ class UserGroupsViewController: UIViewController {
         operationQueue.qualityOfService = .utility
         return operationQueue
     }()
-    private let getUrlPath = "https://api.vk.com/method/groups.get"
-    private let paramters: Parameters = [
-        "owner_id": "\(String(UserSession.shared.userId))",
-        "extended": "1",
-        "fields": "description,members_count",
-        "access_token": "\(UserSession.shared.token)",
-        "v": "\(UserSession.shared.version)"
-    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
         tableView.separatorStyle = .none
-        
-        let myReguest = AF.request(getUrlPath, method: .get, parameters: paramters)
+        operationsSetup()
+    }
+    
+    private func operationsSetup() {
+        let myReguest = groupService.getMyGroupsReguest()
         let getData = GetDataOperation(request: myReguest)
         let parseData = DataParseOperation()
         let writeRealm = WriteRealmOperation()
         writeRealm.completionBlock = { [weak self] in
             self?.loadData()
         }
-        
         parseData.addDependency(getData)
         writeRealm.addDependency(parseData)
-    
         operationQueue.addOperation(getData)
         operationQueue.addOperation(parseData)
         operationQueue.addOperation(writeRealm)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-//        getGroupsAloma()
-    }
+// MARK: - DataBase
     
-    // MARK: - БД
-    
-    // Делаем запрос в сеть для обновления БД
-    private func getGroupsAloma() {
-        afGroups.getMyGroups(userId: UserSession.shared.userId) {[weak self] in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.loadData()
-                self.tableView.reloadData()
-            }
-        }
-    }
-    
-    // Загрузка данных из Realm
     func loadData() {
         DispatchQueue.main.async {
             do {
@@ -83,15 +57,15 @@ class UserGroupsViewController: UIViewController {
                 let groups = realm.objects(GroupsItems.self).filter("ownerId == %@", UserSession.shared.userId)
                 self.groupsAloma = Array(groups)
                 self.filteredGroups = self.groupsAloma
-                
                 self.tableView.reloadData()
-                
             } catch { print(error) }
         }
     }
-    
-    // MARK: - Segue
-    
+}
+
+// MARK: - Segue
+
+extension UserGroupsViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard segue.identifier == "ProfileGroup2VC" else {return}
         if let vc = segue.destination as? ProfileGroupVC {
@@ -140,7 +114,6 @@ extension UserGroupsViewController: UISearchBarDelegate {
     @objc func hideKeyboard() {
         self.tableView?.endEditing(true)
     }
-    
 }
 
 // MARK: - TableView
@@ -148,7 +121,7 @@ extension UserGroupsViewController: UISearchBarDelegate {
 extension UserGroupsViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        filteredGroups.count ?? 0
+        filteredGroups.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -177,7 +150,6 @@ extension UserGroupsViewController: UITableViewDelegate, UITableViewDataSource{
         tableView.deselectRow(at: indexPath, animated: true)
         performSegue(withIdentifier: "ProfileGroup2VC", sender: filteredGroups[indexPath.row].id)
     }
-    
 }
 
 // MARK: - Delete Alert
@@ -187,8 +159,7 @@ extension UserGroupsViewController {
     private func showDeleteAlert(id: Int) {
         let alertController = UIAlertController(title: "Удалить группу?", message: "Это действие действительно внесет изменения в ваш список групп", preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "Удалить", style: .destructive) { _ in
-            let leaveGroup = GroupsServices()
-            leaveGroup.getLeaveGroup(groupID: id) {[weak self] result in
+            self.groupService.getLeaveGroup(groupID: id) {[weak self] result in
                 guard self != nil else {
                     print("fail self")
                     return }
