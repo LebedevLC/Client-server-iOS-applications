@@ -25,36 +25,15 @@ class GroupsServices {
     
     // MARK: - Groups.get
     
-    func getMyGroups(userId: Int, completion: @escaping () -> Void) {
-        
+    func getMyGroupsReguest() -> DataRequest {
         let paramters: Parameters = [
             "owner_id": "\(String(UserSession.shared.userId))",
-            // расширенная информация (да)
             "extended": "1",
             "fields": "description,members_count",
             "access_token": "\(UserSession.shared.token)",
             "v": "\(UserSession.shared.version)"
         ]
-        
-        AF.request(getUrlPath, method: .get, parameters: paramters).responseJSON { [weak self] response in
-            guard response.data != nil else {
-                print("Response from server = nil")
-                return
-            }
-            do {
-                let responseGroups = try JSONDecoder().decode(GroupsModel.self, from: response.data!)
-                let groups = responseGroups.response.items
-                groups.forEach{ $0.ownerId = UserSession.shared.userId}
-                self?.realmService.saveData(
-                    filter: "ownerId",
-                    filterText: UserSession.shared.userId,
-                    array: groups,
-                    completion: completion)
-                completion()
-            } catch {
-                print("Decode ERROR")
-            }
-        }
+        return AF.request(getUrlPath, method: .get, parameters: paramters)
     }
     
     // MARK: - Groups.search
