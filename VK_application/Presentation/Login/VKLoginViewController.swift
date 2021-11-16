@@ -35,7 +35,7 @@ class VKLoginViewController: UIViewController {
             URLQueryItem(name: "response_type", value: "token"),
             URLQueryItem(name: "v", value: "\(UserSession.shared.version)")
             // если нужно повторно входить
-//                                URLQueryItem(name: "revoke", value: "1")
+//            URLQueryItem(name: "revoke", value: "1")
         ]
         let request = URLRequest(url: urlComponents.url!)
         webView.load(request)

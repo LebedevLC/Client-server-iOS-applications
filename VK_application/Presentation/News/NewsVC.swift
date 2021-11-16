@@ -12,7 +12,7 @@ final class NewsVC: UIViewController {
     @IBOutlet var tableView: UITableView!
     
     private var feed: NewsFeedResponse?
-    private let countNews = 50
+    private let countNews = 5
     
     let newsFeedServices = NewsFeedServices()
     let dateFormatterRU = DateFormatterRU()
@@ -36,7 +36,7 @@ final class NewsVC: UIViewController {
                         self.setTableView()
                     }
                 case .failure:
-                    print("getNewsFeed FAIL")
+                    debugPrint("getNewsFeed FAIL")
                 }
             }
         }
@@ -69,26 +69,30 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
             else {
                 return UITableViewCell()
             }
-            let id = feedPost.source_id
-            let date = dateFormatterRU.ShowMeDate(date: feedPost.date)
+            let id = feedPost.source_id ?? 0
+            let date = dateFormatterRU.ShowMeDate(date: feedPost.date ?? 0)
             if id > 0 {
                 var profile: NewsFeedProfile
                 for i in 0..<feedProfiles.count where feedProfiles[i].id == id {
                     profile = feedProfiles[i]
                     let lastName = profile.last_name ?? " "
-                    cell.configure(avatar: profile.photo_50,
-                                   name: lastName + " " + profile.first_name,
-                                   date: date)
+                    let firstName = profile.first_name ?? ""
+                    cell.configure(
+                        avatar: profile.photo_50 ?? "",
+                        name: lastName + " " + firstName,
+                        date: date
+                    )
                     break
                 }
             } else {
                 var group: NewsFeedGroup
                 for i in 0..<feedGroup.count where feedGroup[i].id == -(id) {
                     group = feedGroup[i]
-                    
-                    cell.configure(avatar: group.photo_50,
-                                   name: group.name,
-                                   date: date)
+                    cell.configure(
+                        avatar: group.photo_50 ?? "",
+                        name: group.name ?? "",
+                        date: date
+                    )
                     break
                 }
             }
@@ -103,7 +107,7 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
             else {
                 return UITableViewCell()
             }
-            cell.configure(text: feedPost.text)
+            cell.configure(text: feedPost.text ?? "")
             // реализация разворачивания и сворачивания текста
             cell.controlTapped = { [weak self] in
                 self?.tableView.reloadData()
@@ -117,7 +121,7 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
                                                          for: indexPath) as? NewsCellPhoto,
                 let attachments = feed?.items[indexPath.section].attachments
             else {
-                print("Return Media ERROR")
+                debugPrint("Return Media ERROR")
                 return UITableViewCell()
             }
             cell.configure(attachments: attachments[0])
@@ -136,7 +140,7 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
                 let reposts = feedPost.reposts,
                 let views = feedPost.views
             else {
-                print("Return Footer ERROR")
+                debugPrint("Return Footer ERROR")
                 return UITableViewCell()
             }
             cell.configure(comments: comments, likes: likes, reposts: reposts, views: views)

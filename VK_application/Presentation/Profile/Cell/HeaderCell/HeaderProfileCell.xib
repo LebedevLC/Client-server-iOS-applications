@@ -48,10 +48,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Swb-Fm-TNE">
-                                <rect key="frame" x="130" y="54.5" width="280" height="88"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="88" id="dWa-qD-qrL"/>
-                                </constraints>
+                                <rect key="frame" x="130" y="54.5" width="280" height="17"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Статус">
                                         <attributes>
@@ -140,10 +137,11 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Swb-Fm-TNE" firstAttribute="top" secondItem="Yrl-et-fhV" secondAttribute="bottom" constant="4" id="2li-P9-k9p"/>
                             <constraint firstAttribute="trailing" secondItem="JqD-cJ-sOI" secondAttribute="trailing" constant="10" id="2yX-gt-fpY"/>
                             <constraint firstItem="JqD-cJ-sOI" firstAttribute="leading" secondItem="iv6-pT-23Q" secondAttribute="leading" constant="10" id="4KA-hz-wFK"/>
                             <constraint firstAttribute="trailing" secondItem="Swb-Fm-TNE" secondAttribute="trailing" constant="10" id="BPJ-3o-7Go"/>
-                            <constraint firstItem="JqD-cJ-sOI" firstAttribute="top" secondItem="QqZ-gx-Gip" secondAttribute="bottom" constant="30" id="HYO-ZZ-qr0"/>
+                            <constraint firstItem="JqD-cJ-sOI" firstAttribute="top" secondItem="QqZ-gx-Gip" secondAttribute="bottom" priority="999" constant="30" id="HYO-ZZ-qr0"/>
                             <constraint firstItem="6GF-Fa-Gkb" firstAttribute="leading" secondItem="iv6-pT-23Q" secondAttribute="leading" constant="10" id="K6z-iy-t02"/>
                             <constraint firstItem="Yrl-et-fhV" firstAttribute="top" secondItem="QqZ-gx-Gip" secondAttribute="top" constant="10" id="KwN-n7-7fE"/>
                             <constraint firstItem="Swb-Fm-TNE" firstAttribute="leading" secondItem="QqZ-gx-Gip" secondAttribute="trailing" constant="10" id="PdL-M8-QiG"/>
@@ -152,7 +150,6 @@
                             <constraint firstItem="QqZ-gx-Gip" firstAttribute="top" secondItem="iv6-pT-23Q" secondAttribute="top" constant="20" id="RMO-Dh-99W"/>
                             <constraint firstAttribute="trailing" secondItem="6GF-Fa-Gkb" secondAttribute="trailing" constant="10" id="SOh-MZ-9tR"/>
                             <constraint firstAttribute="bottom" secondItem="6GF-Fa-Gkb" secondAttribute="bottom" constant="16" id="UG2-ff-zbN"/>
-                            <constraint firstItem="Swb-Fm-TNE" firstAttribute="top" secondItem="Yrl-et-fhV" secondAttribute="bottom" constant="4" id="gCZ-qd-qEd"/>
                             <constraint firstAttribute="trailing" secondItem="Yrl-et-fhV" secondAttribute="trailing" constant="10" id="qAY-vy-f3K"/>
                             <constraint firstItem="Yrl-et-fhV" firstAttribute="leading" secondItem="QqZ-gx-Gip" secondAttribute="trailing" constant="10" id="sMA-T6-89c"/>
                         </constraints>

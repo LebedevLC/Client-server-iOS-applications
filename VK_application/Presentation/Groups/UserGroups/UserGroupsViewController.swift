@@ -58,7 +58,7 @@ class UserGroupsViewController: UIViewController {
                 self.groupsAloma = Array(groups)
                 self.filteredGroups = self.groupsAloma
                 self.tableView.reloadData()
-            } catch { print(error) }
+            } catch { debugPrint(error) }
         }
     }
 }
@@ -70,7 +70,7 @@ extension UserGroupsViewController {
         guard segue.identifier == "ProfileGroup2VC" else {return}
         if let vc = segue.destination as? ProfileGroupVC {
             guard let send = sender as? Int else {
-                print("FAIL cast")
+                debugPrint("FAIL cast")
                 return}
             searchBar.text = nil
             vc.groupID = send
@@ -161,13 +161,13 @@ extension UserGroupsViewController {
         let confirmAction = UIAlertAction(title: "Удалить", style: .destructive) { _ in
             self.groupService.getLeaveGroup(groupID: id) {[weak self] result in
                 guard self != nil else {
-                    print("fail self")
+                    debugPrint("fail self")
                     return }
                 switch result {
                 case .success(let answer):
-                    print("Leave to groupID = \(id) = \(answer)")
+                    debugPrint("Leave to groupID = \(id) = \(answer)")
                 case .failure:
-                    print("Leave to gropID = \(id) = FAIL")
+                    debugPrint("Leave to gropID = \(id) = FAIL")
                 }
             }
             DispatchQueue.main.async {

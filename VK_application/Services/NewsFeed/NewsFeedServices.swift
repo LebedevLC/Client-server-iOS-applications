@@ -24,11 +24,11 @@ class NewsFeedServices {
         
         AF.request(feedUrlPath, method: .get, parameters: paramters).responseJSON { response in
             if let error = response.error {
-                print("server Error!")
-                print(error)
+                debugPrint("server Error!")
+                debugPrint(error)
             }
             guard response.data != nil else {
-                print("Error - not Data!")
+                debugPrint("Error - not Data!")
                 return
             }
             self.tryJson(data: response)
@@ -49,7 +49,8 @@ class NewsFeedServices {
                 let feed = responseFeed.response
                 self.dispatchQueueJsonResponse = feed
             } catch {
-                print("DispatchQueue.global.async(group: dispatchGroup) JSON Decode ERROR")
+                debugPrint("DispatchQueue.global.async(group: dispatchGroup) JSON Decode ERROR")
+                debugPrint(data.data!)
                 self.dispatchQueueJsonResponse = nil
             }
         }

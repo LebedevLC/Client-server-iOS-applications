@@ -14,7 +14,7 @@ class WriteRealmOperation: Operation {
     
     override func main() {
         guard let parsedData = dependencies.first as? DataParseOperation else {
-            print("Data not parsed")
+            debugPrint("Data not parsed")
             return
         }
         let posts = parsedData.outputData
@@ -24,6 +24,6 @@ class WriteRealmOperation: Operation {
             filterText: UserSession.shared.userId,
             array: posts,
             completion: { })
-        print("Write Realm success")
+        debugPrint("Write Realm success")
     }
 }
