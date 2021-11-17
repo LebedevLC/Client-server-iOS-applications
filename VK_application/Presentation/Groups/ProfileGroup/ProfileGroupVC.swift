@@ -239,8 +239,8 @@ extension ProfileGroupVC: UITableViewDelegate, UITableViewDataSource {
             guard
                 indexPath.section > 0,
                 let attachments = self.wall[indexPath.section - 1].attachments,
-                let sizeLast = attachments[0].photo?.sizes.endIndex,
-                let heightPhoto = attachments[0].photo?.sizes[sizeLast-1].height
+                let sizeLast = attachments[0].photo?.sizes?.endIndex,
+                let heightPhoto = attachments[0].photo?.sizes?[sizeLast-1].height
             else {
                 return tableView.rowHeight
             }

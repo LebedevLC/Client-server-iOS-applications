@@ -17,13 +17,16 @@ class WriteRealmOperation: Operation {
             debugPrint("Data not parsed")
             return
         }
-        let posts = parsedData.outputData
-        posts.forEach{ $0.ownerId = UserSession.shared.userId}
-        self.realmService.saveData(
-            filter: "ownerId",
-            filterText: UserSession.shared.userId,
-            array: posts,
-            completion: { })
-        debugPrint("Write Realm success")
+        DispatchQueue.main.async {
+            let posts = parsedData.outputData
+            posts.forEach{ $0.ownerId = UserSession.shared.userId}
+            self.realmService.saveData(
+                filter: "ownerId",
+                filterText: UserSession.shared.userId,
+                array: posts,
+                completion: { })
+            debugPrint("Write Realm success")
+        }
+        
     }
 }

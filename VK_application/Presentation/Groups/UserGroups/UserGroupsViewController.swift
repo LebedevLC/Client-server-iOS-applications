@@ -22,7 +22,7 @@ class UserGroupsViewController: UIViewController {
     private let operationQueue: OperationQueue = {
         let operationQueue = OperationQueue()
         operationQueue.name = "com.AsyncOperation.UserGroupsViewController"
-        operationQueue.qualityOfService = .utility
+        operationQueue.qualityOfService = .userInteractive
         return operationQueue
     }()
     
@@ -126,7 +126,8 @@ extension UserGroupsViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard
-            let cell = tableView.dequeueReusableCell(withIdentifier: UserGroupTableViewCell.reusedIdentifire, for: indexPath) as? UserGroupTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: UserGroupTableViewCell.reusedIdentifire, for: indexPath) as? UserGroupTableViewCell,
+            !filteredGroups.isEmpty
         else {
             return UITableViewCell()
         }

@@ -2,8 +2,7 @@
 //  NewsViewController.swift
 //  VK_application
 //
-//  Шикарно с третьего раза Created by Сергей Чумовских  on 23.07.2021.
-//  4-й, и уже с сетью 26.10.2021
+//  Created by Сергей Чумовских  on 23.07.2021.
 
 import UIKit
 
@@ -12,7 +11,7 @@ final class NewsVC: UIViewController {
     @IBOutlet var tableView: UITableView!
     
     private var feed: NewsFeedResponse?
-    private let countNews = 5
+    private let countNews = 50
     
     let newsFeedServices = NewsFeedServices()
     let dateFormatterRU = DateFormatterRU()
@@ -157,8 +156,8 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
         case 2:
             guard
                 let attachments = feed?.items[indexPath.section].attachments,
-                let sizeLast = attachments[0].photo?.sizes.endIndex,
-                let heightPhoto = attachments[0].photo?.sizes[sizeLast-1].height
+                let sizeLast = attachments[0].photo?.sizes?.endIndex,
+                let heightPhoto = attachments[0].photo?.sizes?[sizeLast-1].height
             else {
                 return tableView.rowHeight
             }
