@@ -71,7 +71,7 @@ extension UserGroupsViewController {
         if let vc = segue.destination as? ProfileGroupVC {
             guard let send = sender as? Int else {
                 debugPrint("FAIL cast")
-                return}
+                return }
             searchBar.text = nil
             vc.groupID = send
         }

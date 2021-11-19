@@ -11,7 +11,7 @@ final class NewsVC: UIViewController {
     @IBOutlet var tableView: UITableView!
     
     private var feed: NewsFeedResponse?
-    private let countNews = 50
+    private let countNews = 20
     
     let newsFeedServices = NewsFeedServices()
     let dateFormatterRU = DateFormatterRU()
@@ -109,7 +109,7 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
             cell.configure(text: feedPost.text ?? "")
             // реализация разворачивания и сворачивания текста
             cell.controlTapped = { [weak self] in
-                self?.tableView.reloadData()
+                self?.tableView.reloadSections(IndexSet(integer: indexPath.section), with: .none)
             }
             return cell
             
@@ -157,11 +157,12 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
             guard
                 let attachments = feed?.items[indexPath.section].attachments,
                 let sizeLast = attachments[0].photo?.sizes?.endIndex,
-                let heightPhoto = attachments[0].photo?.sizes?[sizeLast-1].height
+                let heightPhoto = attachments[0].photo?.sizes?[sizeLast-1].height,
+                let widthPhoto = attachments[0].photo?.sizes?[sizeLast-1].width
             else {
                 return tableView.rowHeight
             }
-            let heightPhotoCell = CGFloat(heightPhoto/2)
+            let heightPhotoCell = CGFloat(heightPhoto/widthPhoto) * tableView.bounds.width
             return heightPhotoCell
         case 3:
             return 45
