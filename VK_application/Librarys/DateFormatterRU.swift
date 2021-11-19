@@ -12,6 +12,7 @@ class DateFormatterRU {
     func ShowMeDate(date: Int) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd MMMM yyyy HH:mm"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         let date = Date(timeIntervalSince1970: TimeInterval(date))
         let stringDate = dateFormatter.string(from: date)
         return stringDate

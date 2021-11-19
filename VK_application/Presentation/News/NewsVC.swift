@@ -11,13 +11,15 @@ final class NewsVC: UIViewController {
     @IBOutlet var tableView: UITableView!
     
     private var feed: NewsFeedResponse?
-    private let countNews = 20
+    private let countNews = 2
     
     let newsFeedServices = NewsFeedServices()
     let dateFormatterRU = DateFormatterRU()
+    var freshNewsDate = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupRefreshControl()
         getNewsFeed()
     }
     
@@ -33,6 +35,10 @@ final class NewsVC: UIViewController {
                     DispatchQueue.main.async {
                         self.feed = feed
                         self.setTableView()
+                        guard let nextFrom = feed.next_from else {
+                            debugPrint("no feed.next_from")
+                            return }
+                        self.freshNewsDate = nextFrom
                     }
                 case .failure:
                     debugPrint("getNewsFeed FAIL")
@@ -40,6 +46,65 @@ final class NewsVC: UIViewController {
             }
         }
     }
+}
+
+// MARK: - Pull to Refresh
+
+extension NewsVC {
+    // Функция настройки контроллера
+    private func setupRefreshControl() {
+        // Инициализируем и присваиваем сущность UIRefreshControl
+        tableView.refreshControl = UIRefreshControl()
+        // Настраиваем свойства контрола, как, например,
+        // отображаемый им текст
+        tableView.refreshControl?.attributedTitle = NSAttributedString(string: "Обновление...")
+        // Цвет спиннера
+        tableView.refreshControl?.tintColor = .link
+        // И прикрепляем функцию, которая будет вызываться контролом
+        tableView.refreshControl?.addTarget(self, action: #selector(refreshNews), for: .valueChanged)
+    }
+    
+    @objc func refreshNews() {
+        tableView.refreshControl?.beginRefreshing()
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async{
+            self.newsFeedServices.getNewsNewRequest(
+                count: self.countNews,
+                startFrom: self.freshNewsDate) {[weak self] result in
+                    guard let self = self else { return }
+                    switch result {
+                    case .success(let feed):
+                        DispatchQueue.main.async {
+                            self.tableView.refreshControl?.endRefreshing()
+                            guard feed.items.count > 0 else {
+                                debugPrint("no new newsFeed")
+                                return }
+                            guard let nextFrom = feed.next_from else {
+                                debugPrint("no feed.next_from")
+                                return }
+                            
+                            let newGroups = feed.groups
+                            let newProfiles = feed.profiles
+                            let feedCount = self.feed?.items.count ?? 0
+                            
+                            self.feed?.groups?.append(contentsOf: newGroups!)
+                            self.feed?.profiles?.append(contentsOf: newProfiles!)
+                            
+                            self.freshNewsDate = nextFrom
+                            
+                            let indexSet = IndexSet(integersIn: feedCount..<(feedCount + feed.items.count))
+                            self.feed?.items.insert(contentsOf: feed.items, at: 0)
+                            self.tableView.insertSections(indexSet, with: .automatic)
+                            
+                            self.tableView.reloadData()
+                        }
+                    case .failure:
+                        debugPrint("getNewsFeed FAIL")
+                    }
+                }
+        }
+    }
+    
 }
 
 // MARK: - Extension UITableView
