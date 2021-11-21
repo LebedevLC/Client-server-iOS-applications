@@ -10,44 +10,62 @@ import UIKit
 final class NewsCellText: UITableViewCell {
     
     @IBOutlet var labelText: UILabel!
-    @IBOutlet weak var moreButton: UIButton!
+    @IBOutlet weak var showMoreLabel: UILabel!
+    
+    let stringSetup = AttributedStringSetup()
+    var showMore: NSAttributedString?
+    var showLess: NSAttributedString?
     
     static let reusedIdentifier = "NewsCellText"
     
-    private var isMore: Bool = true
+    private var isMore: Bool = false
     
     var controlTapped: (() -> Void)?
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        showMore = stringSetup.simpleStringSetup(text: "Показать больше", size: 14, color: .link)
+        showLess = stringSetup.simpleStringSetup(text: "Скрыть", size: 14, color: .link)
+        setSingleTap()
+    }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         labelText.text = nil
-        moreButton.isHidden = true
+        showMoreLabel.isHidden = true
     }
     
     func configure(text: String) {
         labelText.text = text
-        if text.count <= 200 || labelText.text == "" {
-            moreButton.isHidden = true
-        } else { moreButton.isHidden = false }
+        if !isMore {
+            showMoreLabel.attributedText = showMore
+        } else {
+            showMoreLabel.attributedText = showLess
+            }
+        
+        if labelText.text == "" || text.count <= 200 {
+            showMoreLabel.isHidden = true
+        } else {
+            showMoreLabel.isHidden = false
+        }
     }
     
-    @IBAction func moreButtonTapped(_ sender: Any) {
+    private func setSingleTap() {
+        let singleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleSingleTap))
+        singleTap.numberOfTapsRequired = 1
+        self.showMoreLabel.addGestureRecognizer(singleTap)
+    }
+    
+    @IBAction func handleSingleTap(sender: UITapGestureRecognizer) {
         if isMore {
             labelText.numberOfLines = 7
-            moreButton.setAttributedTitle(stringSetup(text: "Показать больше"), for: .normal)
+            showMoreLabel.attributedText = showMore
         } else {
             labelText.numberOfLines = 0
-            moreButton.setAttributedTitle(stringSetup(text: "Скрыть"), for: .normal)
+            showMoreLabel.attributedText = showLess
         }
-        isMore.toggle()
         controlTapped?()
+        isMore.toggle()
     }
     
-    private func stringSetup(text: String) -> NSAttributedString {
-         let font = UIFont.systemFont(ofSize: 14)
-         let attributes = [NSAttributedString.Key.font: font,
-                           NSAttributedString.Key.foregroundColor: UIColor.link]
-         let attributedText = NSAttributedString(string: text, attributes: attributes)
-         return attributedText
-     }
 }

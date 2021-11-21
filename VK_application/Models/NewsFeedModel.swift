@@ -20,7 +20,7 @@ struct NewsFeedResponse: Codable {
 
 struct NewsFeedItems: Codable {
     var source_id: Int?
-    var date: Int?
+    var date: Double?
     var post_type: String?
     var text: String?
     var post_id: Int?

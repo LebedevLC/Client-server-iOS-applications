@@ -14,46 +14,21 @@ class NewsFeedServices {
     private let dispatchGroup = DispatchGroup()
     var dispatchQueueJsonResponse: NewsFeedResponse?
     
-    func getNewsFeedPost(count: Int,
-                         completion: @escaping (Result<NewsFeedResponse, SimpleServiceError>) -> Void) {
-        let paramters: Parameters = [
-            "filters": "post",
-            "count": "\(count)",
-            "access_token": "\(UserSession.shared.token)",
-            "v": "\(UserSession.shared.version)"
-        ]
-        
-        AF.request(feedUrlPath, method: .get, parameters: paramters).responseJSON { response in
-            if let error = response.error {
-                debugPrint("server Error!")
-                debugPrint(error)
-            }
-            guard response.data != nil else {
-                debugPrint("Error - not Data!")
-                return
-            }
-            self.tryJson(data: response)
-            self.dispatchGroup.notify(queue: DispatchQueue.main) {
-                if let response = self.dispatchQueueJsonResponse {
-                    completion(.success(response))
-                } else {
-                    completion(.failure(.decodeError))
-                }
-            }
-        }
-    }
-    
-    func getNewsNewRequest(count: Int, startFrom: String,
+    func getNewsFeedPost(count: Int, startFrom: String? = nil, startTime: Double? = nil,
                            completion: @escaping (Result<NewsFeedResponse, SimpleServiceError>) -> Void){
-        let paramters: Parameters = [
+        var paramters: Parameters = [
             "filters": "post",
             "count": "\(count)",
-            "start_from": "\(startFrom)",
-//            "start_time":  "\(timeInterval1970)",
             "access_token": "\(UserSession.shared.token)",
             "v": "\(UserSession.shared.version)"
         ]
-        
+        if let startTime = startTime {
+            paramters["start_time"] = startTime
+               }
+        if let startFrom = startFrom {
+            paramters["start_from"] = startFrom
+               }
+
         AF.request(feedUrlPath, method: .get, parameters: paramters).responseJSON { response in
             if let error = response.error {
                 debugPrint("server Error!")

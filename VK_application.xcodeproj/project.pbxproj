@@ -31,6 +31,7 @@
 		463994E326B04A36002AAF6D /* NewsCellText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463994E226B04A36002AAF6D /* NewsCellText.swift */; };
 		463994E626B06A75002AAF6D /* NewsCellHeader2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 463994E526B06A75002AAF6D /* NewsCellHeader2.xib */; };
 		463994E826B06BCC002AAF6D /* NewsCellHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463994E726B06BCC002AAF6D /* NewsCellHeader.swift */; };
+		463D87A5274A618B0025922A /* AttributedStringSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463D87A4274A618A0025922A /* AttributedStringSetup.swift */; };
 		463DBCE026FA276A005723AF /* VKLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463DBCDF26FA2769005723AF /* VKLoginViewController.swift */; };
 		463DBCE226FB7A56005723AF /* FriendsServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463DBCE126FB7A56005723AF /* FriendsServices.swift */; };
 		463DBCE626FBBE5D005723AF /* PhotoesServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463DBCE526FBBE5D005723AF /* PhotoesServices.swift */; };
@@ -135,6 +136,7 @@
 		463994E226B04A36002AAF6D /* NewsCellText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCellText.swift; sourceTree = "<group>"; };
 		463994E526B06A75002AAF6D /* NewsCellHeader2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsCellHeader2.xib; sourceTree = "<group>"; };
 		463994E726B06BCC002AAF6D /* NewsCellHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCellHeader.swift; sourceTree = "<group>"; };
+		463D87A4274A618A0025922A /* AttributedStringSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedStringSetup.swift; sourceTree = "<group>"; };
 		463DBCDF26FA2769005723AF /* VKLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKLoginViewController.swift; sourceTree = "<group>"; };
 		463DBCE126FB7A56005723AF /* FriendsServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsServices.swift; sourceTree = "<group>"; };
 		463DBCE526FBBE5D005723AF /* PhotoesServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoesServices.swift; sourceTree = "<group>"; };
@@ -349,6 +351,7 @@
 			children = (
 				466D880C27202C59005C7626 /* DefaultAlert.swift */,
 				46F87ADA2728C53D00BCB96E /* DateFormatterRU.swift */,
+				463D87A4274A618A0025922A /* AttributedStringSetup.swift */,
 				4638E5C726A1A223004E26A2 /* Extension */,
 			);
 			path = Librarys;
@@ -953,6 +956,7 @@
 				464BACE426ECDC7E000402B0 /* LoadingViewController.swift in Sources */,
 				460E71642699E8BE00261821 /* AddFriendsViewController.swift in Sources */,
 				463DBCE026FA276A005723AF /* VKLoginViewController.swift in Sources */,
+				463D87A5274A618B0025922A /* AttributedStringSetup.swift in Sources */,
 				463DBCE626FBBE5D005723AF /* PhotoesServices.swift in Sources */,
 				463DBCED26FF8970005723AF /* FriendsModel.swift in Sources */,
 				464BACF626F24F29000402B0 /* DescriptionCell.swift in Sources */,

@@ -11,11 +11,12 @@ final class NewsVC: UIViewController {
     @IBOutlet var tableView: UITableView!
     
     private var feed: NewsFeedResponse?
-    private let countNews = 2
+    private let countNews = 7
     
-    let newsFeedServices = NewsFeedServices()
-    let dateFormatterRU = DateFormatterRU()
-    var freshNewsDate = ""
+    private let newsFeedServices = NewsFeedServices()
+    private let dateFormatterRU = DateFormatterRU()
+    private var nextFrom = ""
+    private var isLoading = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +39,7 @@ final class NewsVC: UIViewController {
                         guard let nextFrom = feed.next_from else {
                             debugPrint("no feed.next_from")
                             return }
-                        self.freshNewsDate = nextFrom
+                        self.nextFrom = nextFrom
                     }
                 case .failure:
                     debugPrint("getNewsFeed FAIL")
@@ -51,16 +52,11 @@ final class NewsVC: UIViewController {
 // MARK: - Pull to Refresh
 
 extension NewsVC {
-    // Функция настройки контроллера
+
     private func setupRefreshControl() {
-        // Инициализируем и присваиваем сущность UIRefreshControl
         tableView.refreshControl = UIRefreshControl()
-        // Настраиваем свойства контрола, как, например,
-        // отображаемый им текст
         tableView.refreshControl?.attributedTitle = NSAttributedString(string: "Обновление...")
-        // Цвет спиннера
         tableView.refreshControl?.tintColor = .link
-        // И прикрепляем функцию, которая будет вызываться контролом
         tableView.refreshControl?.addTarget(self, action: #selector(refreshNews), for: .valueChanged)
     }
     
@@ -68,34 +64,29 @@ extension NewsVC {
         tableView.refreshControl?.beginRefreshing()
         let queue = DispatchQueue.global(qos: .utility)
         queue.async{
-            self.newsFeedServices.getNewsNewRequest(
+            let mostFreshNewsDate = self.feed?.items.first?.date ?? Date().timeIntervalSince1970
+            self.newsFeedServices.getNewsFeedPost(
                 count: self.countNews,
-                startFrom: self.freshNewsDate) {[weak self] result in
+                startTime: mostFreshNewsDate + 1) {[weak self] result in
                     guard let self = self else { return }
                     switch result {
                     case .success(let feed):
+                        guard feed.items.count > 0 else {
+                            self.tableView.refreshControl?.endRefreshing()
+                            debugPrint("no new newsFeed")
+                            return }
+                        let newGroups = feed.groups
+                        let newProfiles = feed.profiles
+                        let feedCount = self.feed?.items.count ?? 0
+                        
+                        self.feed?.groups?.append(contentsOf: newGroups!)
+                        self.feed?.profiles?.append(contentsOf: newProfiles!)
+                        self.feed?.items.insert(contentsOf: feed.items, at: 0)
+                        
                         DispatchQueue.main.async {
                             self.tableView.refreshControl?.endRefreshing()
-                            guard feed.items.count > 0 else {
-                                debugPrint("no new newsFeed")
-                                return }
-                            guard let nextFrom = feed.next_from else {
-                                debugPrint("no feed.next_from")
-                                return }
-                            
-                            let newGroups = feed.groups
-                            let newProfiles = feed.profiles
-                            let feedCount = self.feed?.items.count ?? 0
-                            
-                            self.feed?.groups?.append(contentsOf: newGroups!)
-                            self.feed?.profiles?.append(contentsOf: newProfiles!)
-                            
-                            self.freshNewsDate = nextFrom
-                            
                             let indexSet = IndexSet(integersIn: feedCount..<(feedCount + feed.items.count))
-                            self.feed?.items.insert(contentsOf: feed.items, at: 0)
                             self.tableView.insertSections(indexSet, with: .automatic)
-                            
                             self.tableView.reloadData()
                         }
                     case .failure:
@@ -217,7 +208,10 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
         case 0:
             return 80
         case 1:
-            return tableView.rowHeight
+            if feed?.items[indexPath.section].text == "" {
+                return 1
+            } else {
+                return tableView.rowHeight }
         case 2:
             guard
                 let attachments = feed?.items[indexPath.section].attachments,
@@ -225,7 +219,7 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
                 let heightPhoto = attachments[0].photo?.sizes?[sizeLast-1].height,
                 let widthPhoto = attachments[0].photo?.sizes?[sizeLast-1].width
             else {
-                return tableView.rowHeight
+                return 1
             }
             let heightPhotoCell = CGFloat(heightPhoto/widthPhoto) * tableView.bounds.width
             return heightPhotoCell
@@ -239,6 +233,7 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
     private func setTableView() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.prefetchDataSource = self
         
         tableView.register(UINib(nibName: NewsCellHeader.reusedIdentifier, bundle: nil),
                            forCellReuseIdentifier: NewsCellHeader.reusedIdentifier)
@@ -266,5 +261,45 @@ extension NewsVC {
             let attachments = feed?.items[indexPath.section].attachments
         else { return }
         destinationController.attachments = attachments
+    }
+}
+
+// MARK: - Infinite Scrolling
+
+extension NewsVC: UITableViewDataSourcePrefetching {
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        guard let maxSection = indexPaths.map({ $0.section }).max() else { return }
+        guard let count = feed?.items.count else { return }
+        if maxSection > count - 3,
+           !isLoading {
+            isLoading = true
+            newsFeedServices.getNewsFeedPost(count: countNews, startFrom: nextFrom) {[weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let feed):
+                    guard feed.items.count > 0 else {
+                        debugPrint("no next newsFeed")
+                        return }
+                    guard let nextFrom = feed.next_from else {
+                        debugPrint("no feed.next_from")
+                        return }
+                    let newGroups = feed.groups
+                    let newProfiles = feed.profiles
+                    let feedCount = self.feed?.items.count ?? 0
+                    
+                    self.feed?.groups?.append(contentsOf: newGroups!)
+                    self.feed?.profiles?.append(contentsOf: newProfiles!)
+                    self.feed?.items.append(contentsOf: feed.items)
+                    self.nextFrom = nextFrom
+                    
+                    let indexSet = IndexSet(integersIn: feedCount..<(feedCount + feed.items.count))
+                    self.tableView.insertSections(indexSet, with: .automatic)
+                    
+                case .failure:
+                    debugPrint("getNewsFeed FAIL")
+                }
+                self.isLoading = false
+            }
+        }
     }
 }

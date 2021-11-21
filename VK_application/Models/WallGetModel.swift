@@ -18,7 +18,7 @@ struct WallGetResponse: Codable {
 
 struct WallItems: Codable {
     let id: Int
-    let date: Int
+    let date: Double
     let post_type: String
     let text: String
     let attachments: [Attachments]?
