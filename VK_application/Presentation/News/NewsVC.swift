@@ -24,7 +24,7 @@ final class NewsVC: UIViewController {
         getNewsFeed()
     }
     
-// MARK: - Network
+    // MARK: - Network
     
     private func getNewsFeed() {
         let queue = DispatchQueue.global(qos: .utility)
@@ -47,55 +47,6 @@ final class NewsVC: UIViewController {
             }
         }
     }
-}
-
-// MARK: - Pull to Refresh
-
-extension NewsVC {
-
-    private func setupRefreshControl() {
-        tableView.refreshControl = UIRefreshControl()
-        tableView.refreshControl?.attributedTitle = NSAttributedString(string: "Обновление...")
-        tableView.refreshControl?.tintColor = .link
-        tableView.refreshControl?.addTarget(self, action: #selector(refreshNews), for: .valueChanged)
-    }
-    
-    @objc func refreshNews() {
-        tableView.refreshControl?.beginRefreshing()
-        let queue = DispatchQueue.global(qos: .utility)
-        queue.async{
-            let mostFreshNewsDate = self.feed?.items.first?.date ?? Date().timeIntervalSince1970
-            self.newsFeedServices.getNewsFeedPost(
-                count: self.countNews,
-                startTime: mostFreshNewsDate + 1) {[weak self] result in
-                    guard let self = self else { return }
-                    switch result {
-                    case .success(let feed):
-                        guard feed.items.count > 0 else {
-                            self.tableView.refreshControl?.endRefreshing()
-                            debugPrint("no new newsFeed")
-                            return }
-                        let newGroups = feed.groups
-                        let newProfiles = feed.profiles
-                        let feedCount = self.feed?.items.count ?? 0
-                        
-                        self.feed?.groups?.append(contentsOf: newGroups!)
-                        self.feed?.profiles?.append(contentsOf: newProfiles!)
-                        self.feed?.items.insert(contentsOf: feed.items, at: 0)
-                        
-                        DispatchQueue.main.async {
-                            self.tableView.refreshControl?.endRefreshing()
-                            let indexSet = IndexSet(integersIn: feedCount..<(feedCount + feed.items.count))
-                            self.tableView.insertSections(indexSet, with: .automatic)
-                            self.tableView.reloadData()
-                        }
-                    case .failure:
-                        debugPrint("getNewsFeed FAIL")
-                    }
-                }
-        }
-    }
-    
 }
 
 // MARK: - Extension UITableView
@@ -264,12 +215,62 @@ extension NewsVC {
     }
 }
 
+// MARK: - Pull to Refresh
+
+extension NewsVC {
+
+    private func setupRefreshControl() {
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.attributedTitle = NSAttributedString(string: "Обновление...")
+        tableView.refreshControl?.tintColor = .link
+        tableView.refreshControl?.addTarget(self, action: #selector(refreshNews), for: .valueChanged)
+    }
+    
+    @objc func refreshNews() {
+        tableView.refreshControl?.beginRefreshing()
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async {
+            let mostFreshNewsDate = self.feed?.items.first?.date ?? Date().timeIntervalSince1970
+            self.newsFeedServices.getNewsFeedPost(
+                count: self.countNews,
+                startTime: mostFreshNewsDate + 3) {[weak self] result in
+                    guard let self = self else { return }
+                    switch result {
+                    case .success(let feed):
+                        guard feed.items.count > 0 else {
+                            self.tableView.refreshControl?.endRefreshing()
+                            debugPrint("no new newsFeed")
+                            return }
+                        let newGroups = feed.groups
+                        let newProfiles = feed.profiles
+                        let feedCount = self.feed?.items.count ?? 0
+                        
+                        self.feed?.groups?.append(contentsOf: newGroups!)
+                        self.feed?.profiles?.append(contentsOf: newProfiles!)
+                        self.feed?.items.insert(contentsOf: feed.items, at: 0)
+                        
+                        DispatchQueue.main.async {
+                            self.tableView.refreshControl?.endRefreshing()
+                            let indexSet = IndexSet(integersIn: feedCount..<(feedCount + feed.items.count))
+                            self.tableView.insertSections(indexSet, with: .automatic)
+                            self.tableView.reloadData()
+                        }
+                    case .failure:
+                        debugPrint("getNewsFeed FAIL")
+                    }
+                }
+        }
+    }
+}
+
 // MARK: - Infinite Scrolling
 
 extension NewsVC: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        guard let maxSection = indexPaths.map({ $0.section }).max() else { return }
-        guard let count = feed?.items.count else { return }
+        guard
+            let maxSection = indexPaths.map({ $0.section }).max(),
+            let count = feed?.items.count
+        else { return }
         if maxSection > count - 3,
            !isLoading {
             isLoading = true
@@ -283,12 +284,12 @@ extension NewsVC: UITableViewDataSourcePrefetching {
                     guard let nextFrom = feed.next_from else {
                         debugPrint("no feed.next_from")
                         return }
-                    let newGroups = feed.groups
-                    let newProfiles = feed.profiles
+                    let newGroups = feed.groups ?? []
+                    let newProfiles = feed.profiles ?? []
                     let feedCount = self.feed?.items.count ?? 0
                     
-                    self.feed?.groups?.append(contentsOf: newGroups!)
-                    self.feed?.profiles?.append(contentsOf: newProfiles!)
+                    self.feed?.groups?.append(contentsOf: newGroups)
+                    self.feed?.profiles?.append(contentsOf: newProfiles)
                     self.feed?.items.append(contentsOf: feed.items)
                     self.nextFrom = nextFrom
                     

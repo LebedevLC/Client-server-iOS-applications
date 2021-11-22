@@ -33,7 +33,7 @@ final class AddFriendCell: UITableViewCell {
         let url = URL(string: user.photo_100)
         avatarImageView.kf.setImage(with: url)
         nameLabel.text = user.first_name + " " + user.last_name
-//        cityLabel.text = user.city
+        cityLabel.text = nil
     }
     
     private func configureStatic() {
