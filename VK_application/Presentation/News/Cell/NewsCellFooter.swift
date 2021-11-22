@@ -57,13 +57,13 @@ final class NewsCellFooter: UITableViewCell {
             isLike = true
         }
         likeView.configure(isLike: isLike,
-                           likeCount: likes.count
+                           likeCount: likes.count ?? 0
         )
         likeView.controlTapped = {[weak self] in
             self?.likeTapped?()
         }
         repostView.configure(isRepost: false,
-                             repostCount: reposts.count
+                             repostCount: reposts.count ?? 0
         )
         repostView.controlTapped = {[weak self] in
             self?.repostTapped?()
@@ -72,7 +72,7 @@ final class NewsCellFooter: UITableViewCell {
         commentControl.controlTapped = {[weak self] in
             self?.commentTapped?()
         }
-        viewsControl.configure(viewsCount: views.count)
+        viewsControl.configure(viewsCount: views.count ?? 0)
     }
     
     private func setView() {

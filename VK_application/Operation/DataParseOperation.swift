@@ -16,16 +16,16 @@ class DataParseOperation: Operation {
             let getDataOperation = dependencies.first as? GetDataOperation,
             let data = getDataOperation.data
         else {
-            print("Data not loaded")
+            debugPrint("Data not loaded")
             return
         }
 
         do {
             let posts = try decoder.decode(GroupsModel.self, from: data)
             outputData = posts.response.items
-            print("Parse Success")
+            debugPrint("Parse Success")
         } catch {
-            print("Data to decode Failed")
+            debugPrint("Data to decode Failed")
         }
 
     }

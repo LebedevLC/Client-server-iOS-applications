@@ -151,7 +151,7 @@ struct UsersGetLastSeen: Codable {
     /// 6 — приложение для Windows 10;
     /// 7 — полная версия сайта.
     let platform: Int?
-    let time: Int?
+    let time: Double?
 }
 
 struct UsersGetPersonal: Codable {

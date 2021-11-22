@@ -4,20 +4,6 @@
 //
 //  Created by Сергей Чумовских  on 14.10.2021.
 //
-/*
- //        friendService.getAddFriend(userID: userID) {[weak self] result in
- //            guard self != nil
- //            else {
- //                print("FAIL self")
- //                return }
- //            switch result {
- //            case .success:
- //             // show alert or some animation
- //            case .failure:
- //                print("fail")
- //            }
- //        }
- */
 
 import UIKit
 import RealmSwift
@@ -28,19 +14,28 @@ struct CollectionTableCellModel {
     let online: Bool
 }
 
+struct HeaderCellModel {
+    let name: String
+    let status: String
+    let date: String
+    let avatar: String
+}
+
 class ProfileVC: UIViewController {
     
     @IBOutlet private var barButtonItem: UIBarButtonItem!
     @IBOutlet private var tableView: UITableView!
     
-    private var usersService = UsersServices()
-    private var photoesService = PhotoesServices()
-    private var friendsService = FriendsServices()
+    private let usersService = UsersServices()
+    private let photoesService = PhotoesServices()
+    private let friendsService = FriendsServices()
+    private let dateFormatterRU = DateFormatterRU()
     
     private var userInfo: [UsersGetItems] = []
     private var collectionPhotoes: [PhotoesItems] = []
     private var friends: [FriendsItems] = []
     private var modelsCell: [CollectionTableCellModel] = []
+    private var headerModelsCell: [HeaderCellModel] = []
     private var mutal: Int = 0
     
     // значение профиля, по-умолчанию - своя страница
@@ -71,7 +66,7 @@ class ProfileVC: UIViewController {
                     self.friends = friends
                     self.loadFriends()
                 case .failure:
-                    print("getFriendsNoRealm FAIL")
+                    debugPrint("getFriendsNoRealm FAIL")
                 }
             }
             self.usersService.getUsersInfo(userId: self.userId) {[weak self] result in
@@ -82,8 +77,9 @@ class ProfileVC: UIViewController {
                     if !self.userInfo.isEmpty {
                         self.mutal = self.userInfo[0].common_count ?? 0
                     }
+                    self.setupHeaderModel()
                 case .failure:
-                    print("getUsersInfo FAIL")
+                    debugPrint("getUsersInfo FAIL")
                 }
             }
             self.photoesService.getPhotoesAllNoRealm(ownerID: self.userId) {[weak self] result in
@@ -95,7 +91,7 @@ class ProfileVC: UIViewController {
                         self.setTableView()
                     }
                 case .failure:
-                    print("getPhotoesAllNoRealm FAIL")
+                    debugPrint("getPhotoesAllNoRealm FAIL")
                 }
             }
         }
@@ -103,13 +99,31 @@ class ProfileVC: UIViewController {
     
     // Friends to modelsCell
     private func loadFriends() {
-        for i in 0..<friends.count {
-            let name = friends[i].first_name + " " + friends[i].last_name
-            let url = friends[i].photo_100
-            let online = friends[i].online == 1 ? true : false
-            modelsCell.append(.init(title: name, imageName: url, online: online))
-            tableView.reloadData()
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async {
+            for i in 0..<self.friends.count {
+                let name = self.friends[i].first_name + " " + self.friends[i].last_name
+                let url = self.friends[i].photo_100
+                let online = self.friends[i].online == 1 ? true : false
+                self.modelsCell.append(.init(title: name, imageName: url, online: online))
+            }
         }
+        tableView.reloadData()
+    }
+    
+    // Info header
+    private func setupHeaderModel() {
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async {
+            guard !self.userInfo.isEmpty else { return }
+            let userInfo = self.userInfo[0]
+            let name = (userInfo.first_name ?? "") + " " + (userInfo.last_name ?? "")
+            let status = userInfo.status ?? ""
+            let avatar = userInfo.photo_100 ?? ""
+            let date = self.dateFormatterRU.ShowMeDate(date: userInfo.last_seen?.time ?? 0)
+            self.headerModelsCell.append(.init(name: name, status: status, date: date, avatar: avatar))
+        }
+        tableView.reloadData()
     }
     
 }
@@ -146,13 +160,11 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(
                     withIdentifier: HeaderProfileCell.reusedIdentifier,
                     for: indexPath) as? HeaderProfileCell,
-                !userInfo.isEmpty,
-                let photo = userInfo[0].photo_100
+                !headerModelsCell.isEmpty
             else {
                 return UITableViewCell()
             }
-            let userInfo = self.userInfo[0]
-            cell.configure(accountItems: userInfo, photo: photo, friendCount: self.modelsCell.count)
+            cell.configure(model: headerModelsCell[0])
             cell.moreInfoTapped = { [weak self] in
                 self?.performSegue(withIdentifier: "goToMoreInfo", sender: nil)
             }
@@ -235,14 +247,17 @@ extension ProfileVC {
 
 extension ProfileVC {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "goToPhotoes" {
+        switch segue.identifier {
+        case "goToPhotoes":
             guard let destinationVC = segue.destination as? PhotoesFriendVC
             else { return }
             destinationVC.userID = userId
-        } else if segue.identifier == "goToMoreInfo" {
+        case "goToMoreInfo":
             guard let destinationVC = segue.destination as? MoreInfoVC
             else { return }
             destinationVC.infoModel = userInfo[0]
+        default:
+            debugPrint("unkown segue")
         }
     }
 }

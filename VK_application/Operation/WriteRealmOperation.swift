@@ -14,16 +14,19 @@ class WriteRealmOperation: Operation {
     
     override func main() {
         guard let parsedData = dependencies.first as? DataParseOperation else {
-            print("Data not parsed")
+            debugPrint("Data not parsed")
             return
         }
-        let posts = parsedData.outputData
-        posts.forEach{ $0.ownerId = UserSession.shared.userId}
-        self.realmService.saveData(
-            filter: "ownerId",
-            filterText: UserSession.shared.userId,
-            array: posts,
-            completion: { })
-        print("Write Realm success")
+        DispatchQueue.main.async {
+            let posts = parsedData.outputData
+            posts.forEach{ $0.ownerId = UserSession.shared.userId}
+            self.realmService.saveData(
+                filter: "ownerId",
+                filterText: UserSession.shared.userId,
+                array: posts,
+                completion: { })
+            debugPrint("Write Realm success")
+        }
+        
     }
 }

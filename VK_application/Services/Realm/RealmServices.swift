@@ -19,10 +19,11 @@ class RealmServices {
             realm.delete(oldArray)
             realm.add(array)
             try realm.commitWrite()
+//            debugPrint(realm.configuration.fileURL as Any)
             DispatchQueue.main.async {
                 completion()
             }
-        } catch { print(error) }
+        } catch { debugPrint(error) }
     }
     
     /// Сохранение выборочных данных и удаление старых
@@ -35,11 +36,11 @@ class RealmServices {
             realm.delete(oldObject)
             realm.add(object)
             try realm.commitWrite()
-            print(realm.configuration.fileURL as Any)
+//            debugPrint(realm.configuration.fileURL as Any)
             DispatchQueue.main.async {
                 completion()
             }
-        } catch { print(error) }
+        } catch { debugPrint(error) }
     }
     
     /// Запись массива данных в Realm
@@ -51,7 +52,7 @@ class RealmServices {
             realm.add(array)
             try realm.commitWrite()
         } catch {
-            print(error)
+            debugPrint(error)
         }
     }
 }
