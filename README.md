@@ -2,13 +2,13 @@
 
  Использованный стэк:
 
- UIkit
- Storyboard
- Aloma/URLSession
- Realm
- GCD/Operations
- SwiftLint
- KingFisher
+ UIkit,
+ Storyboard,
+ Aloma/URLSession,
+ Realm,
+ GCD/Operations,
+ SwiftLint,
+ KingFisher.
 
  Проект представляет собой простой клиент для:
 
