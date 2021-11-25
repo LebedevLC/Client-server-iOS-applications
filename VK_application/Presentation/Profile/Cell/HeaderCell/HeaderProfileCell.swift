@@ -48,7 +48,7 @@ class HeaderProfileCell: UITableViewCell {
             let status = accountItems.status ?? ""
             let name = firstName + " " + lastName
             let isFriend = accountItems.is_friend ?? 0
-            let isMyFriend = Bool(isFriend as NSNumber)
+            let isMyFriend = Bool(truncating: isFriend as NSNumber)
             DispatchQueue.main.async {
                 self.nameLabel.text = name
                 self.avatarImageView.kf.setImage(with: url)
