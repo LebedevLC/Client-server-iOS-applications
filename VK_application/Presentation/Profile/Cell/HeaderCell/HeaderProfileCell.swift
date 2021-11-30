@@ -38,29 +38,20 @@ class HeaderProfileCell: UITableViewCell {
         statusLabel.text = nil
     }
     
-    func configure(accountItems: UsersGetItems, photo: String, friendCount: Int) {
-        let queue = DispatchQueue.global(qos: .utility)
-        queue.async{
-            let url = URL(string: photo)
-            let date = self.dateFormatterRU.ShowMeDate(date: accountItems.last_seen?.time ?? 0000000000)
-            let firstName = accountItems.first_name ?? ""
-            let lastName = accountItems.last_name ?? ""
-            let status = accountItems.status ?? ""
-            let name = firstName + " " + lastName
-            let isFriend = accountItems.is_friend ?? 0
-            let isMyFriend = Bool(truncating: isFriend as NSNumber)
-            DispatchQueue.main.async {
-                self.nameLabel.text = name
-                self.avatarImageView.kf.setImage(with: url)
-                if status == "" {
-                    self.statusLabel.text = """
-                    Последний раз был/а в сети
-                    \(date)
-                    """
-                } else {
-                    self.statusLabel.text = status
-                }
-            }
+    func configure(model: HeaderCellModel) {
+        let url = URL(string: model.avatar)
+        let status = model.status
+        let name = model.name
+        
+        nameLabel.text = name
+        avatarImageView.kf.setImage(with: url)
+        if status != "" {
+            statusLabel.text = status
+        } else {
+            statusLabel.text = """
+                Последний раз был/а в сети:
+                \(model.date)
+                """
         }
     }
     

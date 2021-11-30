@@ -14,21 +14,28 @@ class NewsFeedServices {
     private let dispatchGroup = DispatchGroup()
     var dispatchQueueJsonResponse: NewsFeedResponse?
     
-    func getNewsFeedPost(count: Int, completion: @escaping (Result<NewsFeedResponse, SimpleServiceError>) -> Void) {
-        let paramters: Parameters = [
+    func getNewsFeedPost(count: Int, startFrom: String? = nil, startTime: Double? = nil,
+                           completion: @escaping (Result<NewsFeedResponse, SimpleServiceError>) -> Void){
+        var paramters: Parameters = [
             "filters": "post",
             "count": "\(count)",
             "access_token": "\(UserSession.shared.token)",
             "v": "\(UserSession.shared.version)"
         ]
-        
+        if let startTime = startTime {
+            paramters["start_time"] = startTime
+               }
+        if let startFrom = startFrom {
+            paramters["start_from"] = startFrom
+               }
+
         AF.request(feedUrlPath, method: .get, parameters: paramters).responseJSON { response in
             if let error = response.error {
-                print("server Error!")
-                print(error)
+                debugPrint("server Error!")
+                debugPrint(error)
             }
             guard response.data != nil else {
-                print("Error - not Data!")
+                debugPrint("Error - not Data!")
                 return
             }
             self.tryJson(data: response)
@@ -49,7 +56,8 @@ class NewsFeedServices {
                 let feed = responseFeed.response
                 self.dispatchQueueJsonResponse = feed
             } catch {
-                print("DispatchQueue.global.async(group: dispatchGroup) JSON Decode ERROR")
+                debugPrint("DispatchQueue.global.async(group: dispatchGroup) JSON Decode ERROR")
+                debugPrint(data.data!)
                 self.dispatchQueueJsonResponse = nil
             }
         }

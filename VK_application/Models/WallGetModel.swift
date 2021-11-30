@@ -18,7 +18,7 @@ struct WallGetResponse: Codable {
 
 struct WallItems: Codable {
     let id: Int
-    let date: Int
+    let date: Double
     let post_type: String
     let text: String
     let attachments: [Attachments]?
@@ -29,44 +29,44 @@ struct WallItems: Codable {
 }
 
 struct Attachments: Codable {
-    var type: String
+    var type: String?
     var photo: Photo?
 }
 
 struct Photo: Codable {
-    let album_id: Int
-    let date: Int
-    let id: Int
-    let owner_id: Int
-    let access_key: String
-    let sizes: [Sizes]
-    let text: String
-    let user_id: Int
+    let album_id: Int?
+    let date: Int?
+    let id: Int?
+    let owner_id: Int?
+    let access_key: String?
+    let sizes: [Sizes]?
+    let text: String?
+    let user_id: Int?
 }
 
 struct Sizes: Codable {
-    let height: Int
-    let width: Int
-    let type: String
-    let url: String
+    let height: Int?
+    let width: Int?
+    let type: String?
+    let url: String?
 }
 
 struct Comments: Codable {
-    let can_post: Int
-    let count: Int
+    let can_post: Int?
+    let count: Int?
 }
 
 struct Likes: Codable {
-    let can_like: Int
-    let count: Int
-    let user_likes: Int
+    let can_like: Int?
+    let count: Int?
+    let user_likes: Int?
 }
 
 struct Reposts: Codable {
-    let count: Int
-    let user_reposted: Int
+    let count: Int?
+    let user_reposted: Int?
 }
 
 struct Views: Codable {
-    let count: Int
+    let count: Int?
 }

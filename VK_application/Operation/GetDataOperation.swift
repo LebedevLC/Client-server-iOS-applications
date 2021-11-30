@@ -20,9 +20,9 @@ class GetDataOperation: AsyncOperation {
         request.responseData(queue: DispatchQueue.global(qos: .utility)) { [weak self] response in
             self?.data = response.data
             self?.state = .finished
-            print("data loaded")
+            debugPrint("Data loaded")
         }
-        print("GetDataOperation finished")
+        debugPrint("GetDataOperation finished")
     }
 
     override func cancel() {

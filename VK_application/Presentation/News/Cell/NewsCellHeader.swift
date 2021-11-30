@@ -14,10 +14,12 @@ final class NewsCellHeader: UITableViewCell {
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var dateLabel: UILabel!
     
-    static let reusedIdentifier = "NewsCellHeader2"
+    private let stringSetup = AttributedStringSetup()
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    static let reusedIdentifier = "NewsCellHeader2"
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
         self.configureStatic()
         cellView.frame = bounds
     }
@@ -33,8 +35,7 @@ final class NewsCellHeader: UITableViewCell {
         let url = URL(string: avatar)
         avatarView.kf.setImage(with: url)
         nameLabel.text = name
-        dateLabel.text = date
-        
+        dateLabel.attributedText = stringSetup.simpleStringSetup(text: date, size: 13, color: .black)
     }
     
     private func configureStatic() {
