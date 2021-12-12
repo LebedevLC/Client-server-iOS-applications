@@ -5,7 +5,6 @@
 //  Created by Сергей Чумовских  on 26.07.2021.
 //
 
-
 import UIKit
 
 final class CommentControl2: UIControl {

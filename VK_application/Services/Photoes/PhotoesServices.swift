@@ -15,7 +15,7 @@ class PhotoesServices {
     private let getAlbumUrlPath = "https://api.vk.com/method/photos.get"
     private let realmService = RealmServices()
     
-    //MARK: - Все фотографии
+    // MARK: - Все фотографии
     
     func getPhotoesAll(ownerID: Int, completion: @escaping () -> Void) {
         let paramters: Parameters = [
@@ -27,7 +27,7 @@ class PhotoesServices {
             // вернуть стандартные альбомы (нет)
             "no_service_albums": "0",
             "access_token": "\(UserSession.shared.token)",
-            "v": "\(UserSession.shared.v)"
+            "v": "\(UserSession.shared.version)"
         ]
         
         AF.request(allUrlPath, method: .get, parameters: paramters).responseJSON { [weak self] response in
@@ -51,7 +51,44 @@ class PhotoesServices {
         }
     }
     
-    //MARK: - Получить альбом
+    // MARK: - Все фотографии NO Realm
+    
+    func getPhotoesAllNoRealm(ownerID: Int, completion: @escaping (Result<[PhotoesItems], SimpleServiceError>) -> Void) {
+        let paramters: Parameters = [
+            "owner_id": "\(ownerID)",
+            // колличесвто фотографий максимум 200, стандартно 20
+            "count": "199",
+            // расширенная информация (да)
+            "extended": "1",
+            // вернуть стандартные альбомы (нет)
+            "no_service_albums": "0",
+            "access_token": "\(UserSession.shared.token)",
+            "v": "\(UserSession.shared.version)"
+        ]
+        
+        AF.request(allUrlPath, method: .get, parameters: paramters).responseJSON { response in
+            if let error = response.error {
+                completion(.failure(.serverError))
+                print("Server ERROR")
+                print(error)
+            }
+            guard response.data != nil else {
+                completion(.failure(.notData))
+                return
+            }
+            do {
+                let responsePhotoes = try JSONDecoder().decode(PhotoesModel.self, from: response.data!)
+                let photoes = responsePhotoes.response.items
+                completion(.success(photoes))
+            } catch {
+                print("------------Decode ERROR-------------")
+                print(response)
+                completion(.failure(.decodeError))
+            }
+        }
+    }
+    
+    // MARK: - Получить альбом
     
     func getAlbumPhotoes(ownerID: Int, completion: @escaping () -> Void) {
         let paramters: Parameters = [
@@ -62,7 +99,7 @@ class PhotoesServices {
             // расширенная информация (да)
             "extended": "1",
             "access_token": "\(UserSession.shared.token)",
-            "v": "\(UserSession.shared.v)"
+            "v": "\(UserSession.shared.version)"
         ]
         
         AF.request(allUrlPath, method: .get, parameters: paramters).responseJSON { [weak self] response in

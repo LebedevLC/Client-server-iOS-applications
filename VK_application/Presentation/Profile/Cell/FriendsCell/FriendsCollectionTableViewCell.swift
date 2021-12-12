@@ -22,6 +22,23 @@ class FriendsCollectionTableViewCell: UITableViewCell {
         return label
     }()
     
+    private let mutualFriendsCount: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.numberOfLines = 1
+        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        return label
+    }()
+    
+    private let allFriends: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.numberOfLines = 1
+        label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        label.text = "Все друзья"
+        return label
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -41,6 +58,8 @@ class FriendsCollectionTableViewCell: UITableViewCell {
         
         contentView.addSubview(collectionView)
         contentView.addSubview(friendsCount)
+        contentView.addSubview(mutualFriendsCount)
+        contentView.addSubview(allFriends)
     }
     
     override func layoutSubviews() {
@@ -48,28 +67,43 @@ class FriendsCollectionTableViewCell: UITableViewCell {
         friendsCount.frame = CGRect(
             x: 16,
             y: 8,
-            width: contentView.frame.width,
+            width: 100,
+            height: 16)
+        mutualFriendsCount.frame = CGRect(
+            x:132,
+            y:8,
+            width: 150,
             height: 16)
         collectionView.frame = CGRect(
             x: 0,
             y: 32,
             width: contentView.frame.width,
             height: contentView.frame.height-35)
+        allFriends.frame = CGRect(
+            x: contentView.frame.width - 121,
+            y: 8,
+            width: 105,
+            height: 16)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with models: [CollectionTableCellModel]) {
-        self.friendsCount.text = "Друзья  \(models.count)"
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        friendsCount.text = nil
+        mutualFriendsCount.text = nil
+    }
+    
+    func configure(models: [CollectionTableCellModel], mutal: Int) {
+        friendsCount.text = "Друзья  \(models.count)"
+        mutualFriendsCount.text = "Общие друзья  \(mutal)"
         self.models = models
         collectionView.reloadData()
     }
     
 }
-
-
 
 extension FriendsCollectionTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     

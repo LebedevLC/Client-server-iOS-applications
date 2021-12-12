@@ -24,10 +24,10 @@ final class RepostControl: UIControl {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private var repostStatic: Bool?
     
-//MARK: - LifeCicle
+// MARK: - LifeCicle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,36 +38,36 @@ final class RepostControl: UIControl {
         self.setView()
     }
     
-//MARK: - Body
+// MARK: - Body
     
     private func setView() {
         self.addSubview(repostButton)
         self.addSubview(repostLabel)
         self.repostButton.addTarget(self, action: #selector(tapControl(_:)), for: .touchUpInside)
         let size: CGFloat = 30
-        NSLayoutConstraint.activate ([
+        NSLayoutConstraint.activate([
             repostButton.topAnchor.constraint(equalTo: topAnchor, constant: 4),
             repostButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             repostButton.heightAnchor.constraint(equalToConstant: size),
-            repostButton.widthAnchor.constraint(equalToConstant: size),
+            repostButton.widthAnchor.constraint(equalToConstant: size)
         ])
-        NSLayoutConstraint.activate ([
+        NSLayoutConstraint.activate([
             repostLabel.topAnchor.constraint(equalTo: repostButton.bottomAnchor, constant: 2),
             repostLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2),
             repostLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 2),
-            repostLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 2),
+            repostLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 2)
         ])
     }
     
-//MARK: - TapButton
+// MARK: - TapButton
     
-    enum repostState: String {
+    enum RepostState: String {
         case repostON =  "Рекомендуете"
         case repostOFF = "Рекомендовать"
     }
 
     private func repostON() {
-        repostLabel.text = repostState.repostON.rawValue
+        repostLabel.text = RepostState.repostON.rawValue
         repostButton.tintColor = UIColor.lightGray
         repostButton.setBackgroundImage(UIImage(systemName: "hand.thumbsup.fill"), for: .normal)
         repostLabel.textColor = UIColor.gray
@@ -75,7 +75,7 @@ final class RepostControl: UIControl {
     }
     
     private func repostOFF() {
-        repostLabel.text = repostState.repostOFF.rawValue
+        repostLabel.text = RepostState.repostOFF.rawValue
         repostButton.tintColor = UIColor.link
         repostButton.setBackgroundImage(UIImage(systemName: "hand.thumbsup"), for: .normal)
         repostLabel.textColor = UIColor.link
@@ -96,14 +96,14 @@ final class RepostControl: UIControl {
         animatedLabel()
     }
     
-//MARK: - Animation
+// MARK: - Animation
     
     private func animatedLabel() {
         UIView.transition(with: repostLabel,
                           duration: 0.2,
                           options: .transitionFlipFromTop,
                           animations: { [unowned self] in
-                            switch repostStatic{
+                            switch repostStatic {
                             case true: repostOFF()
                             case false: repostON()
                             case .none:

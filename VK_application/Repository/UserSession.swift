@@ -11,10 +11,9 @@ class UserSession {
     
     static let shared = UserSession()
     
-    private init(){}
+    private init() {}
     
-    let v: String = "5.131"
+    let version: String = "5.131"
     var token: String = ""
     var userId: Int = 0
 }
-

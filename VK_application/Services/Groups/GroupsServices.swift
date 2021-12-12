@@ -23,41 +23,20 @@ class GroupsServices {
     private let leaveUrlPath = "https://api.vk.com/method/groups.leave"
     private let realmService = RealmServices()
     
-    //MARK: - Groups.get
+    // MARK: - Groups.get
     
-    func getMyGroups(userId: Int, completion: @escaping () -> Void) {
-        
+    func getMyGroupsReguest() -> DataRequest {
         let paramters: Parameters = [
             "owner_id": "\(String(UserSession.shared.userId))",
-            //расширенная информация (да)
             "extended": "1",
             "fields": "description,members_count",
             "access_token": "\(UserSession.shared.token)",
-            "v": "5.131"
+            "v": "\(UserSession.shared.version)"
         ]
-        
-        AF.request(getUrlPath, method: .get, parameters: paramters).responseJSON { [weak self] response in
-            guard response.data != nil else {
-                print("Response from server = nil")
-                return
-            }
-            do {
-                let responseGroups = try JSONDecoder().decode(GroupsModel.self, from: response.data!)
-                let groups = responseGroups.response.items
-                groups.forEach{ $0.ownerId = UserSession.shared.userId}
-                self?.realmService.saveData(
-                    filter: "ownerId",
-                    filterText: UserSession.shared.userId,
-                    array: groups,
-                    completion: completion)
-                completion()
-            } catch {
-                print("Decode ERROR")
-            }
-        }
+        return AF.request(getUrlPath, method: .get, parameters: paramters)
     }
     
-    //MARK: - Groups.search
+    // MARK: - Groups.search
     
     /// Получить список найденных групп по запросу "q" с колличеством "count" (max count=1000)
     func getMyGroups(q: String, count: Int, completion: @escaping (Result<[GroupsSearchItems], GroupsServiceError>) -> Void) {
@@ -70,7 +49,7 @@ class GroupsServices {
             "q": "\(q)",
             "count": "\(newCount)",
             "access_token": "\(UserSession.shared.token)",
-            "v": "5.131"
+            "v": "\(UserSession.shared.version)"
         ]
         
         AF.request(searchUrlPath, method: .get, parameters: paramters).responseJSON { response in
@@ -93,7 +72,7 @@ class GroupsServices {
         }
     }
     
-    //MARK: - Groups.join
+    // MARK: - Groups.join
     
     struct GroupJoinModel: Codable {
         let response: Int
@@ -103,7 +82,7 @@ class GroupsServices {
         let paramters: Parameters = [
             "group_id": "\(groupID)",
             "access_token": "\(UserSession.shared.token)",
-            "v": "5.131"
+            "v": "\(UserSession.shared.version)"
         ]
         
         AF.request(joinUrlPath, method: .get, parameters: paramters).responseJSON { response in
@@ -124,7 +103,7 @@ class GroupsServices {
         }
     }
     
-    //MARK: - Groups.leave
+    // MARK: - Groups.leave
     
     struct GroupLeaveModel: Codable {
         let response: Int
@@ -134,7 +113,7 @@ class GroupsServices {
         let paramters: Parameters = [
             "group_id": "\(groupID)",
             "access_token": "\(UserSession.shared.token)",
-            "v": "\(UserSession.shared.v)"
+            "v": "\(UserSession.shared.version)"
         ]
         
         AF.request(leaveUrlPath, method: .get, parameters: paramters).responseJSON { response in

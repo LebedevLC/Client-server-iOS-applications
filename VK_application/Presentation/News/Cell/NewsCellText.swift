@@ -41,8 +41,7 @@ final class NewsCellText: UITableViewCell {
     @IBAction func handleSingleTap(sender: UITapGestureRecognizer) {
         if isMore {
             labelText.numberOfLines = 8
-        }
-        else {
+        } else {
             labelText.numberOfLines = 0
         }
         isMore.toggle()

@@ -15,14 +15,14 @@ class MyFriendsVC: UIViewController {
     @IBOutlet var sortBarButtonItem: UIBarButtonItem!
     
     private var friendsServices = FriendsServices()
-    // параметр для сортиовке при запросе
+    // параметр для сортиовки при запросе
     private var order: FriendsServices.Order = .hints
     private var backUserId: Int?
     
     private var token: NotificationToken?
     private var friendsRealmNotification: Results<FriendsItems>?
     
-    //MARK: - LifeCicle
+    // MARK: - LifeCicle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +41,7 @@ class MyFriendsVC: UIViewController {
         returnToFriendRow(id: backUserId)
     }
     
-    //MARK: - DataBase
+    // MARK: - DataBase
     
     // Получение данных из БД, подписка на нотификацию и обновление таблицы
     private func pairTableAndRealm() {
@@ -79,26 +79,23 @@ class MyFriendsVC: UIViewController {
     private func loadData() {
         do {
             let realm = try Realm()
-            // Чтение из БД по параметру myOwnerId
             let friends = realm.objects(FriendsItems.self).filter("myOwnerId == %@", UserSession.shared.userId)
-            //сервер сортирует по параметрам, а мы добавим тех кто "В сети" в начало
+            // сервер сортирует по параметрам, а мы добавим тех кто "В сети" в начало
             let sotrFriends = friends.sorted(byKeyPath: "online", ascending: false)
             self.friendsRealmNotification = sotrFriends
         } catch { print(error) }
     }
     
-    //MARK: - Segue
+    // MARK: - Segue
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard
-            segue.identifier == "moveToPhoto",
-            let destinationController = segue.destination as? PhotoesFriendVC
+            segue.identifier == "goToProfile",
+            let destinationVC = segue.destination as? ProfileVC,
+            let indexPath = sender as? IndexPath,
+            let id = friendsRealmNotification?[indexPath.row].id
         else { return }
-        guard let indexPath = sender as? IndexPath else {return}
-        guard let friend = friendsRealmNotification?[indexPath.row] else {return}
-        backUserId = friend.id
-        destinationController.userID = friend.id
-        destinationController.title = friend.first_name + " " + friend.last_name
+        destinationVC.showUserId = id
     }
     
     // вернуться к ячейке выбранного пользователя
@@ -113,7 +110,7 @@ class MyFriendsVC: UIViewController {
                 animated: false)
     }
     
-//MARK: - Bar Button Items
+// MARK: - Bar Button Items
     
     private func configureButtonMenu() {
         let item = sortBarButtonItem
@@ -157,7 +154,7 @@ class MyFriendsVC: UIViewController {
     }
 }
 
-// MARK: - Extension MyFriends Delegate, DataSourse
+// MARK: - TableView
 
 extension MyFriendsVC: UITableViewDelegate, UITableViewDataSource{
     
@@ -176,7 +173,7 @@ extension MyFriendsVC: UITableViewDelegate, UITableViewDataSource{
         let friend = friendsRealmNotification[indexPath.row]
         cell.configure(friend: friend)
         cell.avatarTapped = { [weak self] in
-            self?.performSegue(withIdentifier: "moveToPhoto", sender: indexPath)
+            self?.performSegue(withIdentifier: "goToProfile", sender: indexPath)
         }
         return cell
     }
@@ -191,11 +188,11 @@ extension MyFriendsVC: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        performSegue(withIdentifier: "moveToPhoto", sender: indexPath)
+        performSegue(withIdentifier: "goToProfile", sender: indexPath)
     }
 }
 
-//MARK: - Delete Alert
+// MARK: - Delete Alert
 
 extension MyFriendsVC {
     

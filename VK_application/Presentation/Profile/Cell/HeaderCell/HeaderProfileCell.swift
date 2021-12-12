@@ -15,11 +15,15 @@ class HeaderProfileCell: UITableViewCell {
     @IBOutlet var cellView: UIView!
     @IBOutlet var avatarImageView: AvatarImageView!
     @IBOutlet var nameLabel: UILabel!
-    @IBOutlet var cityLabel: UILabel!
-    @IBOutlet var editButton: UIButton!
-    @IBOutlet var photoButton: UIButton!
-    @IBOutlet var postButton: UIButton!
-    @IBOutlet var cameraButton: UIButton!
+    @IBOutlet var statusLabel: UILabel!
+    @IBOutlet var moreInfo: UIButton!
+    @IBOutlet var friendButton: UIButton!
+    @IBOutlet var giftButton: UIButton!
+    @IBOutlet var notifyButton: UIButton!
+    
+    private let dateFormatterRU = DateFormatterRU()
+    
+    var moreInfoTapped: (() -> Void)?
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -31,22 +35,42 @@ class HeaderProfileCell: UITableViewCell {
         super.prepareForReuse()
         avatarImageView.image = nil
         nameLabel.text = nil
-        cityLabel.text = nil
+        statusLabel.text = nil
     }
     
-    func configure(accountItems: AccountItems, photoModel: PhotoesItems, friendCount: Int) {
-        let url = URL(string: photoModel.singleSizePhoto)
-        DispatchQueue.main.async() { [weak self] in
-            self?.avatarImageView.kf.setImage(with: url)
+    func configure(accountItems: UsersGetItems, photo: String, friendCount: Int) {
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async{
+            let url = URL(string: photo)
+            let date = self.dateFormatterRU.ShowMeDate(date: accountItems.last_seen?.time ?? 0000000000)
+            let firstName = accountItems.first_name ?? ""
+            let lastName = accountItems.last_name ?? ""
+            let status = accountItems.status ?? ""
+            let name = firstName + " " + lastName
+            let isFriend = accountItems.is_friend ?? 0
+            let isMyFriend = Bool(truncating: isFriend as NSNumber)
+            DispatchQueue.main.async {
+                self.nameLabel.text = name
+                self.avatarImageView.kf.setImage(with: url)
+                if status == "" {
+                    self.statusLabel.text = """
+                    Последний раз был/а в сети
+                    \(date)
+                    """
+                } else {
+                    self.statusLabel.text = status
                 }
-        nameLabel.text = accountItems.first_name + " " + accountItems.last_name
-        cityLabel.text = accountItems.home_town
+            }
+        }
     }
     
     private func configureStatic() {
         avatarView.layer.borderWidth = 2
         avatarView.layer.borderColor = UIColor.white.cgColor
-        editButton.layer.cornerRadius = 10
+        moreInfo.layer.cornerRadius = 10
     }
 
+    @IBAction func moreInfoButtonTapped(_ sender: UIButton) {
+        self.moreInfoTapped?()
+    }
 }

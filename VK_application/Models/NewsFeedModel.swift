@@ -47,4 +47,3 @@ struct NewsFeedGroup: Codable {
     var photo_100: String
     var photo_200: String
 }
-

@@ -5,63 +5,67 @@
 //  Created by Сергей Чумовских  on 13.07.2021.
 //
 
-import SwiftUI
 import Foundation
 import RealmSwift
+import Alamofire
 
 class UserGroupsViewController: UIViewController {
     
     @IBOutlet var searchBar: UISearchBar!
     @IBOutlet var tableView: UITableView!
     
-    // для перехода по сеге
-    var tapedInAvatar = false
-    // для клавиатуры
     private var tapGesture: UITapGestureRecognizer?
-    // данные групп
-    private var afGroups = GroupsServices()
+    private var groupService = GroupsServices()
+    private var groupsAloma: [GroupsItems] = []
+    private var filteredGroups: [GroupsItems] = []
     
-    var groupsAloma: [GroupsItems] = []
-    var filteredGroups: [GroupsItems] = []
+    private let operationQueue: OperationQueue = {
+        let operationQueue = OperationQueue()
+        operationQueue.name = "com.AsyncOperation.UserGroupsViewController"
+        operationQueue.qualityOfService = .utility
+        return operationQueue
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
         tableView.separatorStyle = .none
+        operationsSetup()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        getGroupsAloma()
+    private func operationsSetup() {
+        let myReguest = groupService.getMyGroupsReguest()
+        let getData = GetDataOperation(request: myReguest)
+        let parseData = DataParseOperation()
+        let writeRealm = WriteRealmOperation()
+        writeRealm.completionBlock = { [weak self] in
+            self?.loadData()
+        }
+        parseData.addDependency(getData)
+        writeRealm.addDependency(parseData)
+        operationQueue.addOperation(getData)
+        operationQueue.addOperation(parseData)
+        operationQueue.addOperation(writeRealm)
     }
     
-    //MARK: - БД
+// MARK: - DataBase
     
-    // Делаем запрос в сеть для обновления БД
-    private func getGroupsAloma() {
-        afGroups.getMyGroups(userId: UserSession.shared.userId) {[weak self] in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.loadData()
+    func loadData() {
+        DispatchQueue.main.async {
+            do {
+                let realm = try Realm()
+                let groups = realm.objects(GroupsItems.self).filter("ownerId == %@", UserSession.shared.userId)
+                self.groupsAloma = Array(groups)
+                self.filteredGroups = self.groupsAloma
                 self.tableView.reloadData()
-            }
+            } catch { print(error) }
         }
     }
-    
-    // Загрузка данных из Realm
-    private func loadData() {
-        do {
-            let realm = try Realm()
-            // Чтение из БД по параметру myOwnerId
-            let groups = realm.objects(GroupsItems.self).filter("ownerId == %@", UserSession.shared.userId)
-            self.groupsAloma = Array(groups)
-            self.filteredGroups = self.groupsAloma
-            self.tableView.reloadData()
-        } catch { print(error) }
-    }
-    
-    //MARK: - Segue
-    
+}
+
+// MARK: - Segue
+
+extension UserGroupsViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard segue.identifier == "ProfileGroup2VC" else {return}
         if let vc = segue.destination as? ProfileGroupVC {
@@ -74,7 +78,7 @@ class UserGroupsViewController: UIViewController {
     }
 }
 
-//MARK: - Extension UserGroups: UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension UserGroupsViewController: UISearchBarDelegate {
     
@@ -110,10 +114,9 @@ extension UserGroupsViewController: UISearchBarDelegate {
     @objc func hideKeyboard() {
         self.tableView?.endEditing(true)
     }
-    
 }
 
-//MARK: - Extension UserGroups: UITabBarDelegate, UITableViewDataSource
+// MARK: - TableView
 
 extension UserGroupsViewController: UITableViewDelegate, UITableViewDataSource{
     
@@ -130,7 +133,6 @@ extension UserGroupsViewController: UITableViewDelegate, UITableViewDataSource{
         let group = filteredGroups[indexPath.row]
         cell.configure(group: group)
         cell.avatarTapped = { [weak self] in
-            self?.tapedInAvatar = true
             self?.performSegue(withIdentifier: "ProfileGroup2VC", sender: group.id)
         }
         return cell
@@ -140,32 +142,41 @@ extension UserGroupsViewController: UITableViewDelegate, UITableViewDataSource{
         guard editingStyle == .delete,
               !indexPath.isEmpty
         else { return }
-        let leaveGroup = GroupsServices()
         let groupID = filteredGroups[indexPath.row].id
-        leaveGroup.getLeaveGroup(groupID: groupID) {[weak self] result in
-            guard self != nil else {
-                print("fail self")
-                return }
-            switch result {
-            case .success(let answer):
-                self?.filteredGroups.remove(at: indexPath.row)
-                self?.tableView.deleteRows(at: [indexPath], with: .none)
-                print("Leave to groupID = \(groupID) = \(answer)")
-            case .failure:
-                print("Leave to gropID = \(groupID) = FAIL")
-            }
-        }
-        DispatchQueue.main.async {
-            tableView.reloadData()
-        }
-        
+        showDeleteAlert(id: groupID)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         performSegue(withIdentifier: "ProfileGroup2VC", sender: filteredGroups[indexPath.row].id)
     }
-    
 }
 
+// MARK: - Delete Alert
 
+extension UserGroupsViewController {
+    
+    private func showDeleteAlert(id: Int) {
+        let alertController = UIAlertController(title: "Удалить группу?", message: "Это действие действительно внесет изменения в ваш список групп", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Удалить", style: .destructive) { _ in
+            self.groupService.getLeaveGroup(groupID: id) {[weak self] result in
+                guard self != nil else {
+                    print("fail self")
+                    return }
+                switch result {
+                case .success(let answer):
+                    print("Leave to groupID = \(id) = \(answer)")
+                case .failure:
+                    print("Leave to gropID = \(id) = FAIL")
+                }
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        alertController.addAction(confirmAction)
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: {})
+    }
+}

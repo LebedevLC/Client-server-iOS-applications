@@ -107,11 +107,11 @@ class BigPhotoView: UIView, UIGestureRecognizerDelegate {
             likeControl.centerYAnchor.constraint(equalTo: visibleView.centerYAnchor),
             likeControl.centerXAnchor.constraint(equalTo: visibleView.centerXAnchor),
             likeControl.heightAnchor.constraint(equalToConstant: 200),
-            likeControl.widthAnchor.constraint(equalToConstant: 230),
+            likeControl.widthAnchor.constraint(equalToConstant: 230)
         ])
     }
     
-//MARK: - Photo
+// MARK: - Photo
     
     private func setPhotos() {
         guard
@@ -155,7 +155,7 @@ class BigPhotoView: UIView, UIGestureRecognizerDelegate {
         }
     }
     
-//MARK: - Gesture
+// MARK: - Gesture
     
     private func setGesture() {
         panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(recognizer:)))
@@ -268,7 +268,7 @@ class BigPhotoView: UIView, UIGestureRecognizerDelegate {
         return true
     }
     
-//MARK: - Animation
+// MARK: - Animation
     
     enum DirectionAnimation {
         case left
@@ -312,7 +312,7 @@ class BigPhotoView: UIView, UIGestureRecognizerDelegate {
         UIView.animate(
             withDuration: 0.3,
             delay: 0,
-            options: [.curveEaseOut,],
+            options: [.curveEaseOut],
             animations: { [unowned self] in
                 self.visibleView.transform = .identity
                 self.rightView.transform = .identity
@@ -347,7 +347,7 @@ class BigPhotoView: UIView, UIGestureRecognizerDelegate {
         UIView.animate(
             withDuration: 1,
             delay: 3,
-            options: [.curveEaseOut,],
+            options: [.curveEaseOut],
             animations: { [unowned self] in
                 self.nameLabel.alpha = 0
                 
@@ -383,7 +383,7 @@ class BigPhotoView: UIView, UIGestureRecognizerDelegate {
             animations: { [unowned self] in
                 self.visibleView.transform = CGAffineTransform.identity
                 self.visibleView.frame = UIScreen.main.bounds
-            } )
+            })
     }
     
 }

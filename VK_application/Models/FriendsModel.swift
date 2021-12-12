@@ -64,8 +64,7 @@ class FriendsItems: Object, Decodable {
         do {
             let cityContainer = try values.nestedContainer(keyedBy: FriendsCityKeys.self, forKey: .city)
             self.title = try cityContainer.decode(String.self, forKey: .title)
-        }
-        catch {
+        } catch {
             self.title = nil
         }
         
@@ -74,8 +73,7 @@ class FriendsItems: Object, Decodable {
 
 }
 
-
-//MARK: - Friend delete response
+// MARK: - Friend delete response
 
 struct ResponseServerFriendDelete: Decodable {
     let response: FriendDeleteResponse
