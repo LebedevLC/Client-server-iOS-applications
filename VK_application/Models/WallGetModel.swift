@@ -12,61 +12,61 @@ struct WallGetModel: Codable {
 }
 
 struct WallGetResponse: Codable {
-    let count: Int
+    let count: Int?
     let items: [WallItems]
 }
 
 struct WallItems: Codable {
-    var id: Int
-    var date: Int
-    var post_type: String
-    var text: String
-    var attachments: [Attachments]?
-    var comments: Comments?
-    var likes: Likes?
-    var reposts: Reposts?
-    var views: Views?
+    let id: Int?
+    let date: Double?
+    let post_type: String?
+    let text: String?
+    let attachments: [Attachments]?
+    let comments: Comments?
+    let likes: Likes?
+    let reposts: Reposts?
+    let views: Views?
 }
 
 struct Attachments: Codable {
-    var type: String
+    var type: String?
     var photo: Photo?
 }
 
 struct Photo: Codable {
-    var album_id: Int
-//    var date: Date
-    var id: Int
-    var owner_id: Int
-    var access_key: String
-    var sizes: [Sizes]
-    var text: String
-    var user_id: Int
+    let album_id: Int?
+    let date: Int?
+    let id: Int?
+    let owner_id: Int?
+    let access_key: String?
+    let sizes: [Sizes]?
+    let text: String?
+    let user_id: Int?
 }
 
 struct Sizes: Codable {
-    var height: Int
-    var width: Int
-    var type: String
-    var url: String
+    let height: Int?
+    let width: Int?
+    let type: String?
+    let url: String?
 }
 
 struct Comments: Codable {
-    var can_post: Int
-    var count: Int
+    let can_post: Int?
+    let count: Int?
 }
 
 struct Likes: Codable {
-    var can_like: Int
-    var count: Int
-    var user_likes: Int
+    let can_like: Int?
+    let count: Int?
+    let user_likes: Int?
 }
 
 struct Reposts: Codable {
-    var count: Int
-    var user_reposted: Int
+    let count: Int?
+    let user_reposted: Int?
 }
 
 struct Views: Codable {
-    var count: Int
+    let count: Int?
 }

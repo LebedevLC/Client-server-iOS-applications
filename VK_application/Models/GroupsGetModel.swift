@@ -8,7 +8,6 @@
 import Foundation
 import RealmSwift
 
-
 struct GroupsModel: Decodable {
     let response: GroupsResponse
 }

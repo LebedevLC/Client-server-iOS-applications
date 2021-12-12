@@ -30,17 +30,15 @@ final class ViewsControl: UIControl {
     private func setView() {
         self.addSubview(viewsButton)
         self.addSubview(viewsCountLabel)
-        viewsButton.tintColor = UIColor.black
+        viewsButton.tintColor = UIColor.label
         viewsButton.setImage(UIImage(systemName: "eye"), for: .normal)
-        viewsButton.setImage(UIImage(systemName: "eye.fill"), for: .selected)
-        viewsCountLabel.textColor = UIColor.black
+        viewsCountLabel.textColor = UIColor.label
         viewsCountLabel.translatesAutoresizingMaskIntoConstraints = false
         viewsCountLabel.trailingAnchor.constraint(equalTo: viewsButton.leadingAnchor, constant: -2).isActive = true
         viewsCountLabel.centerYAnchor.constraint(equalTo: viewsButton.centerYAnchor).isActive = true
     }
     
     func configure(viewsCount: Int) {
-        viewsButton.isSelected = true
         switch viewsCount {
         case 0..<1000:
             viewsCountLabel.text = String(viewsCount)

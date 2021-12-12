@@ -9,5 +9,6 @@ target 'VK_application' do
   pod 'Alamofire', '~> 5.4'
   pod 'Kingfisher', '~> 7.0'
   pod 'RealmSwift', '~> 10.17.0'
+  pod 'SwiftLint'
 
 end

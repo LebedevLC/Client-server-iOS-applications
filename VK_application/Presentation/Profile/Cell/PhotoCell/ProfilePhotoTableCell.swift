@@ -21,6 +21,17 @@ class ProfilePhotoTableCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         return label
     }()
+    private let allPhotoes: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.numberOfLines = 1
+        label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        label.text = "Все фотографии"
+        label.isUserInteractionEnabled = true
+        return label
+    }()
+    
+    var allPhotoesTapped: (() -> Void)?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         let layout = UICollectionViewFlowLayout()
@@ -41,21 +52,13 @@ class ProfilePhotoTableCell: UITableViewCell {
         
         contentView.addSubview(collectionView)
         contentView.addSubview(photoesCount)
+        contentView.addSubview(allPhotoes)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        photoesCount.frame = CGRect(
-            x: 16,
-            y: 8,
-            width: contentView.frame.width,
-            height: 16)
-        collectionView.frame = CGRect(
-            x: 0,
-            y: 32,
-            width: contentView.frame.width,
-            height: contentView.frame.height-35)
-        
+        setupFrame()
+        setGesture()
     }
     
     required init?(coder: NSCoder) {
@@ -68,9 +71,34 @@ class ProfilePhotoTableCell: UITableViewCell {
         collectionView.reloadData()
     }
     
+    private func setupFrame() {
+        photoesCount.frame = CGRect(
+            x: 16,
+            y: 8,
+            width: 200,
+            height: 16)
+        collectionView.frame = CGRect(
+            x: 0,
+            y: 32,
+            width: contentView.frame.width,
+            height: contentView.frame.height-35)
+        allPhotoes.frame = CGRect(
+            x: contentView.frame.width - 156,
+            y: 8,
+            width: 140,
+            height: 16)
+    }
+    
+    private func setGesture() {
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap))
+        allPhotoes.addGestureRecognizer(singleTap)
+    }
+    
+    @objc func handleSingleTap() {
+        self.allPhotoesTapped?()
+    }
+    
 }
-
-
 
 extension ProfilePhotoTableCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     

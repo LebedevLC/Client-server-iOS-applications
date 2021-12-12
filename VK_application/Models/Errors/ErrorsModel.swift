@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-//MARK: - Some Error
+// MARK: - Some Error
 
 // Service Error
 enum SimpleServiceError: Error {
@@ -17,7 +17,7 @@ enum SimpleServiceError: Error {
     case decodeError
 }
 
-//MARK: - Friend
+// MARK: - Friend
 
 // addFriend
 struct ErrorAddFriendModel: Codable {
@@ -28,6 +28,3 @@ struct ErrorAddFriendResponse: Codable {
     let error_code: Int
     let error_msg: String
 }
-
-
-

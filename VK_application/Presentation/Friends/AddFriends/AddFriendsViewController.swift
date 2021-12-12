@@ -20,17 +20,21 @@ final class AddFriendsViewController: UIViewController {
     private var usersSection = [[UsersSearchItems]]()
     private var firstLetters: [String] = []
     // Пользователи
-    private var afSearchUsers = UsersServices()
+    private var userService = UsersServices()
     private var friendService = FriendsServices()
     private var countSearch: Int = 200
-    var usersSearchAloma: [UsersSearchItems] = []
+    var usersFromAloma: [UsersSearchItems] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupLetters()
+        getSuggestionsFriends()
+    }
+    
+    private func setupTable() {
         searchBar.delegate = self
         tableView.dataSource = self
         tableView.delegate = self
-        
         tableView.register(UINib(nibName: AddFriendCell.reusedIdentifier, bundle: nil),
                            forCellReuseIdentifier: AddFriendCell.reusedIdentifier)
         
@@ -39,15 +43,33 @@ final class AddFriendsViewController: UIViewController {
         setupLetters()
     }
     
-    //MARK: - Aloma
+// MARK: - Network
     
-    private func getUsersSearchAloma(q: String, count: Int) {
-        // q - параметр поиска
-        afSearchUsers.getSearchUsers(q: q, count: count) {[weak self] result in
+    private func getSuggestionsFriends() {
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async{
+            self.friendService.getSuggestionsFriends {[weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let users):
+                    self.usersFromAloma = users
+                    DispatchQueue.main.async {
+                        self.setupTable()
+                        self.tableView.reloadData()
+                    }
+                case .failure:
+                    print("getSuggestionsFriends FAIL")
+                }
+            }
+        }
+    }
+    
+    private func searchUsers(q: String, count: Int) {
+        userService.getSearchUsers(q: q, count: count) {[weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let users):
-                self.usersSearchAloma = users
+                self.usersFromAloma = users
                 DispatchQueue.main.async {
                     self.lettersControl.refreshButtons()
                     self.setupLetters()
@@ -59,30 +81,28 @@ final class AddFriendsViewController: UIViewController {
         }
     }
     
-    private func addFriendAloma(userID: Int) {
-        friendService.getAddFriend(userID: userID) {[weak self] result in
-            guard self != nil else {
-                print("FAIL self")
-                return }
-            switch result {
-            case .success(let answer):
-                print("Add friend to UserID = \(userID) = \(answer)")
-                // Add friend
-                self?.navigationController?.popViewController(animated: true)
-            case .failure(let failCode):
-                print("Add friend to UserID = \(userID) = FAIL = \(failCode)")
-                // UIAlertAction
-            }
-        }
+    private func goToProfile(userID: Int) {
+        performSegue(withIdentifier: "fromSearchToProfileVC", sender: userID)
     }
     
-    //MARK: - Sorting
+// MARK: - Segue
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard
+            segue.identifier == "fromSearchToProfileVC",
+            let destinationVC = segue.destination as? ProfileVC,
+            let id = sender as? Int
+        else { return }
+        destinationVC.showUserId = id
+    }
+    
+// MARK: - Sorting
     
     private func setupLetters(){
-        firstLetters = getFirstLetters(usersSearchAloma)
+        firstLetters = getFirstLetters(usersFromAloma)
         lettersControl.setLetters(firstLetters)
         lettersControl.addTarget(self, action: #selector(scrollToLetter), for: .valueChanged)
-        usersSection = sortedForSection(usersSearchAloma, firstLetters: firstLetters)
+        usersSection = sortedForSection(usersFromAloma, firstLetters: firstLetters)
     }
     
     /// Переместиться к указанному первому символу в таблице
@@ -116,7 +136,7 @@ final class AddFriendsViewController: UIViewController {
     }
 }
 
-//MARK: - Extension AddFriendsViewController
+// MARK: - TableView
 
 extension AddFriendsViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -137,8 +157,7 @@ extension AddFriendsViewController: UITableViewDelegate, UITableViewDataSource {
         let user = usersSection[indexPath.section][indexPath.row]
         cell.configure(user: user)
         cell.avatarTapped = { [weak self] in
-            // AlomaSend - AddFriend
-            self?.addFriendAloma(userID: user.id)
+            self?.goToProfile(userID: user.id)
         }
         return cell
     }
@@ -155,34 +174,29 @@ extension AddFriendsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        // AlomaSend - AddFriend
-        addFriendAloma(userID: usersSection[indexPath.section][indexPath.row].id)
+        goToProfile(userID: usersSection[indexPath.section][indexPath.row].id)
     }
 }
 
-//MARK: - SearchBar
+// MARK: - SearchBar
 
 extension AddFriendsViewController: UISearchBarDelegate {
-    // функция активируется при изменении текста в searchBar
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
-            usersSearchAloma = []
+            usersFromAloma = []
             tableView.reloadData()
         } else {
-            getUsersSearchAloma(q: searchText, count: countSearch)
+            searchUsers(q: searchText, count: countSearch)
         }
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        // Добавляем обработчик жестов, когда пользователь вызвал клавиаруту у UISearchBar
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tableView.addGestureRecognizer(tapGesture!)
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        // Убираем обработчик нажатий, когда пользователь ткнул в другое место
         tableView.removeGestureRecognizer(tapGesture!)
-        // Так-же обнуляем обработчик
         tapGesture = nil
     }
     

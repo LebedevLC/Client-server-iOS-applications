@@ -11,98 +11,128 @@ import RealmSwift
 struct CollectionTableCellModel {
     let title: String
     let imageName: String
+    let online: Bool
+}
+
+struct HeaderCellModel {
+    let name: String
+    let status: String
+    let date: String
+    let avatar: String
 }
 
 class ProfileVC: UIViewController {
     
-    @IBOutlet var barButtonItem: UIBarButtonItem!
-    @IBOutlet var tableView: UITableView!
+    @IBOutlet private var barButtonItem: UIBarButtonItem!
+    @IBOutlet private var tableView: UITableView!
     
-    private var photoesService = PhotoesServices()
-    private var accountService = AccountServices()
+    private let usersService = UsersServices()
+    private let photoesService = PhotoesServices()
+    private let friendsService = FriendsServices()
+    private let dateFormatterRU = DateFormatterRU()
     
-    private var profileInfo: [AccountItems] = []
-    private var avatarPhotoes: [PhotoesItems] = []
+    private var userInfo: [UsersGetItems] = []
     private var collectionPhotoes: [PhotoesItems] = []
-    private var friendsRealm: [FriendsItems] = []
+    private var friends: [FriendsItems] = []
     private var modelsCell: [CollectionTableCellModel] = []
+    private var headerModelsCell: [HeaderCellModel] = []
+    private var mutal: Int = 0
     
-    // значение профиля по-умолчанию - своя страница
-    private var userID: Int = UserSession.shared.userId
-    
-    private var isAvatarPhoto = true
+    // значение профиля, по-умолчанию - своя страница
+    var userId: Int = UserSession.shared.userId
+    var showUserId: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getProfileInfo()
+        showUserId != nil ? userId = showUserId! : nil
+        getUserInfo()
         configureButtonMenu()
     }
     
-//MARK: - Network
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tableView.reloadData()
+    }
     
-    // Получение списка друзей (веб-запрос, запись в БД)
-    private func getProfileInfo() {
-        accountService.getProfileInfo {[weak self] in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.loadProfileInfo()
-                self.getPhotoesUser(userId: self.userID)
+    // MARK: - Network
+    
+    private func getUserInfo() {
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async{
+            self.friendsService.getFriendsNoRealm(userId: self.userId, order: .hints) {[weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let friends):
+                    self.friends = friends
+                    self.loadFriends()
+                case .failure:
+                    debugPrint("getFriendsNoRealm FAIL")
+                }
+            }
+            self.usersService.getUsersInfo(userId: self.userId) {[weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let info):
+                    self.userInfo = info
+                    if !self.userInfo.isEmpty {
+                        self.mutal = self.userInfo[0].common_count ?? 0
+                    }
+                    self.setupHeaderModel()
+                case .failure:
+                    debugPrint("getUsersInfo FAIL")
+                }
+            }
+            self.photoesService.getPhotoesAllNoRealm(ownerID: self.userId) {[weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let photoes):
+                    self.collectionPhotoes = photoes
+                    DispatchQueue.main.async {
+                        self.setTableView()
+                    }
+                case .failure:
+                    debugPrint("getPhotoesAllNoRealm FAIL")
+                }
             }
         }
     }
     
-    // Получить фотографии пользователя
-    private func getPhotoesUser(userId: Int) {
-        photoesService.getPhotoesAll(ownerID: userId) {[weak self] in
-            guard let self = self else { return }
-            self.loadCollectionPhotoes(userID: userId)
-            self.setTableView()
-        }
-    }
-    
-//MARK: - DataBase
-    
-    // Realm - Profile info
-    private func loadProfileInfo() {
-        do {
-            let realm = try Realm()
-            let profileInfo = realm.objects(AccountItems.self).filter("id == %@", userID)
-            // Запись информации профиля в локальную переменную
-            self.profileInfo = Array(profileInfo)
-            let friends = realm.objects(FriendsItems.self).filter("myOwnerId == %@", userID)
-            let sotrFriends = friends.sorted(byKeyPath: "online", ascending: false)
-            self.friendsRealm = Array(sotrFriends)
-        } catch { print(error) }
-        for i in 0...(friendsRealm.count - 1) {
-            let name = friendsRealm[i].first_name + " " + friendsRealm[i].last_name
-            let url = friendsRealm[i].photo_100
-            modelsCell.append(.init(title: name, imageName: url))
-        }
-    }
-    
-    // Realm - Photoes
-    private func loadCollectionPhotoes(userID: Int) {
-        do {
-            let realm = try Realm()
-            let photoes = realm.objects(PhotoesItems.self).filter("id == %@ AND album_id != %@", userID, -6)
-            let avatar = realm.objects(PhotoesItems.self).filter("id == %@ AND album_id == %@", userID, -6)
-            guard photoes.count != 0 else {
-                print("friend count photoes = 0")
-                return
+    // Friends to modelsCell
+    private func loadFriends() {
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async {
+            for i in 0..<self.friends.count {
+                let name = self.friends[i].first_name + " " + self.friends[i].last_name
+                let url = self.friends[i].photo_100
+                let online = self.friends[i].online == 1 ? true : false
+                self.modelsCell.append(.init(title: name, imageName: url, online: online))
             }
-            self.collectionPhotoes = Array(photoes)
-            self.avatarPhotoes = Array(avatar)
-            self.tableView.reloadData()
-        } catch { print(error) }
+        }
+        tableView.reloadData()
     }
+    
+    // Info header
+    private func setupHeaderModel() {
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async {
+            guard !self.userInfo.isEmpty else { return }
+            let userInfo = self.userInfo[0]
+            let name = (userInfo.first_name ?? "") + " " + (userInfo.last_name ?? "")
+            let status = userInfo.status ?? ""
+            let avatar = userInfo.photo_100 ?? ""
+            let date = self.dateFormatterRU.ShowMeDate(date: userInfo.last_seen?.time ?? 0)
+            self.headerModelsCell.append(.init(name: name, status: status, date: date, avatar: avatar))
+        }
+        tableView.reloadData()
+    }
+    
 }
 
-//MARK: - TableView
+// MARK: - TableView
 
 extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
     
     private func setTableView() {
-//        self.tableView.separatorStyle = .none
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.register(UINib(nibName: HeaderProfileCell.reusedIdentifier, bundle: nil),
@@ -124,19 +154,20 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
-            
 // Header
         case 0:
             guard
                 let cell = tableView.dequeueReusableCell(
                     withIdentifier: HeaderProfileCell.reusedIdentifier,
-                    for: indexPath) as? HeaderProfileCell
+                    for: indexPath) as? HeaderProfileCell,
+                !headerModelsCell.isEmpty
             else {
                 return UITableViewCell()
             }
-            let info = profileInfo[0]
-            let photo = avatarPhotoes[0]
-            cell.configure(accountItems: info, photoModel: photo, friendCount: modelsCell.count)
+            cell.configure(model: headerModelsCell[0])
+            cell.moreInfoTapped = { [weak self] in
+                self?.performSegue(withIdentifier: "goToMoreInfo", sender: nil)
+            }
             return cell
             
 // Friends
@@ -147,7 +178,7 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
             else {
                 return UITableViewCell()
             }
-            cell.configure(with: modelsCell)
+            cell.configure(models: modelsCell, mutal: mutal)
             return cell
             
 // Photo collection
@@ -159,6 +190,9 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
                 return UITableViewCell()
             }
             cell.configure(with: collectionPhotoes)
+            cell.allPhotoesTapped = { [weak self] in
+                self?.performSegue(withIdentifier: "goToPhotoes", sender: nil)
+            }
             return cell
             
 // Default
@@ -183,7 +217,7 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-//MARK: - Bar Button Items
+// MARK: - Bar Button Items
 
 extension ProfileVC {
     
@@ -209,3 +243,21 @@ extension ProfileVC {
     }
 }
 
+// MARK: - Segue
+
+extension ProfileVC {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case "goToPhotoes":
+            guard let destinationVC = segue.destination as? PhotoesFriendVC
+            else { return }
+            destinationVC.userID = userId
+        case "goToMoreInfo":
+            guard let destinationVC = segue.destination as? MoreInfoVC
+            else { return }
+            destinationVC.infoModel = userInfo[0]
+        default:
+            debugPrint("unkown segue")
+        }
+    }
+}

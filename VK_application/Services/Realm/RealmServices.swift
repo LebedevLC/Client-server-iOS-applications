@@ -19,12 +19,11 @@ class RealmServices {
             realm.delete(oldArray)
             realm.add(array)
             try realm.commitWrite()
-//            print("добавил/обновил \(array.count) записей")
-//            print(realm.configuration.fileURL as Any)
+//            debugPrint(realm.configuration.fileURL as Any)
             DispatchQueue.main.async {
                 completion()
             }
-        } catch { print(error) }
+        } catch { debugPrint(error) }
     }
     
     /// Сохранение выборочных данных и удаление старых
@@ -37,11 +36,11 @@ class RealmServices {
             realm.delete(oldObject)
             realm.add(object)
             try realm.commitWrite()
-            print(realm.configuration.fileURL as Any)
+//            debugPrint(realm.configuration.fileURL as Any)
             DispatchQueue.main.async {
                 completion()
             }
-        } catch { print(error) }
+        } catch { debugPrint(error) }
     }
     
     /// Запись массива данных в Realm
@@ -50,32 +49,10 @@ class RealmServices {
         do {
             let realm = try Realm()
             realm.beginWrite()
-            print("Начинаю запись данных в Realm")
             realm.add(array)
             try realm.commitWrite()
-            print("Добавил \(array.count) записей")
         } catch {
-            print(error)
+            debugPrint(error)
         }
     }
-    
-//    func saveFriendsData(_ friends: [FriendsItems]) {
-//        // обработка исключений при работе с хранилищем
-//        do {
-//            let realm = try Realm()
-//            // получаем friends
-//            try friends.forEach{
-//                guard let friend = realm.object(ofType: FriendsDataRealm.self, forPrimaryKey: $0.id) else { return }
-//            let oldData = friend.friends
-//            realm.beginWrite()
-//            realm.delete(oldData)
-//            friend.friends.append(objectsIn: friends)
-//                try realm.commitWrite()
-//
-//            }
-//        } catch {
-//            print(error)
-//        }
-//    }
-    
 }

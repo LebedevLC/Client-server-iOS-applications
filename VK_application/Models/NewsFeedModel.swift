@@ -15,15 +15,15 @@ struct NewsFeedResponse: Codable {
     var items: [NewsFeedItems]
     var profiles: [NewsFeedProfile]?
     var groups: [NewsFeedGroup]?
-    var next_from: String
+    var next_from: String?
 }
 
 struct NewsFeedItems: Codable {
-    var source_id: Int
-    var date: Int
-    var post_type: String
-    var text: String
-    var post_id: Int
+    var source_id: Int?
+    var date: Double?
+    var post_type: String?
+    var text: String?
+    var post_id: Int?
     var attachments: [Attachments]?
     var comments: Comments?
     var likes: Likes?
@@ -32,19 +32,18 @@ struct NewsFeedItems: Codable {
 }
 
 struct NewsFeedProfile: Codable {
-    var first_name: String
-    var id: Int
+    var first_name: String?
+    var id: Int?
     var last_name: String?
-    var photo_50: String
-    var photo_100: String
+    var photo_50: String?
+    var photo_100: String?
 }
 
 struct NewsFeedGroup: Codable {
-    var id: Int
-    var name: String
-    var screen_name: String
-    var photo_50: String
-    var photo_100: String
-    var photo_200: String
+    var id: Int?
+    var name: String?
+    var screen_name: String?
+    var photo_50: String?
+    var photo_100: String?
+    var photo_200: String?
 }
-

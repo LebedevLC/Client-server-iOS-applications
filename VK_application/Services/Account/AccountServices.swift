@@ -14,12 +14,12 @@ class AccountServices {
     private let getProfileInfoUrlPath = "https://api.vk.com/method/account.getProfileInfo"
     private let realmService = RealmServices()
     
-    //MARK: - Все фотографии
+    // MARK: - Возвращает информацию о текущем профиле
     
     func getProfileInfo(completion: @escaping () -> Void) {
         let paramters: Parameters = [
             "access_token": "\(UserSession.shared.token)",
-            "v": "\(UserSession.shared.v)"
+            "v": "\(UserSession.shared.version)"
         ]
         
         AF.request(getProfileInfoUrlPath, method: .get, parameters: paramters).responseJSON { [weak self] response in

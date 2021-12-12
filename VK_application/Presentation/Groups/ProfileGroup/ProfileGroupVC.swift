@@ -37,7 +37,7 @@ final class ProfileGroupVC: UIViewController {
         tableView.reloadData()
     }
     
-//MARK: - Network
+// MARK: - Network
     
     private func getWallGroup(completion: @escaping () -> Void) {
         wallService.getWall(ownerID: -groupID, count: countPostsLoad) {[weak self] result in
@@ -54,7 +54,7 @@ final class ProfileGroupVC: UIViewController {
         }
     }
     
-//MARK: - Database
+// MARK: - Database
     
     private func loadGroupData() {
         do {
@@ -64,7 +64,7 @@ final class ProfileGroupVC: UIViewController {
         } catch { print(error) }
     }
     
-//MARK: - Segue
+// MARK: - Segue
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
@@ -86,7 +86,7 @@ final class ProfileGroupVC: UIViewController {
     }
 }
 
-//MARK: - TableView
+// MARK: - TableView
 
 extension ProfileGroupVC: UITableViewDelegate, UITableViewDataSource {
     
@@ -103,7 +103,7 @@ extension ProfileGroupVC: UITableViewDelegate, UITableViewDataSource {
         case 0:
             switch indexPath.row {
                 
-        //MARK: - Group section
+        // MARK: - Group section
                 
 // первая ячейка (хедер)
             case 0:
@@ -149,7 +149,7 @@ extension ProfileGroupVC: UITableViewDelegate, UITableViewDataSource {
                 return UITableViewCell()
             }
         
-        //MARK: - News Section
+        // MARK: - News Section
         
         default:
             switch indexPath.row {
@@ -164,7 +164,7 @@ extension ProfileGroupVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 let group = group[0]
                 let wallData = wall[indexPath.section - 1]
-                let date = dateFormatterRU.ShowMeDate(date: wallData.date)
+                let date = dateFormatterRU.ShowMeDate(date: wallData.date ?? 0)
                 cell.configure(avatar: group.photo_100,
                                name: group.name,
                                date: date)
@@ -179,8 +179,7 @@ extension ProfileGroupVC: UITableViewDelegate, UITableViewDataSource {
                     return UITableViewCell()
                 }
                 let wallData = wall[indexPath.section - 1]
-                cell.configure(text: wallData.text)
-                // реализация разворачивания и сворачивания текста
+                cell.configure(text: wallData.text ?? "")
                 cell.controlTapped = { [weak self] in
                     self?.tableView.reloadData()
                 }
@@ -226,16 +225,31 @@ extension ProfileGroupVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard
-            indexPath.section > 0 && indexPath.row == 2,
-            let attachments = self.wall[indexPath.section - 1].attachments,
-            let sizeLast = attachments[0].photo?.sizes.endIndex,
-            let heightPhoto = attachments[0].photo?.sizes[sizeLast-1].height
-        else {
+        switch indexPath.row {
+        case 0:
+            guard indexPath.section > 0
+            else {
+                return tableView.rowHeight
+            }
+            return 80
+        case 1:
+            return tableView.rowHeight
+        case 2:
+            guard
+                indexPath.section > 0,
+                let attachments = self.wall[indexPath.section - 1].attachments,
+                let sizeLast = attachments[0].photo?.sizes?.endIndex,
+                let heightPhoto = attachments[0].photo?.sizes?[sizeLast-1].height
+            else {
+                return tableView.rowHeight
+            }
+            let heightPhotoCell = CGFloat(heightPhoto/2)
+            return heightPhotoCell
+        case 3:
+            return 45
+        default:
             return tableView.rowHeight
         }
-        let heightPhotoCell = CGFloat(heightPhoto/2)
-        return heightPhotoCell
     }
     
     private func setTableView() {

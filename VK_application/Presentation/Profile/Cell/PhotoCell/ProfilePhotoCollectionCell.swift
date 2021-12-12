@@ -12,31 +12,37 @@ class ProfilePhotoCollectionCell: UICollectionViewCell {
     
     static let identifier = "ProfilePhotoCollectionCell"
     
-    private let Image: UIImageView = {
-        let image = UIImageView ()
+    private let image: UIImageView = {
+        let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.layer.borderWidth = 1
         image.layer.borderColor = UIColor.black.cgColor
         image.backgroundColor = .clear
         image.tintColor = .clear
+        image.image = UIImage(named: "photoHolder")
         return image
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.addSubview(Image)
+        contentView.addSubview(image)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        image.image = UIImage(named: "photoHolder")
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
-        Image.layer.masksToBounds = true
-        Image.layer.cornerRadius = 8
-        Image.backgroundColor = .cyan
-        Image.frame = CGRect(
+        image.layer.masksToBounds = true
+        image.layer.cornerRadius = 8
+        image.backgroundColor = .cyan
+        image.frame = CGRect(
             x: 0,
             y: 0,
             width: 130,
@@ -44,7 +50,8 @@ class ProfilePhotoCollectionCell: UICollectionViewCell {
     }
     
     func configure(with model: PhotoesItems) {
-        let url = URL(string: model.singleSizePhoto)
-        Image.kf.setImage(with: url, placeholder: nil, options: [.transition(ImageTransition.fade(1) ) ] )
+        // выбираем не самую "тяжелую" картинку для предпросмотра
+        let url = URL(string: model.sizesArray[4])
+        image.kf.setImage(with: url, placeholder: nil, options: [.transition(ImageTransition.fade(1) ) ] )
     }
 }

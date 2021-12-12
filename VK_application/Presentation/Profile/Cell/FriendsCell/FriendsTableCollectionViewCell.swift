@@ -20,7 +20,7 @@ class FriendsTableCollectionViewCell: UICollectionViewCell {
     }()
     
     private let friendImage: UIImageView = {
-        let image = UIImageView ()
+        let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.layer.masksToBounds = true
         image.layer.borderWidth = 1
@@ -32,6 +32,14 @@ class FriendsTableCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         contentView.addSubview(friendName)
         contentView.addSubview(friendImage)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        friendImage.layer.borderWidth = 1
+        friendImage.layer.borderColor = UIColor.black.cgColor
+        friendImage.image = nil
+        friendName.text = nil
     }
     
     required init?(coder: NSCoder) {
@@ -55,9 +63,11 @@ class FriendsTableCollectionViewCell: UICollectionViewCell {
     
     func configure(with model: CollectionTableCellModel) {
         let url = URL(string: model.imageName)
-        DispatchQueue.main.async() { [weak self] in
-            self?.friendImage.kf.setImage(with: url)
-                }
+        friendImage.kf.setImage(with: url)
         friendName.text = model.title
+        if model.online {
+            friendImage.layer.borderWidth = 3
+            friendImage.layer.borderColor = UIColor.link.cgColor
+        }
     }
 }

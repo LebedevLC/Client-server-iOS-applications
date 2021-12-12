@@ -9,7 +9,7 @@ import Foundation
 
 class DateFormatterRU {
     
-    func ShowMeDate(date: Int) -> String {
+    func ShowMeDate(date: Double) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd MMMM yyyy HH:mm"
         let date = Date(timeIntervalSince1970: TimeInterval(date))

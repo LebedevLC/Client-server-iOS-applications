@@ -27,7 +27,7 @@ final class NotificationControl: UIControl {
     
     private var notificationStatic: Bool?
     
-//MARK: - LifeCicle
+// MARK: - LifeCicle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,36 +38,36 @@ final class NotificationControl: UIControl {
         self.setView()
     }
     
-//MARK: - Body
+// MARK: - Body
     
     private func setView() {
         self.addSubview(notificationButton)
         self.addSubview(notificationLabel)
         self.notificationButton.addTarget(self, action: #selector(tapControl(_:)), for: .touchUpInside)
         let size: CGFloat = 30
-        NSLayoutConstraint.activate ([
+        NSLayoutConstraint.activate([
             notificationButton.topAnchor.constraint(equalTo: topAnchor, constant: 4),
             notificationButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             notificationButton.heightAnchor.constraint(equalToConstant: size),
-            notificationButton.widthAnchor.constraint(equalToConstant: size),
+            notificationButton.widthAnchor.constraint(equalToConstant: size)
         ])
-        NSLayoutConstraint.activate ([
+        NSLayoutConstraint.activate([
             notificationLabel.topAnchor.constraint(equalTo: notificationButton.bottomAnchor, constant: 2),
             notificationLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2),
             notificationLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 2),
-            notificationLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 2),
+            notificationLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 2)
         ])
     }
     
-//MARK: - TapButton
+// MARK: - TapButton
     
-    enum notificationState: String {
+    enum NotificationState: String {
         case notificationON = "Уведомления"
         case notificationOFF = "Уведомлять"
     }
 
     private func notificationON() {
-        notificationLabel.text = notificationState.notificationON.rawValue
+        notificationLabel.text = NotificationState.notificationON.rawValue
         notificationButton.tintColor = UIColor.lightGray
         notificationButton.setBackgroundImage(UIImage(systemName: "bell.fill"), for: .normal)
         notificationLabel.textColor = UIColor.gray
@@ -75,7 +75,7 @@ final class NotificationControl: UIControl {
     }
     
     private func notificationOFF() {
-        notificationLabel.text = notificationState.notificationOFF.rawValue
+        notificationLabel.text = NotificationState.notificationOFF.rawValue
         notificationButton.tintColor = UIColor.link
         notificationButton.setBackgroundImage(UIImage(systemName: "bell"), for: .normal)
         notificationLabel.textColor = UIColor.link
@@ -96,14 +96,14 @@ final class NotificationControl: UIControl {
         animatedLabel()
     }
     
-//MARK: - Animation
+// MARK: - Animation
     
     private func animatedLabel() {
         UIView.transition(with: notificationLabel,
                           duration: 0.2,
                           options: .transitionFlipFromTop,
                           animations: { [unowned self] in
-                            switch notificationStatic{
+                            switch notificationStatic {
                             case true: notificationOFF()
                             case false: notificationON()
                             case .none:

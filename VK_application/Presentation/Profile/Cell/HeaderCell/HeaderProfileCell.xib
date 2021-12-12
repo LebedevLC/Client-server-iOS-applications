@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -12,41 +12,22 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="HeaderProfileCell" rowHeight="209" id="KGk-i7-Jjw" customClass="HeaderProfileCell" customModule="VK_application" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="420" height="209"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="HeaderProfileCell" rowHeight="243" id="KGk-i7-Jjw" customClass="HeaderProfileCell" customModule="VK_application" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="420" height="243"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="420" height="209"/>
+                <rect key="frame" x="0.0" y="0.0" width="420" height="243"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iv6-pT-23Q">
-                        <rect key="frame" x="0.0" y="0.0" width="420" height="209"/>
+                        <rect key="frame" x="0.0" y="0.0" width="420" height="243"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6GF-Fa-Gkb">
-                                <rect key="frame" x="10" y="130" width="400" height="30"/>
-                                <color key="backgroundColor" systemColor="systemGray5Color"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="4sV-2d-YZ1"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="gray">
-                                    <attributedString key="attributedTitle">
-                                        <fragment content="Редактировать">
-                                            <attributes>
-                                                <font key="NSFont" size="14" name="Helvetica"/>
-                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                            </attributes>
-                                        </fragment>
-                                    </attributedString>
-                                    <color key="baseForegroundColor" systemColor="systemBlueColor"/>
-                                </buttonConfiguration>
-                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QqZ-gx-Gip" customClass="AvatarUIView" customModule="VK_application" customModuleProvider="target">
                                 <rect key="frame" x="20" y="20" width="100" height="100"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Hinata0" translatesAutoresizingMaskIntoConstraints="NO" id="Txo-6U-F4o" customClass="AvatarImageView" customModule="VK_application" customModuleProvider="target">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photoHolder" translatesAutoresizingMaskIntoConstraints="NO" id="Txo-6U-F4o" customClass="AvatarImageView" customModule="VK_application" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
-                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
                                 </subviews>
@@ -60,27 +41,36 @@
                                     <constraint firstAttribute="width" constant="100" id="fTW-2C-X32"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Василий Пупкин" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yrl-et-fhV">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Имя пользователя" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yrl-et-fhV">
                                 <rect key="frame" x="130" y="30" width="280" height="20.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Swb-Fm-TNE">
-                                <rect key="frame" x="130" y="60.5" width="280" height="17"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <nil key="textColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Swb-Fm-TNE">
+                                <rect key="frame" x="130" y="54.5" width="280" height="17"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Статус">
+                                        <attributes>
+                                            <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <font key="NSFont" metaFont="menu" size="14"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="JqD-cJ-sOI">
-                                <rect key="frame" x="10" y="175" width="400" height="24"/>
+                                <rect key="frame" x="10" y="150" width="400" height="35"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="niv-NA-ZId">
-                                        <rect key="frame" x="0.0" y="0.0" width="130" height="24"/>
-                                        <buttonConfiguration key="configuration" style="plain" imagePlacement="leading" imagePadding="2" titleAlignment="center">
-                                            <imageReference key="image" image="photo" catalog="system" symbolScale="large"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="130" height="35"/>
+                                        <buttonConfiguration key="configuration" style="plain" imagePlacement="top" imagePadding="0.0" titleAlignment="center">
+                                            <imageReference key="image" image="person.fill.checkmark.rtl" catalog="system" symbolScale="large"/>
                                             <attributedString key="attributedTitle">
-                                                <fragment content="Фото">
+                                                <fragment content="В друзьях">
                                                     <attributes>
                                                         <color key="NSColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
                                                         <font key="NSFont" size="14" name="Helvetica"/>
@@ -91,12 +81,12 @@
                                         </buttonConfiguration>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="URc-u0-gms">
-                                        <rect key="frame" x="135" y="0.0" width="130" height="24"/>
+                                        <rect key="frame" x="135" y="0.0" width="130" height="35"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" imagePlacement="leading" imagePadding="2" titleAlignment="center">
-                                            <imageReference key="image" image="note.text" catalog="system" symbolScale="large"/>
+                                        <buttonConfiguration key="configuration" style="plain" imagePlacement="top" imagePadding="0.0" titleAlignment="center">
+                                            <imageReference key="image" image="gift" catalog="system" symbolScale="large"/>
                                             <attributedString key="attributedTitle">
-                                                <fragment content="Запись">
+                                                <fragment content="Подарок">
                                                     <attributes>
                                                         <color key="NSColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
                                                         <font key="NSFont" size="14" name="Helvetica"/>
@@ -107,15 +97,15 @@
                                         </buttonConfiguration>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ond-cb-E1W">
-                                        <rect key="frame" x="270" y="0.0" width="130" height="24"/>
+                                        <rect key="frame" x="270" y="0.0" width="130" height="35"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" imagePlacement="leading" imagePadding="2" titleAlignment="center">
-                                            <imageReference key="image" image="camera" catalog="system" symbolScale="large"/>
+                                        <buttonConfiguration key="configuration" style="plain" imagePlacement="top" imagePadding="0.0" titleAlignment="leading">
+                                            <imageReference key="image" image="bell" catalog="system" symbolScale="large"/>
                                             <attributedString key="attributedTitle">
-                                                <fragment content="Камера">
+                                                <fragment content="Уведомления">
                                                     <attributes>
                                                         <color key="NSColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
-                                                        <font key="NSFont" size="14" name="Helvetica"/>
+                                                        <font key="NSFont" size="13" name="Helvetica"/>
                                                         <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                     </attributes>
                                                 </fragment>
@@ -124,24 +114,46 @@
                                     </button>
                                 </subviews>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6GF-Fa-Gkb">
+                                <rect key="frame" x="10" y="197" width="400" height="30"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="4sV-2d-YZ1"/>
+                                </constraints>
+                                <buttonConfiguration key="configuration" style="gray">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Подробная информация">
+                                            <attributes>
+                                                <color key="NSColor" red="0.20392158630000001" green="0.47058826679999999" blue="0.96470588450000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <font key="NSFont" size="16" name="Helvetica"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                    <color key="baseForegroundColor" systemColor="systemBlueColor"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="moreInfoButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="E9n-xA-tyY"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Swb-Fm-TNE" firstAttribute="top" secondItem="Yrl-et-fhV" secondAttribute="bottom" constant="4" id="2li-P9-k9p"/>
                             <constraint firstAttribute="trailing" secondItem="JqD-cJ-sOI" secondAttribute="trailing" constant="10" id="2yX-gt-fpY"/>
                             <constraint firstItem="JqD-cJ-sOI" firstAttribute="leading" secondItem="iv6-pT-23Q" secondAttribute="leading" constant="10" id="4KA-hz-wFK"/>
-                            <constraint firstItem="6GF-Fa-Gkb" firstAttribute="top" secondItem="QqZ-gx-Gip" secondAttribute="bottom" constant="10" id="4kc-gV-2Jf"/>
                             <constraint firstAttribute="trailing" secondItem="Swb-Fm-TNE" secondAttribute="trailing" constant="10" id="BPJ-3o-7Go"/>
+                            <constraint firstItem="JqD-cJ-sOI" firstAttribute="top" secondItem="QqZ-gx-Gip" secondAttribute="bottom" priority="999" constant="30" id="HYO-ZZ-qr0"/>
                             <constraint firstItem="6GF-Fa-Gkb" firstAttribute="leading" secondItem="iv6-pT-23Q" secondAttribute="leading" constant="10" id="K6z-iy-t02"/>
                             <constraint firstItem="Yrl-et-fhV" firstAttribute="top" secondItem="QqZ-gx-Gip" secondAttribute="top" constant="10" id="KwN-n7-7fE"/>
                             <constraint firstItem="Swb-Fm-TNE" firstAttribute="leading" secondItem="QqZ-gx-Gip" secondAttribute="trailing" constant="10" id="PdL-M8-QiG"/>
+                            <constraint firstItem="6GF-Fa-Gkb" firstAttribute="top" secondItem="JqD-cJ-sOI" secondAttribute="bottom" constant="12" id="Q8l-Cs-7R0"/>
                             <constraint firstItem="QqZ-gx-Gip" firstAttribute="leading" secondItem="iv6-pT-23Q" secondAttribute="leading" constant="20" id="Qsz-T7-FTc"/>
                             <constraint firstItem="QqZ-gx-Gip" firstAttribute="top" secondItem="iv6-pT-23Q" secondAttribute="top" constant="20" id="RMO-Dh-99W"/>
                             <constraint firstAttribute="trailing" secondItem="6GF-Fa-Gkb" secondAttribute="trailing" constant="10" id="SOh-MZ-9tR"/>
-                            <constraint firstItem="Swb-Fm-TNE" firstAttribute="top" secondItem="Yrl-et-fhV" secondAttribute="bottom" constant="10" id="gCZ-qd-qEd"/>
+                            <constraint firstAttribute="bottom" secondItem="6GF-Fa-Gkb" secondAttribute="bottom" constant="16" id="UG2-ff-zbN"/>
                             <constraint firstAttribute="trailing" secondItem="Yrl-et-fhV" secondAttribute="trailing" constant="10" id="qAY-vy-f3K"/>
                             <constraint firstItem="Yrl-et-fhV" firstAttribute="leading" secondItem="QqZ-gx-Gip" secondAttribute="trailing" constant="10" id="sMA-T6-89c"/>
-                            <constraint firstItem="JqD-cJ-sOI" firstAttribute="top" secondItem="6GF-Fa-Gkb" secondAttribute="bottom" constant="15" id="tz9-8J-tkI"/>
-                            <constraint firstAttribute="bottom" secondItem="JqD-cJ-sOI" secondAttribute="bottom" constant="10" id="vdp-ht-Gd9"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -156,30 +168,27 @@
             <connections>
                 <outlet property="avatarImageView" destination="Txo-6U-F4o" id="Iuy-et-C1N"/>
                 <outlet property="avatarView" destination="QqZ-gx-Gip" id="Svg-9H-VvB"/>
-                <outlet property="cameraButton" destination="Ond-cb-E1W" id="waZ-Zv-J2c"/>
                 <outlet property="cellView" destination="iv6-pT-23Q" id="u8r-Hy-11c"/>
-                <outlet property="cityLabel" destination="Swb-Fm-TNE" id="Sts-13-rFQ"/>
-                <outlet property="editButton" destination="6GF-Fa-Gkb" id="Jv1-d8-1ZZ"/>
+                <outlet property="friendButton" destination="niv-NA-ZId" id="u9z-TO-h2z"/>
+                <outlet property="giftButton" destination="URc-u0-gms" id="eTF-Io-L5q"/>
+                <outlet property="moreInfo" destination="6GF-Fa-Gkb" id="Jv1-d8-1ZZ"/>
                 <outlet property="nameLabel" destination="Yrl-et-fhV" id="duk-Zi-Wof"/>
-                <outlet property="photoButton" destination="niv-NA-ZId" id="u9z-TO-h2z"/>
-                <outlet property="postButton" destination="URc-u0-gms" id="eTF-Io-L5q"/>
+                <outlet property="notifyButton" destination="Ond-cb-E1W" id="waZ-Zv-J2c"/>
+                <outlet property="statusLabel" destination="Swb-Fm-TNE" id="Sts-13-rFQ"/>
             </connections>
-            <point key="canvasLocation" x="202.89855072463769" y="67.96875"/>
+            <point key="canvasLocation" x="202.89855072463769" y="79.352678571428569"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="Hinata0" width="500" height="488"/>
-        <image name="camera" catalog="system" width="128" height="94"/>
-        <image name="note.text" catalog="system" width="128" height="106"/>
-        <image name="photo" catalog="system" width="128" height="93"/>
+        <image name="bell" catalog="system" width="128" height="124"/>
+        <image name="gift" catalog="system" width="128" height="124"/>
+        <image name="person.fill.checkmark.rtl" catalog="system" width="128" height="88"/>
+        <image name="photoHolder" width="250" height="250"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

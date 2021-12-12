@@ -10,6 +10,11 @@ import UIKit
 final class NewsCellText: UITableViewCell {
     
     @IBOutlet var labelText: UILabel!
+    @IBOutlet weak var showMoreLabel: UILabel!
+    
+    let stringSetup = AttributedStringSetup()
+    var showMore: NSAttributedString?
+    var showLess: NSAttributedString?
     
     static let reusedIdentifier = "NewsCellText"
     
@@ -17,35 +22,50 @@ final class NewsCellText: UITableViewCell {
     
     var controlTapped: (() -> Void)?
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        showMore = stringSetup.simpleStringSetup(text: "Показать больше", size: 14, color: .link)
+        showLess = stringSetup.simpleStringSetup(text: "Скрыть", size: 14, color: .link)
         setSingleTap()
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         labelText.text = nil
+        showMoreLabel.isHidden = true
     }
     
     func configure(text: String) {
         labelText.text = text
+        if !isMore {
+            showMoreLabel.attributedText = showMore
+        } else {
+            showMoreLabel.attributedText = showLess
+            }
+        
+        if labelText.text == "" || text.count <= 200 {
+            showMoreLabel.isHidden = true
+        } else {
+            showMoreLabel.isHidden = false
+        }
     }
-
+    
     private func setSingleTap() {
         let singleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleSingleTap))
         singleTap.numberOfTapsRequired = 1
-        self.labelText.addGestureRecognizer(singleTap)
+        self.showMoreLabel.addGestureRecognizer(singleTap)
     }
-
-    // Разворачиваем или сворачиваем длинный текст
+    
     @IBAction func handleSingleTap(sender: UITapGestureRecognizer) {
         if isMore {
-            labelText.numberOfLines = 8
-        }
-        else {
+            labelText.numberOfLines = 7
+            showMoreLabel.attributedText = showMore
+        } else {
             labelText.numberOfLines = 0
+            showMoreLabel.attributedText = showLess
         }
-        isMore.toggle()
         controlTapped?()
+        isMore.toggle()
     }
+    
 }

@@ -88,7 +88,3 @@ final class FriendsTableViewCell: UITableViewCell {
     }
     
 }
-
-
-
-

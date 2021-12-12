@@ -30,12 +30,14 @@ class BigImageNewsVC: UIViewController, UIGestureRecognizerDelegate {
         navigationController?.navigationBar.isHidden = false
     }
     
-//MARK: - Image
+// MARK: - Image
     
     private func setImage(index: Int) {
         guard let photo = attachments[index].photo?.sizes else {return}
         let sizeLast = photo.endIndex - 1
-        let url = URL(string: photo[sizeLast].url)
+        debugPrint(attachments[index].photo?.access_key)
+        debugPrint(attachments[index].photo?.id)
+        let url = URL(string: photo[sizeLast].url ?? "")
         bigImageView.kf.setImage(with: url, placeholder: nil, options: [.transition(ImageTransition.fade(1))])
         bigImageView.frame = UIScreen.main.bounds
         bigImageView.backgroundColor = UIColor.clear
@@ -62,7 +64,7 @@ class BigImageNewsVC: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-//MARK: - UIGesture
+// MARK: - UIGesture
     
     private func setGesture() {
         // показать/скрыть навигацию
@@ -177,7 +179,7 @@ class BigImageNewsVC: UIViewController, UIGestureRecognizerDelegate {
         return true
     }
     
-//MARK: - Animation
+// MARK: - Animation
     
     // анимация возвращения в исходное состояние
     private func animation(){
@@ -186,7 +188,7 @@ class BigImageNewsVC: UIViewController, UIGestureRecognizerDelegate {
             animations: { [unowned self] in
                 self.bigImageView.transform = CGAffineTransform.identity
                 self.bigImageView.frame = UIScreen.main.bounds
-            } )
+            })
     }
     
 }

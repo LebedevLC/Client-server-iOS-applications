@@ -27,15 +27,15 @@ class VKLoginViewController: UIViewController {
         urlComponents.host = "oauth.vk.com"
         urlComponents.path = "/authorize"
         urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: "7984119"),
+            URLQueryItem(name: "client_id", value: "7988507"),
             URLQueryItem(name: "display", value: "mobile"),
             URLQueryItem(name: "redirect_uri", value: "https://oauth.vk.com/blank.html"),
             // Битовая маска настроек доступа приложения (262150 - Доступ к группам пользователя, 401502 - для новостей)
             URLQueryItem(name: "scope", value: "401502"),
             URLQueryItem(name: "response_type", value: "token"),
-            URLQueryItem(name: "v", value: "\(UserSession.shared.v)"),
+            URLQueryItem(name: "v", value: "\(UserSession.shared.version)")
             // если нужно повторно входить
-//                                URLQueryItem(name: "revoke", value: "1")
+//            URLQueryItem(name: "revoke", value: "1")
         ]
         let request = URLRequest(url: urlComponents.url!)
         webView.load(request)
