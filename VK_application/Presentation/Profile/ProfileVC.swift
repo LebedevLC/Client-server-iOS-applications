@@ -29,7 +29,7 @@ class ProfileVC: UIViewController {
     private let usersService = UsersServices()
     private let photoesService = PhotoesServices()
     private let friendsService = FriendsServices()
-    private let dateFormatterRU = DateFormatterRU()
+    private let profileSimpleFactory = ProfileSimpleFactory()
     
     private var userInfo: [UsersGetItems] = []
     private var collectionPhotoes: [PhotoesItems] = []
@@ -58,13 +58,13 @@ class ProfileVC: UIViewController {
     
     private func getUserInfo() {
         let queue = DispatchQueue.global(qos: .utility)
-        queue.async{
+        queue.async {
             self.friendsService.getFriendsNoRealm(userId: self.userId, order: .hints) {[weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success(let friends):
                     self.friends = friends
-                    self.loadFriends()
+                    self.setupFriendsModels()
                 case .failure:
                     debugPrint("getFriendsNoRealm FAIL")
                 }
@@ -98,17 +98,12 @@ class ProfileVC: UIViewController {
     }
     
     // Friends to modelsCell
-    private func loadFriends() {
+    private func setupFriendsModels() {
         let queue = DispatchQueue.global(qos: .utility)
         queue.async {
-            for i in 0..<self.friends.count {
-                let name = self.friends[i].first_name + " " + self.friends[i].last_name
-                let url = self.friends[i].photo_100
-                let online = self.friends[i].online == 1 ? true : false
-                self.modelsCell.append(.init(title: name, imageName: url, online: online))
-            }
+            self.modelsCell = self.profileSimpleFactory.constructFriendsModelsCell(from: self.friends)
         }
-        tableView.reloadData()
+        self.tableView.reloadData()
     }
     
     // Info header
@@ -116,12 +111,7 @@ class ProfileVC: UIViewController {
         let queue = DispatchQueue.global(qos: .utility)
         queue.async {
             guard !self.userInfo.isEmpty else { return }
-            let userInfo = self.userInfo[0]
-            let name = (userInfo.first_name ?? "") + " " + (userInfo.last_name ?? "")
-            let status = userInfo.status ?? ""
-            let avatar = userInfo.photo_100 ?? ""
-            let date = self.dateFormatterRU.ShowMeDate(date: userInfo.last_seen?.time ?? 0)
-            self.headerModelsCell.append(.init(name: name, status: status, date: date, avatar: avatar))
+            self.headerModelsCell = self.profileSimpleFactory.constructHeadersModelsCell(from: self.userInfo)
         }
         tableView.reloadData()
     }
