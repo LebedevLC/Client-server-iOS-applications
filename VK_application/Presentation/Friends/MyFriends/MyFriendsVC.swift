@@ -110,7 +110,7 @@ class MyFriendsVC: UIViewController {
                 animated: false)
     }
     
-// MARK: - Bar Button Items
+    // MARK: - Bar Button Items
     
     private func configureButtonMenu() {
         let item = sortBarButtonItem
@@ -159,7 +159,7 @@ class MyFriendsVC: UIViewController {
 extension MyFriendsVC: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let friendsRealmNotification = self.friendsRealmNotification else {return 0}
+        guard let friendsRealmNotification = self.friendsRealmNotification else { return 0 }
         return friendsRealmNotification.count
     }
     

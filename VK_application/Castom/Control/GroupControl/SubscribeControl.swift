@@ -99,19 +99,20 @@ final class SubscribeControl: UIControl {
 // MARK: - Animation
     
     private func animatedLabel() {
-        UIView.transition(with: subscribeLabel,
-                          duration: 0.2,
-                          options: .transitionFlipFromTop,
-                          animations: { [unowned self] in
-                            switch subState {
-                            case true: subscribeOFF()
-                            case false: subscribeON()
-                            case .none:
-                                return
-                            case .some(_):
-                                break
-                            }
-                          }
+        UIView.transition(
+            with: subscribeLabel,
+            duration: 0.2,
+            options: .transitionFlipFromTop,
+            animations: { [unowned self] in
+                switch subState {
+                case true: subscribeOFF()
+                case false: subscribeON()
+                case .none:
+                    return
+                case .some(_):
+                    break
+                }
+            }
         )
     }
     

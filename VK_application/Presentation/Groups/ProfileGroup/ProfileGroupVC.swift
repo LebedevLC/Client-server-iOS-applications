@@ -6,14 +6,14 @@
 //
 
 import UIKit
-import RealmSwift
 
 final class ProfileGroupVC: UIViewController {
     
     @IBOutlet var tableView: UITableView!
     
-    let wallService = WallServices()
-    let dateFormatterRU = DateFormatterRU()
+    private let wallService = WallServices()
+    private let adapter = ProfileGroupAdapter()
+    private let dateFormatterRU = DateFormatterRU()
     
     private var group: [GroupsItems] = []
     private var wall: [WallItems] = []
@@ -56,12 +56,11 @@ final class ProfileGroupVC: UIViewController {
     
 // MARK: - Database
     
+    /// Работа с БД ведется в адаптере
     private func loadGroupData() {
-        do {
-            let realm = try Realm()
-            let groupRealm = realm.objects(GroupsItems.self).filter("id == %@", groupID)
-            self.group = Array(groupRealm)
-        } catch { print(error) }
+        adapter.loadGroupData(groupID: groupID) { group in
+            self.group = group
+        }
     }
     
 // MARK: - Segue
@@ -109,11 +108,11 @@ extension ProfileGroupVC: UITableViewDelegate, UITableViewDataSource {
             case 0:
                 guard
                     let cell = tableView.dequeueReusableCell(withIdentifier: GroupCellHeader.reusedIdentifier,
-                                                             for: indexPath) as? GroupCellHeader
+                                                             for: indexPath) as? GroupCellHeader,
+                    let group = group.first
                 else {
                     return UITableViewCell()
                 }
-                let group = group[0]
                 cell.configure(group: group)
                 return cell
 
@@ -121,11 +120,11 @@ extension ProfileGroupVC: UITableViewDelegate, UITableViewDataSource {
             case 1:
                 guard
                     let cell = tableView.dequeueReusableCell(withIdentifier: GroupCellLogo.reusedIdentifier,
-                                                             for: indexPath) as? GroupCellLogo
+                                                             for: indexPath) as? GroupCellLogo,
+                    let group = group.first
                 else {
                     return UITableViewCell()
                 }
-                let group = group[0]
                 cell.configure(group: group)
                 return cell
 
@@ -133,12 +132,11 @@ extension ProfileGroupVC: UITableViewDelegate, UITableViewDataSource {
             case 2:
                 guard
                     let cell = tableView.dequeueReusableCell(withIdentifier: DescriptionCell.reusedIdentifier,
-                                                             for: indexPath) as? DescriptionCell
+                                                             for: indexPath) as? DescriptionCell,
+                    let group = group.first
                 else {
                     return UITableViewCell()
                 }
-
-                let group = group[0]
                 cell.configure(group: group)
 
                 cell.buttonTapped = { [weak self] in
@@ -158,11 +156,11 @@ extension ProfileGroupVC: UITableViewDelegate, UITableViewDataSource {
             case 0:
                 guard
                     let cell = tableView.dequeueReusableCell(withIdentifier: NewsCellHeader.reusedIdentifier,
-                                                             for: indexPath) as? NewsCellHeader
+                                                             for: indexPath) as? NewsCellHeader,
+                    let group = group.first
                 else {
                     return UITableViewCell()
                 }
-                let group = group[0]
                 let wallData = wall[indexPath.section - 1]
                 let date = dateFormatterRU.ShowMeDate(date: wallData.date ?? 0)
                 cell.configure(avatar: group.photo_100,
