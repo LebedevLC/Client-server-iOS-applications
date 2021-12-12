@@ -30,7 +30,7 @@ final class CommentControl2: UIControl {
     private func setView() {
         self.addSubview(commentButton)
         self.commentButton.addTarget(self, action: #selector(tapControl(_:)), for: .touchUpInside)
-        commentButton.tintColor = UIColor.black
+        commentButton.tintColor = UIColor.label
         commentButton.setImage(UIImage(systemName: "text.bubble"), for: .normal)
         commentButton.setImage(UIImage(systemName: "text.bubble.fill"), for: .selected)
     }

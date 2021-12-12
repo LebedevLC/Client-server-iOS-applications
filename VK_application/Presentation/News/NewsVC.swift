@@ -108,13 +108,12 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
         case 1:
             guard
                 let cell = tableView.dequeueReusableCell(withIdentifier: NewsCellText.reusedIdentifier,
-                                                         for: indexPath) as? NewsCellText,
-                let feedPost = feed?.items[indexPath.section]
+                                                         for: indexPath) as? NewsCellText
             else {
                 return UITableViewCell()
             }
-            cell.configure(text: feedPost.text ?? "")
-            // реализация разворачивания и сворачивания текста
+            let feedPost = feed?.items[indexPath.section].text ?? ""
+            cell.configure(text: feedPost)
             cell.controlTapped = { [weak self] in
                 self?.tableView.reloadSections(IndexSet(integer: indexPath.section), with: .none)
             }
@@ -125,12 +124,12 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
             guard
                 let cell = tableView.dequeueReusableCell(withIdentifier: NewsCellPhoto.reusedIdentifier,
                                                          for: indexPath) as? NewsCellPhoto,
-                let attachments = feed?.items[indexPath.section].attachments
+                let attachments = feed?.items[indexPath.section].attachments?.first
             else {
-                debugPrint("Return Media ERROR")
+                debugPrint("No media in cell")
                 return UITableViewCell()
             }
-            cell.configure(attachments: attachments[0])
+            cell.configure(attachments: attachments)
             cell.controlTapped = { [weak self] in
                 self?.performSegue(withIdentifier: "showBigImageNews", sender: indexPath)}
             return cell
@@ -182,6 +181,7 @@ extension NewsVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     private func setTableView() {
+        tableView.separatorStyle = .none
         tableView.delegate = self
         tableView.dataSource = self
         tableView.prefetchDataSource = self

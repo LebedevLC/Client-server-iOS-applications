@@ -164,7 +164,7 @@ extension ProfileGroupVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 let group = group[0]
                 let wallData = wall[indexPath.section - 1]
-                let date = dateFormatterRU.ShowMeDate(date: wallData.date)
+                let date = dateFormatterRU.ShowMeDate(date: wallData.date ?? 0)
                 cell.configure(avatar: group.photo_100,
                                name: group.name,
                                date: date)
@@ -179,8 +179,7 @@ extension ProfileGroupVC: UITableViewDelegate, UITableViewDataSource {
                     return UITableViewCell()
                 }
                 let wallData = wall[indexPath.section - 1]
-                cell.configure(text: wallData.text)
-                // реализация разворачивания и сворачивания текста
+                cell.configure(text: wallData.text ?? "")
                 cell.controlTapped = { [weak self] in
                     self?.tableView.reloadData()
                 }

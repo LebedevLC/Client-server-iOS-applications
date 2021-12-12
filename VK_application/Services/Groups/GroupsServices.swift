@@ -55,7 +55,7 @@ class GroupsServices {
         AF.request(searchUrlPath, method: .get, parameters: paramters).responseJSON { response in
             if let error = response.error {
                 completion(.failure(.serverError))
-                print(error)
+                debugPrint(error.localizedDescription)
             }
             guard response.data != nil else {
                 completion(.failure(.notData))
@@ -88,7 +88,7 @@ class GroupsServices {
         AF.request(joinUrlPath, method: .get, parameters: paramters).responseJSON { response in
             if let error = response.error {
                 completion(.failure(.serverError))
-                print(error)
+                debugPrint(error)
             }
             guard response.data != nil else {
                 completion(.failure(.notData))
@@ -119,7 +119,7 @@ class GroupsServices {
         AF.request(leaveUrlPath, method: .get, parameters: paramters).responseJSON { response in
             if let error = response.error {
                 completion(.failure(.serverError))
-                print(error)
+                debugPrint(error)
             }
             guard response.data != nil else {
                 completion(.failure(.notData))

@@ -29,8 +29,8 @@ final class NewsCellPhoto: UITableViewCell {
     
     func configure(attachments: Attachments) {
         guard let photo = attachments.photo?.sizes else { return }
-        let sizeLast = photo.endIndex - 1
-        let url = URL(string: photo[sizeLast].url ?? "")
+        let last = photo.last
+        let url = URL(string: last?.url ?? "")
         newsImageView.kf.setImage(with: url, placeholder: nil, options: [.transition(ImageTransition.fade(1) ) ] )
     }
     

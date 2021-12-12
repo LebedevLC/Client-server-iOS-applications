@@ -40,8 +40,8 @@ class UsersServices {
         AF.request(searchUsersUrlPath, method: .get, parameters: parameters).responseJSON { response in
             if let error = response.error {
                 completion(.failure(.serverError))
-                print("Server ERROR")
-                print(error)
+                debugPrint("Server ERROR")
+                debugPrint(error)
             }
             guard response.data != nil else {
                 completion(.failure(.notData))
@@ -53,7 +53,7 @@ class UsersServices {
                 completion(.success(users))
                 self.realmService.saveData(array: users)
             } catch {
-                print("Decode ERROR")
+                debugPrint("Decode ERROR")
                 completion(.failure(.decodeError))
             }
         }
@@ -73,8 +73,8 @@ class UsersServices {
         AF.request(usersInfoUrlPath, method: .get, parameters: parameters).responseJSON { response in
             if let error = response.error {
                 completion(.failure(.serverError))
-                print("Server ERROR")
-                print(error)
+                debugPrint("Server ERROR")
+                debugPrint(error)
             }
             guard response.data != nil else {
                 completion(.failure(.notData))
@@ -85,8 +85,8 @@ class UsersServices {
                 let usersInfo = responseUsersInfo.response
                 completion(.success(usersInfo))
             } catch {
-                print("------------Decode ERROR-------------")
-                print(response)
+                debugPrint("------------Decode ERROR-------------")
+                debugPrint(response)
                 completion(.failure(.decodeError))
             }
         }

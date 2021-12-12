@@ -92,11 +92,10 @@
                         <color key="selectedImageTintColor" systemColor="linkColor"/>
                     </tabBar>
                     <connections>
+                        <segue destination="88T-nJ-MiZ" kind="relationship" relationship="viewControllers" id="x8b-Nl-xiV"/>
+                        <segue destination="cjv-gt-nVk" kind="relationship" relationship="viewControllers" id="AoY-Fk-CBg"/>
                         <segue destination="yxQ-KP-tdN" kind="relationship" relationship="viewControllers" id="7CD-Wt-rwA"/>
                         <segue destination="B6W-Yj-U7x" kind="relationship" relationship="viewControllers" id="4qt-2L-ef2"/>
-                        <segue destination="88T-nJ-MiZ" kind="relationship" relationship="viewControllers" id="x8b-Nl-xiV"/>
-                        <segue destination="3xi-Uk-o3I" kind="relationship" relationship="viewControllers" id="uMU-uj-e8O"/>
-                        <segue destination="cjv-gt-nVk" kind="relationship" relationship="viewControllers" id="AoY-Fk-CBg"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bHF-9U-qHx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -123,41 +122,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dwa-qY-eNj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2677.5700934579436" y="-261.12311015118792"/>
-        </scene>
-        <!--Сообщения-->
-        <scene sceneID="PU9-UL-VJm">
-            <objects>
-                <navigationController id="3xi-Uk-o3I" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Сообщения" image="message" catalog="system" selectedImage="message.fill" id="hzk-wp-VPg">
-                        <color key="badgeColor" systemColor="systemBackgroundColor"/>
-                    </tabBarItem>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="4Yw-u9-sLL">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="S2Q-o4-cwa" kind="relationship" relationship="rootViewController" id="wYW-rz-e1q"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3uD-Xr-x5G" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2676" y="-1644"/>
-        </scene>
-        <!--Messages Controller-->
-        <scene sceneID="XyZ-gb-r1Y">
-            <objects>
-                <viewController id="S2Q-o4-cwa" customClass="MessagesController" customModule="VK_application" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="dVf-qE-etb">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="yhO-AP-gc0"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="tRo-kY-Rxm"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="uPs-dT-r1w" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3579" y="-1644"/>
         </scene>
         <!--Возможные друзья-->
         <scene sceneID="8hx-RT-T0Z">
@@ -806,9 +770,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XUE-eS-b04">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XUE-eS-b04">
                                 <rect key="frame" x="0.0" y="56" width="414" height="757"/>
-                                <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="g7s-2M-j26"/>
@@ -902,11 +866,11 @@
             <objects>
                 <viewController id="5yj-Mb-4jK" customClass="BigImageNewsVC" customModule="VK_application" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WWf-e2-et5">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock.icloud.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="T3X-wy-0RK">
-                                <rect key="frame" x="0.0" y="57" width="414" height="753.5"/>
+                                <rect key="frame" x="0.0" y="89" width="414" height="672.5"/>
                                 <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                         </subviews>
@@ -1079,7 +1043,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="aDs-Sm-8n0"/>
+        <segue reference="q11-wk-06H"/>
         <segue reference="Scd-P0-qh6"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -1090,7 +1054,6 @@
         <image name="line.3.crossed.swirl.circle" catalog="system" width="128" height="121"/>
         <image name="lock.icloud.fill" catalog="system" width="128" height="88"/>
         <image name="message" catalog="system" width="128" height="113"/>
-        <image name="message.fill" catalog="system" width="128" height="113"/>
         <image name="newspaper" catalog="system" width="128" height="111"/>
         <image name="newspaper.fill" catalog="system" width="128" height="111"/>
         <image name="person" catalog="system" width="128" height="117"/>

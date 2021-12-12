@@ -12,15 +12,15 @@ struct WallGetModel: Codable {
 }
 
 struct WallGetResponse: Codable {
-    let count: Int
+    let count: Int?
     let items: [WallItems]
 }
 
 struct WallItems: Codable {
-    let id: Int
-    let date: Double
-    let post_type: String
-    let text: String
+    let id: Int?
+    let date: Double?
+    let post_type: String?
+    let text: String?
     let attachments: [Attachments]?
     let comments: Comments?
     let likes: Likes?

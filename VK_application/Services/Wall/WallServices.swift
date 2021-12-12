@@ -7,13 +7,11 @@
 
 import Foundation
 import Alamofire
-import RealmSwift
 
 // MARK: - Получение списка записей со стены
 
 class WallServices {
     private let feedUrlPath = "https://api.vk.com/method/wall.get"
-    private let realmService = RealmServices()
     
     func getWall(ownerID: Int, count: Int, completion: @escaping (Result<[WallItems], SimpleServiceError>) -> Void) {
         let paramters: Parameters = [
@@ -26,12 +24,12 @@ class WallServices {
         AF.request(feedUrlPath, method: .get, parameters: paramters).responseJSON { response in
             if let error = response.error {
                 completion(.failure(.serverError))
-                print("server Error!")
-                print(error)
+                debugPrint("server Error!")
+                debugPrint(error)
             }
             guard response.data != nil else {
                 completion(.failure(.notData))
-                print("Error - not Data!")
+                debugPrint("Error - not Data!")
                 return
             }
             do {
@@ -40,7 +38,7 @@ class WallServices {
                 completion(.success(wall))
             } catch {
                 completion(.failure(.decodeError))
-                print("Decode Error")
+                debugPrint("Decode Error")
             }
         }
     }

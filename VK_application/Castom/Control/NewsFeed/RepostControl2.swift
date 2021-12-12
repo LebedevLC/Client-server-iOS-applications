@@ -33,10 +33,10 @@ final class RepostControl2: UIControl {
         self.addSubview(repostButton)
         self.addSubview(repostCountLabel)
         self.repostButton.addTarget(self, action: #selector(tapControl(_:)), for: .touchUpInside)
-        repostButton.tintColor = UIColor.black
+        repostButton.tintColor = UIColor.label
         repostButton.setImage(UIImage(systemName: "arrowshape.turn.up.right"), for: .normal)
         repostButton.setImage(UIImage(systemName: "arrowshape.turn.up.right.fill"), for: .selected)
-        repostCountLabel.textColor = UIColor.black
+        repostCountLabel.textColor = UIColor.label
         repostCountLabel.translatesAutoresizingMaskIntoConstraints = false
         repostCountLabel.trailingAnchor.constraint(equalTo: repostButton.leadingAnchor, constant: -2).isActive = true
         repostCountLabel.centerYAnchor.constraint(equalTo: repostButton.centerYAnchor).isActive = true

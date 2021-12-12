@@ -38,7 +38,7 @@ class FriendsServices {
         ]
         AF.request(getUrlPath, method: .get, parameters: paramters).responseJSON { [weak self] response in
             guard response.data != nil else {
-                print("Response from server = nil")
+                debugPrint("Response from server = nil")
                 return
             }
             do {
@@ -52,7 +52,7 @@ class FriendsServices {
                     array: friends,
                     completion: { })
             } catch {
-                print("Decode ERROR")
+                debugPrint("Decode ERROR")
             }
         }
     }
@@ -71,7 +71,7 @@ class FriendsServices {
         AF.request(getUrlPath, method: .get, parameters: paramters).responseJSON { response in
             if let error = response.error {
                 completion(.failure(.serverError))
-                print(error)
+                debugPrint(error)
             }
             guard response.data != nil else {
                 completion(.failure(.notData))
@@ -82,7 +82,7 @@ class FriendsServices {
                 let friends = responseFriends.response.items
                 completion(.success(friends))
             } catch {
-                print("Decode ERROR")
+                debugPrint("Decode ERROR")
                 completion(.failure(.decodeError))
             }
         }
@@ -108,7 +108,7 @@ class FriendsServices {
         AF.request(searchUrlPath, method: .get, parameters: paramters).responseJSON { response in
             if let error = response.error {
                 completion(.failure(.serverError))
-                print(error)
+                debugPrint(error)
             }
             guard response.data != nil else {
                 completion(.failure(.notData))
@@ -119,7 +119,7 @@ class FriendsServices {
                 let friends = responseFriends.response.items
                 completion(.success(friends))
             } catch {
-                print("decode error")
+                debugPrint("decode error")
                 completion(.failure(.decodeError))
             }
         }
@@ -136,24 +136,24 @@ class FriendsServices {
         AF.request(addUrlPath, method: .get, parameters: paramters).responseJSON { response in
             if let error = response.error {
                 completion(.failure(.serverError))
-                print(error)
+                debugPrint(error)
             }
             guard response.data != nil else {
                 completion(.failure(.notData))
-                print(completion)
+                debugPrint(completion)
                 return
             }
             do {
                 let responseFriendAdd = try JSONDecoder().decode(ResponseServerCodeModel.self, from: response.data!)
                 completion(.success(responseFriendAdd))
             } catch {
-                print("decode error")
+                debugPrint("decode error")
                 completion(.failure(.decodeError))
-                print("Ищу ошибку...")
+                debugPrint("Ищу ошибку...")
                 self.getAddFriendError(userID: userID, param: paramters) { result in
                     switch result {
                     case .success(let answer):
-                        print(answer)
+                        debugPrint(answer)
                     case .failure:
                         return
                     }
@@ -173,7 +173,7 @@ class FriendsServices {
                 completion(.success(responseFriendAddError))
             } catch {
                 completion(.failure(.decodeError))
-                print("Ошибка декодирования, неизвестные данные")
+                debugPrint("Ошибка декодирования, неизвестные данные")
                 return
             }
         }
@@ -190,19 +190,19 @@ class FriendsServices {
         AF.request(deleteUrlPath, method: .get, parameters: paramters).responseJSON { response in
             if let error = response.error {
                 completion(.failure(.serverError))
-                print(error)
+                debugPrint(error)
             }
             guard response.data != nil else {
                 completion(.failure(.notData))
-                print(completion)
+                debugPrint(completion)
                 return
             }
             do {
                 let responseDeleteFriend = try JSONDecoder().decode(ResponseServerFriendDelete.self, from: response.data!)
                 completion(.success(responseDeleteFriend))
             } catch {
-                print(response)
-                print("decode error")
+                debugPrint(response)
+                debugPrint("decode error")
                 completion(.failure(.decodeError))
             }
         }
@@ -222,7 +222,7 @@ class FriendsServices {
         AF.request(getSuggestionsUrlPath, method: .get, parameters: paramters).responseJSON { response in
             if let error = response.error {
                 completion(.failure(.serverError))
-                print(error)
+                debugPrint(error)
             }
             guard response.data != nil else {
                 completion(.failure(.notData))
@@ -233,7 +233,7 @@ class FriendsServices {
                 let friends = responseFriends.response.items
                 completion(.success(friends))
             } catch {
-                print("decode error")
+                debugPrint("decode error")
                 completion(.failure(.decodeError))
             }
         }

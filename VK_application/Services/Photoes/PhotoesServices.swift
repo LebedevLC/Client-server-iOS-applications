@@ -32,7 +32,7 @@ class PhotoesServices {
         
         AF.request(allUrlPath, method: .get, parameters: paramters).responseJSON { [weak self] response in
             guard response.data != nil else {
-                print("Response from server = nil")
+                debugPrint("Response from server = nil")
                 return
             }
             do {
@@ -46,7 +46,7 @@ class PhotoesServices {
                     completion: completion)
                 completion()
             } catch {
-                print("Decode ERROR")
+                debugPrint("Decode ERROR")
             }
         }
     }
@@ -69,8 +69,8 @@ class PhotoesServices {
         AF.request(allUrlPath, method: .get, parameters: paramters).responseJSON { response in
             if let error = response.error {
                 completion(.failure(.serverError))
-                print("Server ERROR")
-                print(error)
+                debugPrint("Server ERROR")
+                debugPrint(error)
             }
             guard response.data != nil else {
                 completion(.failure(.notData))
@@ -81,8 +81,8 @@ class PhotoesServices {
                 let photoes = responsePhotoes.response.items
                 completion(.success(photoes))
             } catch {
-                print("------------Decode ERROR-------------")
-                print(response)
+                debugPrint("------------Decode ERROR-------------")
+                debugPrint(response)
                 completion(.failure(.decodeError))
             }
         }
@@ -104,7 +104,7 @@ class PhotoesServices {
         
         AF.request(allUrlPath, method: .get, parameters: paramters).responseJSON { [weak self] response in
             guard response.data != nil else {
-                print("Response from server = nil")
+                debugPrint("Response from server = nil")
                 return
             }
             do {
@@ -118,7 +118,7 @@ class PhotoesServices {
                     completion: completion)
                 completion()
             } catch {
-                print("Decode ERROR")
+                debugPrint("Decode ERROR")
             }
         }
     }

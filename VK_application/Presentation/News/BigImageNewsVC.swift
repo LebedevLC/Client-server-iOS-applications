@@ -35,6 +35,8 @@ class BigImageNewsVC: UIViewController, UIGestureRecognizerDelegate {
     private func setImage(index: Int) {
         guard let photo = attachments[index].photo?.sizes else {return}
         let sizeLast = photo.endIndex - 1
+        debugPrint(attachments[index].photo?.access_key)
+        debugPrint(attachments[index].photo?.id)
         let url = URL(string: photo[sizeLast].url ?? "")
         bigImageView.kf.setImage(with: url, placeholder: nil, options: [.transition(ImageTransition.fade(1))])
         bigImageView.frame = UIScreen.main.bounds

@@ -25,10 +25,10 @@
                     </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottomMargin" secondItem="Iee-9b-VBe" secondAttribute="bottom" id="DQB-9h-Zrp"/>
-                    <constraint firstItem="Iee-9b-VBe" firstAttribute="top" secondItem="ZRt-oi-VUN" secondAttribute="topMargin" id="Iux-5U-ozh"/>
-                    <constraint firstItem="Iee-9b-VBe" firstAttribute="leading" secondItem="ZRt-oi-VUN" secondAttribute="leadingMargin" id="NeO-Un-Rbj"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="Iee-9b-VBe" secondAttribute="trailing" id="cNg-xn-6PP"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="Iee-9b-VBe" secondAttribute="bottom" priority="999" id="DQB-9h-Zrp"/>
+                    <constraint firstItem="Iee-9b-VBe" firstAttribute="top" secondItem="ZRt-oi-VUN" secondAttribute="topMargin" priority="999" id="Iux-5U-ozh"/>
+                    <constraint firstItem="Iee-9b-VBe" firstAttribute="leading" secondItem="ZRt-oi-VUN" secondAttribute="leadingMargin" priority="999" id="NeO-Un-Rbj"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Iee-9b-VBe" secondAttribute="trailing" priority="999" id="cNg-xn-6PP"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
