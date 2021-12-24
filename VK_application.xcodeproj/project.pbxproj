@@ -80,6 +80,8 @@
 		467165D826BEAA3D001C9E8D /* NewsCellFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = 467165D726BEAA3D001C9E8D /* NewsCellFooter.xib */; };
 		467165DA26BEAACF001C9E8D /* NewsCellFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467165D926BEAACF001C9E8D /* NewsCellFooter.swift */; };
 		4671660026BFEE75001C9E8D /* BigImageNewsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467165FF26BFEE75001C9E8D /* BigImageNewsVC.swift */; };
+		4693A230276627310094B884 /* ProfileGroupAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4693A22F276627310094B884 /* ProfileGroupAdapter.swift */; };
+		4693A232276669DB0094B884 /* ProfileSimpleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4693A231276669DB0094B884 /* ProfileSimpleFactory.swift */; };
 		469BA92E27346BE200E4B898 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469BA92D27346BE200E4B898 /* AsyncOperation.swift */; };
 		469F57A9269089F200F3A697 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469F57A8269089F200F3A697 /* AppDelegate.swift */; };
 		469F57AB269089F200F3A697 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469F57AA269089F200F3A697 /* SceneDelegate.swift */; };
@@ -185,6 +187,8 @@
 		467165D726BEAA3D001C9E8D /* NewsCellFooter.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsCellFooter.xib; sourceTree = "<group>"; };
 		467165D926BEAACF001C9E8D /* NewsCellFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCellFooter.swift; sourceTree = "<group>"; };
 		467165FF26BFEE75001C9E8D /* BigImageNewsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigImageNewsVC.swift; sourceTree = "<group>"; };
+		4693A22F276627310094B884 /* ProfileGroupAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileGroupAdapter.swift; sourceTree = "<group>"; };
+		4693A231276669DB0094B884 /* ProfileSimpleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSimpleFactory.swift; sourceTree = "<group>"; };
 		469BA92D27346BE200E4B898 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		469F57A5269089F200F3A697 /* VK_application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VK_application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		469F57A8269089F200F3A697 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -525,6 +529,7 @@
 			children = (
 				466420DC27185E3A004DD73B /* Cell */,
 				466420DA27185E28004DD73B /* ProfileVC.swift */,
+				4693A231276669DB0094B884 /* ProfileSimpleFactory.swift */,
 				46557955272ECC2400843C6B /* MoreInfoVC.swift */,
 			);
 			path = Profile;
@@ -582,6 +587,7 @@
 			children = (
 				465E093226C6BB5600B7EDB7 /* Cell */,
 				465E093026C6B8A100B7EDB7 /* ProfileGroupVC.swift */,
+				4693A22F276627310094B884 /* ProfileGroupAdapter.swift */,
 				464BACF826F25B4A000402B0 /* MoreGroupInfo.swift */,
 			);
 			path = ProfileGroup;
@@ -932,6 +938,7 @@
 				46EB458B26AEE7F200183E66 /* CommentControl2.swift in Sources */,
 				460E7166269B0D3F00261821 /* PhotoesFriendVC.swift in Sources */,
 				464BACEF26EDEA84000402B0 /* SubscribeControl.swift in Sources */,
+				4693A232276669DB0094B884 /* ProfileSimpleFactory.swift in Sources */,
 				460E7168269B148E00261821 /* PhotoCollectionViewCell.swift in Sources */,
 				466A12D827074AF3007155E7 /* UsersServices.swift in Sources */,
 				460E716F269DF8F800261821 /* AddFriendCell.swift in Sources */,
@@ -959,6 +966,7 @@
 				463DBCE626FBBE5D005723AF /* PhotoesServices.swift in Sources */,
 				463D87AA274E54FC0025922A /* LikeServices.swift in Sources */,
 				463DBCED26FF8970005723AF /* FriendsModel.swift in Sources */,
+				4693A230276627310094B884 /* ProfileGroupAdapter.swift in Sources */,
 				464BACF626F24F29000402B0 /* DescriptionCell.swift in Sources */,
 				4638E5C326A04B0F004E26A2 /* AvatarImageView.swift in Sources */,
 				463DBCE826FBC440005723AF /* GroupsServices.swift in Sources */,
