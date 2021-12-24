@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4609C4CC2775F84800A0A22C /* FriendsServicesProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4609C4CB2775F84800A0A22C /* FriendsServicesProxy.swift */; };
 		460E71522699966700261821 /* MyFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460E71512699966700261821 /* MyFriendsVC.swift */; };
 		460E715C2699C8E000261821 /* FriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460E715B2699C8E000261821 /* FriendsTableViewCell.swift */; };
 		460E71642699E8BE00261821 /* AddFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460E71632699E8BE00261821 /* AddFriendsViewController.swift */; };
@@ -113,6 +114,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4609C4CB2775F84800A0A22C /* FriendsServicesProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsServicesProxy.swift; sourceTree = "<group>"; };
 		460E71512699966700261821 /* MyFriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFriendsVC.swift; sourceTree = "<group>"; };
 		460E715B2699C8E000261821 /* FriendsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsTableViewCell.swift; sourceTree = "<group>"; };
 		460E71632699E8BE00261821 /* AddFriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsViewController.swift; sourceTree = "<group>"; };
@@ -430,6 +432,7 @@
 			isa = PBXGroup;
 			children = (
 				463DBCE126FB7A56005723AF /* FriendsServices.swift */,
+				4609C4CB2775F84800A0A22C /* FriendsServicesProxy.swift */,
 			);
 			path = Friends;
 			sourceTree = "<group>";
@@ -939,6 +942,7 @@
 				460E7166269B0D3F00261821 /* PhotoesFriendVC.swift in Sources */,
 				464BACEF26EDEA84000402B0 /* SubscribeControl.swift in Sources */,
 				4693A232276669DB0094B884 /* ProfileSimpleFactory.swift in Sources */,
+				4609C4CC2775F84800A0A22C /* FriendsServicesProxy.swift in Sources */,
 				460E7168269B148E00261821 /* PhotoCollectionViewCell.swift in Sources */,
 				466A12D827074AF3007155E7 /* UsersServices.swift in Sources */,
 				460E716F269DF8F800261821 /* AddFriendCell.swift in Sources */,

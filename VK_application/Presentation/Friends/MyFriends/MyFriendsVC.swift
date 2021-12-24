@@ -15,8 +15,9 @@ class MyFriendsVC: UIViewController {
     @IBOutlet var sortBarButtonItem: UIBarButtonItem!
     
     private var friendsServices = FriendsServices()
+//    private var friendServiceProxy = FriendsServiceProxy()
     // параметр для сортиовки при запросе
-    private var order: FriendsServices.Order = .hints
+    private var order: Order = .hints
     private var backUserId: Int?
     
     private var token: NotificationToken?
@@ -70,8 +71,9 @@ class MyFriendsVC: UIViewController {
     }
     
     // Получение списка друзей (веб-запрос, запись в БД)
-    private func getFriendsAloma(order: FriendsServices.Order) {
-        friendsServices.getFriends(userId: UserSession.shared.userId, order: order)
+    private func getFriendsAloma(order: Order) {
+        let proxy = FriendsServiceProxy.init(friendsServices: friendsServices)
+        proxy.getFriends(userId: UserSession.shared.userId, order: order)
         self.loadData()
     }
     
