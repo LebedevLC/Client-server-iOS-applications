@@ -9,7 +9,18 @@ import Foundation
 import Alamofire
 import RealmSwift
 
-class FriendsServices {
+enum Order: String {
+    case hints = "hints"
+    case name = "name"
+    case random = "random"
+}
+
+protocol FriendsServiceInterface {
+
+    func getFriends(userId: Int, order: Order)
+}
+
+class FriendsServices: FriendsServiceInterface {
     
     private let getUrlPath = "https://api.vk.com/method/friends.get"
     private let searchUrlPath = "https://api.vk.com/method/friends.search"
@@ -17,13 +28,6 @@ class FriendsServices {
     private let deleteUrlPath = "https://api.vk.com/method/friends.delete"
     private let getSuggestionsUrlPath = "https://api.vk.com/method/friends.getSuggestions"
     private let realmService = RealmServices()
-    
-    enum Order: String {
-        case hints = "hints"
-        case name = "name"
-        case random = "random"
-        
-    }
     
     // MARK: - Friends.get
     
